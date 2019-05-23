@@ -673,8 +673,9 @@ begin
                // Prod.xProd    := 'NOTA FISCAL EMITIDA EM AMBIENTE DE HOMOLOGACAO - SEM VALOR FISCAL';
 
         Prod.NCM := SQLLocate('NCM', 'NCMICOD', 'NCMA30CODIGO', SQLLocate('PRODUTO', 'PRODICOD', 'NCMICOD', SQLImpressaoCupom.fieldbyname('PRODICOD').AsString));
-        if SQLLocate('NCM', 'NCMICOD', 'ALIQ_ICMS', SQLLocate('PRODUTO', 'PRODICOD', 'NCMICOD', SQLImpressaoCupom.fieldbyname('PRODICOD').AsString)) <> '' then
-          vPercSTEfe := StrToFloat(SQLLocate('NCM', 'NCMICOD', 'ALIQ_ICMS', SQLLocate('PRODUTO', 'PRODICOD', 'NCMICOD', SQLImpressaoCupom.fieldbyname('PRODICOD').AsString)));
+
+        if SQLLocate('ICMSUF', 'ICMUA2UF', 'ICMUN2ALIQUOTA', QuotedStr(Emit.EnderEmit.UF)) <> '' then
+          vPercSTEfe := StrToFloat(SQLLocate('ICMSUF', 'ICMUA2UF', 'ICMUN2ALIQUOTA', QuotedStr(Emit.EnderEmit.UF)));
 
         Prod.EXTIPI := '';
         if (dm.sqlConsulta.fieldbyname('PRODISITTRIB').asstring = '60') or (dm.sqlConsulta.fieldbyname('PRODISITTRIB').asstring = '500') then
@@ -823,8 +824,6 @@ begin
                       ICMS.vBCEfet := (Prod.qCom * (Prod.vProd - Prod.vDesc)) * vPercSTEfe;
                     end;
                   end;
-
-
                           // Base Calculo
                 if dm.sqlConsulta.fieldbyname('PRODA1MODBC').AsString = '0' then
                   ICMS.modBC := dbiMargemValorAgregado else
