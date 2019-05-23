@@ -1,0 +1,1 @@
+alter table USUARIO ADD USUACEXCLCLI CHAR(1);

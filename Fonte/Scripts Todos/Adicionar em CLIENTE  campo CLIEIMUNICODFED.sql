@@ -1,0 +1,1 @@
+alter table CLIENTE add CLIEIMUNICODFED INTEGER;

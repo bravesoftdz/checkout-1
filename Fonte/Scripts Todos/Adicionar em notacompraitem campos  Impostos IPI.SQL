@@ -1,0 +1,4 @@
+ALTER TABLE notacompraitem ADD  NOCA3CSTIPI       CHAR(3);
+ALTER TABLE notacompraitem ADD  NOCN4QTDIPI       NUMERIC(16,4);
+ALTER TABLE notacompraitem ADD  NOCN4UNDIPI       NUMERIC(15,4);
+ALTER TABLE notacompraitem ADD  NOCIN2VBCIPI      NUMERIC(15,2);

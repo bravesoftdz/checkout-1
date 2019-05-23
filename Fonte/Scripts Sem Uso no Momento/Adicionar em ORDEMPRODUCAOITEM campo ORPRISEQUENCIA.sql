@@ -1,0 +1,1 @@
+alter table ORDEMPRODUCAOITEM add ORPRISEQUENCIA integer

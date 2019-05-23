@@ -1,0 +1,1 @@
+Alter table PEDIDOVENDA add PDVDA15NROPEDPALM char(15)

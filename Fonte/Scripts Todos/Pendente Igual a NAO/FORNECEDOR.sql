@@ -1,0 +1,1 @@
+update FORNECEDOR set Pendente = "N" where Pendente = "S"

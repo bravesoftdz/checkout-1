@@ -1,0 +1,1 @@
+update CLIENTEDEPENDENTE set Pendente = "N" where Pendente = "S"

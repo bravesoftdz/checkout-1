@@ -1,0 +1,1 @@
+alter table FUNCIONARIO add   FUNCA8CEP CHAR(8) ;

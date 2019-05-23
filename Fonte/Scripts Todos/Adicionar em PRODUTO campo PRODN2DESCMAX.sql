@@ -1,0 +1,1 @@
+alter table PRODUTO add PRODN2DESCMAX numeric(15,3)

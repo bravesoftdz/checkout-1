@@ -1,0 +1,1 @@
+Alter Table MOVIMENTOCAIXA alter MVCXA15DOCORIG TYPE  char(30);

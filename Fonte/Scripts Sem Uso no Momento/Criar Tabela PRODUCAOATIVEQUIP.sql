@@ -1,0 +1,9 @@
+CREATE TABLE PRODUCAOATIVEQUIP 
+(
+  PREQA13ID                  CHAR(13) NOT NULL,
+  PRATA13ID                  CHAR(13) NOT NULL,
+  PRAEICOD                   INTEGER NOT NULL,
+  REGISTRO                   TIMESTAMP,
+  PENDENTE                   CHAR(1),
+ PRIMARY KEY (PREQA13ID, PRATA13ID)
+);

@@ -1,0 +1,7 @@
+update
+  CONTASPAGAR
+set
+  CTPGN2DESCPROMO = 0
+where
+  CTPGN2DESCPROMO is null
+

@@ -1,0 +1,1 @@
+alter table USUARIO add USUACRESUMOFIN CHAR(01)

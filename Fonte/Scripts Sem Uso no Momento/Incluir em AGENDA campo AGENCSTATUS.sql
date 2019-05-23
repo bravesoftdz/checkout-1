@@ -1,0 +1,1 @@
+alter table AGENDA add AGENCSTATUS CHAR(1)

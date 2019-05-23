@@ -1,0 +1,6 @@
+update 
+  MOVIMENTOESTOQUE
+set 
+  MVESCESTOQUEOK = 'N'
+where
+  MVESCESTOQUEOK is null

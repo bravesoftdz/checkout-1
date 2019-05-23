@@ -1,0 +1,1 @@
+update PAGAMENTO set Pendente = "N" where Pendente = "S"

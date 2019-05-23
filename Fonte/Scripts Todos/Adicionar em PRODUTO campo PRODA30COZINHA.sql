@@ -1,0 +1,1 @@
+alter table PRODUTO add PRODA30COZINHA VARCHAR(30)

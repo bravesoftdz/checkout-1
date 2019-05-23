@@ -1,0 +1,1 @@
+alter table PREVENDAITEM add DATA_INICIO_PRODUCAO integer;

@@ -1,0 +1,9 @@
+CREATE TABLE PRNEGOCIACAOSTATUS (
+       PRNSICOD             INTEGER NOT NULL,
+       PRNSCPEDEMOTIVO      CHAR(1),
+       PRNSA60DESCR         CHAR(60),
+       PRNSCALTERA          CHAR(1),
+       REGISTRO             DATE,
+       PENDENTE             CHAR(1),
+       PRIMARY KEY (PRNSICOD)
+);

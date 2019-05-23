@@ -1,0 +1,432 @@
+inherited FormExportacaoProdutosGruposXML: TFormExportacaoProdutosGruposXML
+  Left = 286
+  Top = 141
+  Caption = 'Exporta'#231#227'o de Grupos e Produtos para XML'
+  OldCreateOrder = True
+  PixelsPerInch = 96
+  TextHeight = 13
+  inherited ScrollBoxFundo: TScrollBox
+    inherited PanelCentral: TPanel
+      object BtnIniciar: TSpeedButton [0]
+        Tag = 3
+        Left = 282
+        Top = 145
+        Width = 101
+        Height = 33
+        Cursor = crHandPoint
+        Hint = 'Fechar Tela'
+        Caption = '&Exportar'
+        Flat = True
+        Font.Charset = ANSI_CHARSET
+        Font.Color = 8404992
+        Font.Height = -11
+        Font.Name = 'Tahoma'
+        Font.Style = [fsBold]
+        Glyph.Data = {
+          360C0000424D360C000000000000360000002800000020000000200000000100
+          180000000000000C0000CE0E0000C40E00000000000000000000FFFFFFFFFFFF
+          FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+          FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+          FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+          FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+          FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+          FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+          FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+          FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+          FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+          FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+          FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+          FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+          FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+          FF000000000000000000000000000000000000000000FFFFFFFFFFFFFFFFFFFF
+          FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+          FFFFFFFFFFFFFFFFFF000000000000000000FFFFFFFFFFFFFFFFFF0000000000
+          00CF3000CF3000CF3000CF3000CF3000CF3000CF3000000000000000FFFFFFFF
+          FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+          FFFFFF0097CF0000000097CF0097FF006790000000006700006700003000FF30
+          2FFF302FFF302FFF302FFF302FFF302FCF3000FF302FCF300000300000000000
+          0000FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+          0097CF00C8FF0000000097FF00679000000000670000972F00972F00972F0030
+          00FF302FFF302FFF672FFF672FFF302FFF302FFF302F00300000672F003000CF
+          3000000000FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+          0097CF00C8FF0000000067900000000067002FC82F00972F2FC82F00972F0097
+          2F003000FF302FFF672FFF302FFF672FFF302FFF302F00300060C82F003000CF
+          3000CF3000000000FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+          0097CF00C8FF0097CF00000000670060FF2F2FC82F2FC82F2FC82F00972F2FC8
+          2F00972F003000FF672FFF672FFF672FFF672FFF672FFF672FFF302FFF302F00
+          300000672F00672F000000FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+          0097CF00C8FF0097FF0097CF0000002FC82F60FF2F2FC82F2FC82F2FC82F0097
+          2F00972F003000FF672FFF672FFF672FFF672FFF672FFF302FFF302F00300000
+          7F00007F00003000000000FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+          FFFFFF0097CF00C8FF0097FF0097CF0000002FC82F2FC82F60FF2F2FC82F2FC8
+          2F00972F00972F003000FF672FFF672FFF672FFF672FFF302F00300000972F00
+          7F00007F00007F0000672F000000FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+          FFFFFF0097CFCFFFFF00C8FF0097FF0097CF00000060FF2F2FC82F2FC82F2FC8
+          2F00972F00972F003000FF672F00000000000000000000000000000000000000
+          0000000000007F00003000000000FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+          FFFFFFFFFFFF0097CF90FFFF00C8FF0097FF0097CF0000002FC82F00972F7F7F
+          00000000FF9700FF672FFF672F0097CF00C8FF00C8FF0097FF0097FF0097FF00
+          000000972F007F00007F00003000000000FFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+          FFFFFFFFFFFF0097CFCFFFFF90FFFF00C8FF0097FF0097CF0000000067000000
+          00000000FF9700FF9700FF97000097CF90FFFF00C8FF00C8FF0097FF00000000
+          7F00007F0000972F007F0000672F000000FFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+          FFFFFFFFFFFF2FC82F0097CFCFFFFF90FFFF00C8FF0097FF0097CF0000000097
+          FF000000FF9700FF9700FF97000097CF90FFFF90FFFF00C8FF0097FF0097CF00
+          000000972F007F00007F00003000000000FFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+          FFFFFFFFFFFFEFC8A02FC82F0097CFCFFFFF90FFFF00C8FF0097FF0097FF0097
+          FF000000FF9700FFC82FFF97000097CF90FFFF90FFFF90FFFF00C8FF0097FF00
+          97CF00000000972F007F0000672F000000FFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+          FFFFFFFFFFFFEFC8A0FFFFCF2FC82F0097CFCFFFFF90FFFF00C8FF00C8FF0097
+          FF000000FF9700FFC82FFFC82F0097CF90FFFF0097CFCFFFFF90FFFF00C8FF00
+          97FF0097CF00000000972F00672F000000FFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+          FFFFFFFFFFFFEFC8A0FFFFFFFFFFCFFFFFCF2F676090FFFF90FFFF00C8FF00C8
+          FF000000FFC82FFF9700FF97000097CF0097CF00672F0097CFCFFFFF90FFFF00
+          C8FF0097FF0097CF00000000672F000000FFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+          FFFFFFFFFFFFEFC8A0FFFFCFFFFFCF2F676090FFFF90FFFF90FFFF90FFFF00C8
+          FF000000FFC82FFFC82FFFC82F0097CFFF9700FF9700FF672F0097CFCFFFFF90
+          FFFF00C8FF0097FF00000000672F000000FFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+          FFFFFFFFFFFFFFFFFFEFC8A00097CF0097CF0097CF0097CF0097CF0097CF0097
+          CF000000FFC82FFFC82FFFFF2F007F00FFC82F007F0000672F0030000097CFCF
+          FFFF90FFFF00C8FF0097FF000000FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+          FFFFFFFFFFFFFFFFFFEFC8A0FFFFFFFFFFCFFFFF2F00672F2FC82F00972F0067
+          2FFFC82FFFC82FFFC82FFF9700FFC82FFF9700FFC82F2FC82F00672F00300000
+          97CFCFFFFF90FFFF00C8FF000000FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+          FFFFFFFFFFFFFFFFFFFFFFFFEFC8A0FFFFFF00672F2FC82F2FC82F00972F0097
+          2FFF9700FFC82FFFC82FFFC82FFF9700FFC82FFF9700007F002FC82F007F00FF
+          672F0097CFCFFFFF90FFFF0097CF000000FFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+          FFFFFFFFFFFFFFFFFFFFFFFFFFFFFF00672F60FF2F60FF2F2FC82F00972F0097
+          2F00672FFF9700FFC82FFFC82FFFC82FFF9700FFC82FFFC82F007F00FF672FFF
+          672FFF672F0097CFCFFFFF0097FF000000FFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+          FFFFFFFFFFFFFFFFFFFFFFFFFFFFFF2FC82FCFFFCFCFFFCF60FF2F2FC82F2FC8
+          2F00972F00972F00672FFFC82F00672F00672FFF672FFF9700FF9700FF9700FF
+          672F2F67600067900097CF00C8FF000000FFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+          FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF2FC82FFFFFFFCFFFCF60FF2F60FF
+          2F2FC82F00972F00972F00672F00972F00972F00672FFF672FFF9700FF9700FF
+          672F00C8FF0097FF00679000C8FF000000FFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+          FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF2FC82F2FC82FCFFFCF60FF
+          2F60FF2F2FC82F2FC82F2FC82F00972F00972F00972F00672FFF672FFF672F00
+          C8FF0097FF0097FF006790006790FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+          FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF2FC82F2FC8
+          2FCFFFCFFFFFFFCFFFCF60FF2F60FF2F2FC82F2FC82F00972F00672FFFFFFF00
+          97CF0097CF0097CFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+          FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+          FF2FC82F2FC82F2FC82F2FC82F2FC82F2FC82F2FC82FFFFFFFFFFFFFFFFFFFFF
+          FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+          FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+          FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+          FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+          FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+          FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+          FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+          FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+          FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+          FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF}
+        ParentFont = False
+        OnClick = BtnIniciarClick
+      end
+      object Label1: TLabel [1]
+        Left = 181
+        Top = 188
+        Width = 192
+        Height = 13
+        Caption = 'Caminho dos arquivos exportados'
+        Font.Charset = ANSI_CHARSET
+        Font.Color = 8404992
+        Font.Height = -11
+        Font.Name = 'Tahoma'
+        Font.Style = [fsBold]
+        ParentFont = False
+      end
+      object Label8: TLabel [2]
+        Left = 179
+        Top = 104
+        Width = 41
+        Height = 13
+        Caption = 'Marcas'
+        Font.Charset = ANSI_CHARSET
+        Font.Color = 8404992
+        Font.Height = -11
+        Font.Name = 'Tahoma'
+        Font.Style = [fsBold]
+        ParentFont = False
+      end
+      object GroupBox1: TGroupBox
+        Left = 175
+        Top = 12
+        Width = 312
+        Height = 84
+        Caption = ' Per'#237'odo '
+        Font.Charset = ANSI_CHARSET
+        Font.Color = 8404992
+        Font.Height = -11
+        Font.Name = 'Tahoma'
+        Font.Style = [fsBold]
+        ParentFont = False
+        TabOrder = 1
+        object Label2: TLabel
+          Left = 14
+          Top = 28
+          Width = 157
+          Height = 13
+          Caption = 'De                                         at'#233
+          Font.Charset = ANSI_CHARSET
+          Font.Color = 8404992
+          Font.Height = -11
+          Font.Name = 'Tahoma'
+          Font.Style = [fsBold]
+          ParentFont = False
+        end
+        object Label5: TLabel
+          Left = 14
+          Top = 68
+          Width = 285
+          Height = 13
+          Caption = 'De 00:00:00 at'#233' 23:59:00 '#233' equivalente a qualquer hora...'
+          Font.Charset = ANSI_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -11
+          Font.Name = 'Tahoma'
+          Font.Style = []
+          ParentFont = False
+        end
+        object DataInicial: TDateEdit
+          Left = 33
+          Top = 22
+          Width = 113
+          Height = 21
+          NumGlyphs = 2
+          TabOrder = 0
+        end
+        object DataFinal: TDateEdit
+          Left = 177
+          Top = 22
+          Width = 113
+          Height = 21
+          NumGlyphs = 2
+          TabOrder = 1
+        end
+        object HoraInicial: TDateTimePicker
+          Left = 33
+          Top = 46
+          Width = 113
+          Height = 21
+          Date = 38013.615213645800000000
+          Time = 38013.615213645800000000
+          Kind = dtkTime
+          TabOrder = 2
+        end
+        object HoraFinal: TDateTimePicker
+          Left = 177
+          Top = 46
+          Width = 113
+          Height = 21
+          Date = 38013.615213645800000000
+          Time = 38013.615213645800000000
+          Kind = dtkTime
+          TabOrder = 3
+        end
+        object ckPeriodo: TCheckBox
+          Left = 97
+          Top = -2
+          Width = 119
+          Height = 17
+          Caption = '[ Desconsiderar ]'
+          TabOrder = 4
+        end
+      end
+      object EditCaminho: TEdit
+        Left = 178
+        Top = 203
+        Width = 310
+        Height = 21
+        TabStop = False
+        Color = 12572888
+        ReadOnly = True
+        TabOrder = 2
+        Text = 'C:\Unit\XML'
+      end
+      object ComboMarca: TRxDBLookupCombo
+        Left = 174
+        Top = 117
+        Width = 312
+        Height = 20
+        DropDownCount = 8
+        DisplayAllFields = True
+        DisplayEmpty = 'Todas as Marcas'
+        FieldsDelimiter = '-'
+        LookupField = 'MARCICOD'
+        LookupDisplay = 'MARCICOD;MARCA60DESCR'
+        LookupDisplayIndex = 1
+        LookupSource = DSSQLMarca
+        TabOrder = 3
+      end
+    end
+  end
+  object SQLSubGrupoXML: TRxQuery
+    Tag = 3
+    DatabaseName = 'DB'
+    SQL.Strings = (
+      'Select * From SubGrupo'
+      'Where (%Filtro)  and (%MInicio) and (%MFim)')
+    Macros = <
+      item
+        DataType = ftString
+        Name = 'Filtro'
+        ParamType = ptInput
+        Value = '0=0'
+      end
+      item
+        DataType = ftString
+        Name = 'MInicio'
+        ParamType = ptInput
+        Value = '0=0'
+      end
+      item
+        DataType = ftString
+        Name = 'MFim'
+        ParamType = ptInput
+        Value = '0=0'
+      end>
+    Left = 56
+    Top = 120
+    object SQLSubGrupoXMLGRUPICOD: TIntegerField
+      FieldName = 'GRUPICOD'
+      Origin = 'DB.SUBGRUPO.GRUPICOD'
+    end
+    object SQLSubGrupoXMLSUBGICOD: TIntegerField
+      FieldName = 'SUBGICOD'
+      Origin = 'DB.SUBGRUPO.SUBGICOD'
+    end
+    object SQLSubGrupoXMLSUBGA60DESCR: TStringField
+      FieldName = 'SUBGA60DESCR'
+      Origin = 'DB.SUBGRUPO.SUBGA60DESCR'
+      FixedChar = True
+      Size = 60
+    end
+  end
+  object SQLGrupoXML11: TQuery
+    DatabaseName = 'DB'
+    SQL.Strings = (
+      'Select * from Grupo'
+      'Where Pendente = '#39'S'#39)
+    Left = 42
+    Top = 208
+    object SQLGrupoXML11GRUPICOD: TIntegerField
+      FieldName = 'GRUPICOD'
+      Origin = 'DB.GRUPO.GRUPICOD'
+    end
+    object SQLGrupoXML11GRUPA60DESCR: TStringField
+      FieldName = 'GRUPA60DESCR'
+      Origin = 'DB.GRUPO.GRUPA60DESCR'
+      FixedChar = True
+      Size = 60
+    end
+  end
+  object SQLProdutoXML: TRxQuery
+    DatabaseName = 'DB'
+    SQL.Strings = (
+      'Select * From Produto'
+      'Where'
+      
+        '  (PRODIAGRUPGRADE = PRODICOD) and (%MInicio) and (%MFim) and (%' +
+        'MMarca)'
+      'Order by '
+      '  PRODIAGRUPGRADE')
+    Macros = <
+      item
+        DataType = ftString
+        Name = 'MInicio'
+        ParamType = ptInput
+        Value = '0=0'
+      end
+      item
+        DataType = ftString
+        Name = 'MFim'
+        ParamType = ptInput
+        Value = '0=0'
+      end
+      item
+        DataType = ftString
+        Name = 'MMarca'
+        ParamType = ptInput
+        Value = '0=0'
+      end>
+    Left = 25
+    Top = 151
+  end
+  object SQLPRodutoGradeXML: TRxQuery
+    DatabaseName = 'DB'
+    SQL.Strings = (
+      'Select * From Produto'
+      'Where %Filtro'
+      'Order by '
+      '  PRODIAGRUPGRADE,'
+      '  GRADICOD,'
+      '  GRTMICOD')
+    Macros = <
+      item
+        DataType = ftString
+        Name = 'Filtro'
+        ParamType = ptInput
+        Value = '0=0'
+      end>
+    Left = 56
+    Top = 151
+  end
+  object SQLGrupoXML: TRxQuery
+    Tag = 3
+    DatabaseName = 'DB'
+    SQL.Strings = (
+      'Select * From Grupo'
+      'Where  (%MInicio) and (%MFim)')
+    Macros = <
+      item
+        DataType = ftString
+        Name = 'MInicio'
+        ParamType = ptInput
+        Value = '0=0'
+      end
+      item
+        DataType = ftString
+        Name = 'MFim'
+        ParamType = ptInput
+        Value = '0=0'
+      end>
+    Left = 26
+    Top = 120
+    object SQLGrupoXMLGRUPICOD: TIntegerField
+      FieldName = 'GRUPICOD'
+      Origin = 'DB.GRUPO.GRUPICOD'
+    end
+    object SQLGrupoXMLGRUPA60DESCR: TStringField
+      FieldName = 'GRUPA60DESCR'
+      Origin = 'DB.GRUPO.GRUPA60DESCR'
+      FixedChar = True
+      Size = 60
+    end
+  end
+  object SQLMarca: TRxQuery
+    DatabaseName = 'DB'
+    SQL.Strings = (
+      'select * from MARCA'
+      'order by MARCA60DESCR')
+    Macros = <>
+    Left = 618
+    Top = 13
+    object SQLMarcaMARCICOD: TIntegerField
+      FieldName = 'MARCICOD'
+      Origin = 'UNITGESTAO.MARCA.MARCICOD'
+    end
+    object SQLMarcaMARCA60DESCR: TStringField
+      FieldName = 'MARCA60DESCR'
+      Origin = 'UNITGESTAO.MARCA.MARCA60DESCR'
+      FixedChar = True
+      Size = 60
+    end
+  end
+  object DSSQLMarca: TDataSource
+    DataSet = SQLMarca
+    Left = 590
+    Top = 13
+  end
+end

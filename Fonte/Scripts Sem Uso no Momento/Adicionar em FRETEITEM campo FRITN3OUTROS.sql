@@ -1,0 +1,1 @@
+alter table FRETEITEM add FRITN3OUTROS numeric(15,3)

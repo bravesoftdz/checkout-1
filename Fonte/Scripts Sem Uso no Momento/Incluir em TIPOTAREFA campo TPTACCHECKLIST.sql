@@ -1,0 +1,1 @@
+alter table TIPOTAREFA add TPTACCHECKLIST CHAR(1)

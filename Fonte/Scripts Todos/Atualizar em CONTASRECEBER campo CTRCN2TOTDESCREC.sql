@@ -1,0 +1,7 @@
+update 
+  CONTASRECEBER
+set 
+  CTRCN2TOTDESCREC = 0
+where
+  CTRCN2TOTDESCREC is null
+

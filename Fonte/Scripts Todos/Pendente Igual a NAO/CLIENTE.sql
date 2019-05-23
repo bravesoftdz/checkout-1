@@ -1,0 +1,1 @@
+update CLIENTE set Pendente = "N" where Pendente = "S"

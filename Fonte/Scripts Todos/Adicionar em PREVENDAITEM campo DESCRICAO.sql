@@ -1,0 +1,1 @@
+alter table PREVENDAITEM add DESCRICAO VARCHAR(200);

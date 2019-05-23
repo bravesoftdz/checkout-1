@@ -1,0 +1,1 @@
+alter table FUNCIONARIO add   FUNCCTIPOREMUN CHAR(1) ;

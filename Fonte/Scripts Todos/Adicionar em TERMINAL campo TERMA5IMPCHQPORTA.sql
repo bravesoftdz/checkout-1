@@ -1,0 +1,1 @@
+alter table TERMINAL add TERMA5IMPCHQPORTA CHAR(5)

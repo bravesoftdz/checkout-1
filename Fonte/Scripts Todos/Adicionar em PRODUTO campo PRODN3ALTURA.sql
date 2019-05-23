@@ -1,0 +1,1 @@
+alter table PRODUTO add PRODN3ALTURA numeric(15,3)

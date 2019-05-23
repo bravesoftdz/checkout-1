@@ -1,0 +1,1 @@
+alter table PRODUTO add PRODN3PERCMARGLUC2 numeric(15,3)

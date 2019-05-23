@@ -1,0 +1,1 @@
+alter table FUNCIONARIO add   BANCA5COD CHAR(5) ;

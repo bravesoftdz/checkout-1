@@ -1,0 +1,1 @@
+alter table FUNCIONARIO add   FUNCA10FONE2 CHAR(10) ;

@@ -1,0 +1,1 @@
+alter table EMPRESA add EMPRIMUNICODFED INTEGER;

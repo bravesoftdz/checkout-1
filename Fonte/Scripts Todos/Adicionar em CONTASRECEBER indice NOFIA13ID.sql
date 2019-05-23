@@ -1,0 +1,1 @@
+create index NOFIA13ID on CONTASRECEBER (NOFIA13ID);

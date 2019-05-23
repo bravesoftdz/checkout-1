@@ -1,0 +1,7 @@
+update 
+  CONTASRECEBER
+set 
+  CTRCCEMITIDOBOLETO = 'N'
+where
+  CTRCCEMITIDOBOLETO is null
+

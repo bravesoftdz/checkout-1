@@ -1,0 +1,1 @@
+alter table EMPRESA add EMPRIENDNRO INTEGER;

@@ -1,0 +1,1 @@
+update RECEBIMENTO set Pendente = "N" where Pendente = "S"

@@ -1,0 +1,1 @@
+Alter table unidade add UNIDA15DESCR char(15)

@@ -1,0 +1,1 @@
+alter table USUARIO add USUACPERMRESUCX CHAR(01)

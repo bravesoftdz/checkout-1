@@ -1,0 +1,1 @@
+alter table FUNCIONARIO add   FUNC5AGENCIA CHAR(5) ;

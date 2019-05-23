@@ -1,0 +1,13 @@
+CREATE TABLE PRODUCAOFASES 
+(
+  PRFAA13ID                  CHAR(13) NOT NULL,
+  EMPRICOD                   INTEGER,
+  PRFAICOD                   INTEGER NOT NULL,
+  PRFAA30DESCR               CHAR(30),
+  REGISTRO                   TIMESTAMP,
+  PENDENTE                   CHAR(1),
+  PRFAN2CUSTOTOTAL           NUMERIC(15, 2),
+  PRFAN2TEMPOTOTAL           NUMERIC(15, 2),
+  PRFAN2CAPACPROD            NUMERIC(15, 2),
+ PRIMARY KEY (PRFAA13ID)
+);

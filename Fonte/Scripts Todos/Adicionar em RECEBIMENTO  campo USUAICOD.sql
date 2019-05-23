@@ -1,0 +1,1 @@
+alter table RECEBIMENTO add USUAICOD INTEGER;

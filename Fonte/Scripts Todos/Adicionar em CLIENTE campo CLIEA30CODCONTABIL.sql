@@ -1,0 +1,1 @@
+alter table cliente add CLIEA30CODCONTABIL char(30);

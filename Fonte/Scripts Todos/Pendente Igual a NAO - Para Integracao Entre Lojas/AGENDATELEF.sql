@@ -1,0 +1,1 @@
+update AGENDATELEF set Pendente = "N" where Pendente = "S"

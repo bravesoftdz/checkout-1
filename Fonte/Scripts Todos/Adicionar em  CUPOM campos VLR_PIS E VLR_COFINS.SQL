@@ -1,0 +1,2 @@
+alter table CUPOM add CUPON2VLRPIS    NUMERIC(15,2);
+alter table CUPOM add CUPON2VLRCOFINS NUMERIC(15,2);

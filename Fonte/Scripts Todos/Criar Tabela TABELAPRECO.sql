@@ -1,0 +1,16 @@
+
+CREATE TABLE TABELAPRECO (
+       TPRCICOD             INTEGER NOT NULL,
+       TPRCA60DESCR         CHAR(60),
+       PENDENTE             CHAR(1),
+       REGISTRO             DATE,
+       PRIMARY KEY (TPRCICOD)
+);
+
+CREATE UNIQUE INDEX XPKTABELAPRECO ON TABELAPRECO
+(
+       TPRCICOD
+);
+
+
+

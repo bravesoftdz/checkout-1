@@ -1,0 +1,1 @@
+alter table NOTAFISCAL add CUPOA13IDCUPNEG char(13);

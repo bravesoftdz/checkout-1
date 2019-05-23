@@ -1,0 +1,1 @@
+alter table configvenda add CFVECQUITAPARCRT char(1);

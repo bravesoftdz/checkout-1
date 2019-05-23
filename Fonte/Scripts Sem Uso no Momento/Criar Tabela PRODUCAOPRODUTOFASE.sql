@@ -1,0 +1,9 @@
+CREATE TABLE PRODUCAOPRODUTOFASE 
+(
+  PRFAA13ID                  CHAR(13) NOT NULL,
+  PRPFICOD                   INTEGER NOT NULL,
+  PRODICOD                   INTEGER NOT NULL,
+  PENDENTE                   CHAR(1),
+  REGISTRO                   TIMESTAMP,
+ PRIMARY KEY (PRODICOD, PRFAA13ID)
+);

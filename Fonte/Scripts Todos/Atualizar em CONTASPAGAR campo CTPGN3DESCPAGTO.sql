@@ -1,0 +1,8 @@
+update
+  CONTASPAGAR
+set
+  CTPGN3DESCPAGTO = 0
+where
+  CTPGN3DESCPAGTO is null
+
+

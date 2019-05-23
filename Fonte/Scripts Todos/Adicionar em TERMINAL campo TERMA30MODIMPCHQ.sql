@@ -1,0 +1,1 @@
+alter table TERMINAL add TERMA30MODIMPCHQ CHAR(30)

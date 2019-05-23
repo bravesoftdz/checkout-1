@@ -1,0 +1,6 @@
+update 
+  OPERACAOESTOQUE
+set 
+  OPESCGERAFINANCEIRO = 'S'
+where
+  OPESCGERAFINANCEIRO is null

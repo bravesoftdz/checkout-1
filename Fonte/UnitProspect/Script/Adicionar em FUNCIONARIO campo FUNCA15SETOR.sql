@@ -1,0 +1,1 @@
+alter table FUNCIONARIO add   FUNCA15SETOR CHAR(15) ;

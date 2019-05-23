@@ -1,0 +1,1 @@
+alter table cupomitem add ENCERRANTE INTEGER

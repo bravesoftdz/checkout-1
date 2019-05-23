@@ -1,0 +1,1 @@
+alter table CUPOM add TROCO NUMERIC(15,2)

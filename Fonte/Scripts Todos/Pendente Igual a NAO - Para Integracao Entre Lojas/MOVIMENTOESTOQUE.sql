@@ -1,0 +1,1 @@
+update MOVIMENTOESTOQUE set Pendente = "N" where Pendente = "S"

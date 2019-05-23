@@ -1,0 +1,1 @@
+update TESOURARIA set Pendente = "N" where Pendente = "S"

@@ -1,0 +1,1 @@
+alter table USUARIO DROP USUAA60EMAL;

@@ -1,0 +1,61 @@
+
+CREATE TABLE OS (
+       OSA13ID              CHAR(13) NOT NULL,
+       TERMICOD             INTEGER,
+       EMPRICOD             INTEGER,
+       OSICOD               INTEGER,
+       OSDEMISSAO           DATE,
+       CLIEA13ID            CHAR(13),
+       OSDPREVENTREGA       DATE,
+       OSCSTATUS            CHAR(1),
+       OSN2VLRSERVICO       NUMERIC(15,2) DEFAULT 0,
+       OSN2VLRDESC          NUMERIC(15,2) DEFAULT 0,
+       OSN2PERCDESC         NUMERIC(15,2) DEFAULT 0,
+       OSN2VLRPRODUTOS      NUMERIC(15,2) DEFAULT 0,
+       OSN2VLRTOTAL         NUMERIC(15,2) DEFAULT 0,
+       OSN2VLRFRETE         NUMERIC(15,2) DEFAULT 0,
+       OSN2BASEISSQN        NUMERIC(15,2) DEFAULT 0,
+       OSN2VLRISSQN         NUMERIC(15,2) DEFAULT 0,
+       OSOBS                VARCHAR(500),
+       TRANICOD             INTEGER,
+       OSDCONCLUSAO         DATE,
+       USUA60RESPCONC       CHAR(60),
+       OSDENTREGA           DATE,
+       OSA60PESSOAENT       CHAR(60),
+       OSA30DOCPESENT       CHAR(30),
+       USUA60RESPENT        VARCHAR(60),
+       USUA60LOGIN          CHAR(60),
+       PENDENTE             CHAR(1),
+       REGISTRO             DATE,
+       OSA60ENDENTR         CHAR(60),
+       OSA60BAIRROENT       CHAR(60),
+       OSAUFENTR            CHAR(2),
+       OSA15FONEENTR        CHAR(15),
+       OSA60CIDENTR         CHAR(60),
+       PRIMARY KEY (OSA13ID)
+);
+
+CREATE UNIQUE INDEX XPKOS ON OS
+(
+       OSA13ID
+);
+
+CREATE INDEX XIF248OS ON OS
+(
+       TERMICOD
+);
+
+CREATE INDEX XIF249OS ON OS
+(
+       EMPRICOD
+);
+
+CREATE INDEX XIF250OS ON OS
+(
+       CLIEA13ID
+);
+
+CREATE INDEX XIF255OS ON OS
+(
+       TRANICOD
+);

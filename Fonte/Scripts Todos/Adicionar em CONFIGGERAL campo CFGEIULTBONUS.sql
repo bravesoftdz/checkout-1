@@ -1,0 +1,1 @@
+alter table CONFIGGERAL add CFGEIULTBONUS integer

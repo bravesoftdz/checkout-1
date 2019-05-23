@@ -1,0 +1,10 @@
+
+CREATE TABLE TAREFAHISTORICO (
+       TAREA13ID            CHAR(13) NOT NULL,
+       TRHTICOD             INTEGER NOT NULL,
+       TRHTA254HISTORICO    VARCHAR(20),
+       REGISTRO             DATE,
+       PENDENTE             CHAR(1),
+       USUAICOD             INTEGER,
+       PRIMARY KEY (TAREA13ID, TRHTICOD)
+);

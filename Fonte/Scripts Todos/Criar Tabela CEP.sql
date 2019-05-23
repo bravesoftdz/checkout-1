@@ -1,0 +1,9 @@
+CREATE TABLE CEP (
+       CEPA8CEP Char(8) NOT NULL ,
+       CEPA60LOGRADOURO Char(60) ,
+       CEPA4TIPOLOGRADOURO Char(4) ,
+       CEPA60BAIRRO1 Char(60) ,
+       CEPA60BAIRRO2 Char(60) ,
+       CEPA60CIDADE Char(60) ,
+       CEPA2ESTADO Char(2) 
+);

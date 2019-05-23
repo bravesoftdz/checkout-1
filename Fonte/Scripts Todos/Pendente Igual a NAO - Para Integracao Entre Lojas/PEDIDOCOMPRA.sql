@@ -1,0 +1,1 @@
+update PEDIDOCOMPRA set Pendente = "N" where Pendente = "S"

@@ -1,0 +1,1 @@
+alter table FUNCIONARIO add   FUNCA60NOMEFANT CHAR(60) ;

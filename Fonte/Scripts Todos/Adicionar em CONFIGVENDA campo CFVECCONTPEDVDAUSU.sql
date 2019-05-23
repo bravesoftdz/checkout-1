@@ -1,0 +1,1 @@
+alter table CONFIGVENDA  add CFVECCONTPEDVDAUSU char(1);

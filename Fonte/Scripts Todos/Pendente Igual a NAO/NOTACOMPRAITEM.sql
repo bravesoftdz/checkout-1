@@ -1,0 +1,1 @@
+update NOTACOMPRAITEM set Pendente = "N" where Pendente = "S"

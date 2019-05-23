@@ -1,0 +1,1 @@
+alter table CUPOM add USUAICODVENDA INTEGER

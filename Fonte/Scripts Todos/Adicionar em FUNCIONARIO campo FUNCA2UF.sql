@@ -1,0 +1,1 @@
+alter table FUNCIONARIO add   FUNCA2UF CHAR(2) ;

@@ -1,0 +1,1 @@
+alter table pedidovenda add PDVDN2VLRENTRADA numeric(15,2);

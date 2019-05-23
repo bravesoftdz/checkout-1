@@ -1,0 +1,1 @@
+alter table FUNCIONARIO add   FUNCN3VLRREMUN NUMERIC(15, 3) ;

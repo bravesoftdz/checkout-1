@@ -1,0 +1,1 @@
+alter table FUNCIONARIO add   FUNCA30URL CHAR(60) ;

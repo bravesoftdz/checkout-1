@@ -1,0 +1,1 @@
+update PRODUTO set Pendente = "N" where Pendente = "S"

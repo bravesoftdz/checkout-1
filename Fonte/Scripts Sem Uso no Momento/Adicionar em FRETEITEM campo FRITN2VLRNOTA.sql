@@ -1,0 +1,1 @@
+alter table FRETEITEM add FRITN2VLRNOTA numeric(15,2)

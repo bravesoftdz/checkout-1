@@ -1,0 +1,1 @@
+update movimentodiverso set MOVDCTROCASTAT = 'S' where MOVDCTROCASTAT is null or MOVDCTROCASTAT = ''

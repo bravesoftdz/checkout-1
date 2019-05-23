@@ -1,0 +1,1 @@
+ALTER TABLE notacompraitem ADD NOCIN2VICMSSTRET numeric(15,2);

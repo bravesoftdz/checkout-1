@@ -1,0 +1,1 @@
+alter table FRETE add CLIEA13IDREDESPACH char(13)

@@ -1,0 +1,1 @@
+create index CLIEA13ID on CLIENTE(CLIEA13ID);

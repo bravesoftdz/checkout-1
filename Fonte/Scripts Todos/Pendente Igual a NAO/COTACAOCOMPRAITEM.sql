@@ -1,0 +1,1 @@
+update COTACAOCOMPRAITEM set Pendente = "N" where Pendente = "S"

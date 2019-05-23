@@ -1,0 +1,1 @@
+alter table ORDEMPRODUCAO add PDVDA13ID CHAR(13)

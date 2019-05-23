@@ -1,0 +1,1 @@
+alter table PRODUCAOLOTE add PRLTCSTATUS CHAR(1)

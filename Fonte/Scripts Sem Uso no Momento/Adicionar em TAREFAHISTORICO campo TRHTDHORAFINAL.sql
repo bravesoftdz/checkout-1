@@ -1,0 +1,2 @@
+alter table TAREFAHISTORICO add 
+  TRHTDHORAFINAL             TIMESTAMP ;

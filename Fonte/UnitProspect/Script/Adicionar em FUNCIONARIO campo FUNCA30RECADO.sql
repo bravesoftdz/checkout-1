@@ -1,0 +1,1 @@
+alter table FUNCIONARIO add   FUNCA30RECADO CHAR(30) ;

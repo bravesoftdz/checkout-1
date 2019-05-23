@@ -1,0 +1,1 @@
+update CONTASPAGAR set Pendente = "N" where Pendente = "S"

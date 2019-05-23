@@ -1,0 +1,1 @@
+alter table configvenda add CFVECFRETEPADRAO CHAR(1);

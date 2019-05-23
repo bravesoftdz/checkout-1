@@ -1,0 +1,9 @@
+CREATE TABLE PRODUCAOFASESATIV 
+(
+  PRATA13ID                  CHAR(13) NOT NULL,
+  PRFAA13ID                  CHAR(13) NOT NULL,
+  PFATICOD                   INTEGER NOT NULL,
+  REGISTRO                   TIMESTAMP,
+  PENDENTE                   CHAR(1),
+ PRIMARY KEY (PRATA13ID, PRFAA13ID)
+);

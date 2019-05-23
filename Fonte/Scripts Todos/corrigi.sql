@@ -1,0 +1,1 @@
+alter table integracao add  INTEICODERRO INTEGER;

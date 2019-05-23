@@ -1,0 +1,1 @@
+alter table FRETEITEM alter FRITINOTAFISCAL type CHAR(254)

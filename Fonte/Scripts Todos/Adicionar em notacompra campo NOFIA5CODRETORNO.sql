@@ -1,0 +1,1 @@
+ALTER TABLE notacompra ADD NOFIA5CODRETORNO varchar(5);

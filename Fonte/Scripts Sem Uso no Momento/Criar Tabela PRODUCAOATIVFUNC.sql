@@ -1,0 +1,9 @@
+CREATE TABLE PRODUCAOATIVFUNC 
+(
+  PRATA13ID                  CHAR(13) NOT NULL,
+  FUNCA13ID                  CHAR(13) NOT NULL,
+  PRAFICOD                   INTEGER,
+  REGISTRO                   TIMESTAMP,
+  PENDENTE                   CHAR(1),
+ PRIMARY KEY (PRATA13ID, FUNCA13ID)
+);

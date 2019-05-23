@@ -1,0 +1,1 @@
+alter table PEDIDOVENDA add USUAA60LOGIN char(60)

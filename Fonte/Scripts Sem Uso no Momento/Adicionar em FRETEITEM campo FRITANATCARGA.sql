@@ -1,0 +1,1 @@
+alter table FRETEITEM add FRITANATCARGA char(30)

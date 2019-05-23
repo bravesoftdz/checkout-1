@@ -1,0 +1,1 @@
+alter table PREVENDA add TROCO NUMERIC(15,2)

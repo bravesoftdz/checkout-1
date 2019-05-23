@@ -1,0 +1,40 @@
+
+CREATE TABLE PEDIDOVENDA (
+       PDVDA13ID            CHAR(13) NOT NULL,
+       EMPRICOD             INTEGER,
+       PDVDICOD             INTEGER,
+       VENDICOD             INTEGER,
+       CLIEA13ID            CHAR(13),
+       TRANICOD             INTEGER,
+       PLRCICOD             INTEGER,
+       PDVDDEMISSAO         DATE,
+       PDVDN2VLRFRETE       NUMERIC(15,3),
+       PDVDA30NROPEDCOMP    CHAR(30),
+       PDVDA30COMPRADOR     CHAR(30),
+       PDVDCTIPO            CHAR(1),
+       PDVDCSTATUS          CHAR(1),
+       PDVDN2VLRDESC        NUMERIC(15,3),
+       PDVDN2TOTPROD        NUMERIC(15,3),
+       PDVDN2TOTPED         NUMERIC(15,3),
+       PDVDTOBS             CHAR(254),
+       REGISTRO             DATE,
+       PENDENTE             CHAR(1),
+       PRIMARY KEY (PDVDA13ID)
+);
+
+CREATE UNIQUE INDEX XPKPEDIDOVENDA ON PEDIDOVENDA
+(
+       PDVDA13ID
+);
+
+CREATE INDEX XPENDENTE_PDVD ON PEDIDOVENDA
+(
+       PENDENTE
+);
+
+CREATE INDEX XREGISTRO_PDVD ON PEDIDOVENDA
+(
+       REGISTRO
+);
+
+

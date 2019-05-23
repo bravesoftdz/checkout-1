@@ -1,0 +1,1 @@
+alter table FRETEITEM alter FRITN2VLRVALOREM type NUMERIC(15, 2) ;

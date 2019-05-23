@@ -1,0 +1,1 @@
+alter table PEDIDOVENDA add SERIA5COD char(5)

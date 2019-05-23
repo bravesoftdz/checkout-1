@@ -1,0 +1,1 @@
+update CLIENTEREFERENCIA set Pendente = "N" where Pendente = "S"

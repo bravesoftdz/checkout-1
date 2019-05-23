@@ -1,0 +1,1 @@
+alter table NOTACOMPRA add FUNCA13ID char(13);

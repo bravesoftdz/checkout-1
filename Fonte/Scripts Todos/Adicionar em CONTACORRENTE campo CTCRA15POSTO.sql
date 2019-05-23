@@ -1,0 +1,1 @@
+alter table CONTACORRENTE add CTCRA15POSTO CHAR(15);

@@ -1,0 +1,1 @@
+alter table RECEBIMENTO add RECECSTATUS char(1)

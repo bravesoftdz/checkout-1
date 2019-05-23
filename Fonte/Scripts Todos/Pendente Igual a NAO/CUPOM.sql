@@ -1,0 +1,1 @@
+update cupom set Pendente = "N" where Pendente = "S"

@@ -1,0 +1,14 @@
+update 
+  MOVIMENTOESTOQUE
+set 
+  MVESN3QTDENTRADA = 0
+where
+  MVESN3QTDENTRADA is null;
+
+update 
+  MOVIMENTOESTOQUE
+set 
+  MVESN3QTDSAIDA = 0
+where
+  MVESN3QTDSAIDA is null;
+

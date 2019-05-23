@@ -1,0 +1,1 @@
+alter table CONTASRECEBER add CTRCA13CTRCAIDCHQ varchar(13)

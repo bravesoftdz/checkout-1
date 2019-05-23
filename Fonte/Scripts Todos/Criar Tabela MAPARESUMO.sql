@@ -1,0 +1,33 @@
+
+CREATE TABLE MAPARESUMO (
+  ECFA13ID CHAR(13) NOT NULL,
+  MapaResData DATE NOT NULL,
+  MapaResNumEquip INTEGER NOT NULL,
+  MapaResNumContOrdOper NUMERIC(15,3),
+  MapaResContRedu NUMERIC(15,3),
+  MapaResVendaBrutaDia NUMERIC(15,3),
+  MapaResCancelamentos NUMERIC(15,3),
+  MapaResDesconto NUMERIC(15,3),
+  MapaResValorContabil NUMERIC(15,3),
+  MapaResSubst NUMERIC(15,3),
+  MapaResIsentoNaoTribut NUMERIC(15,3),
+  MapaResTrib1 NUMERIC(15,3),
+  MapaResTrib2 NUMERIC(15,3),
+  MapaResTrib3 NUMERIC(15,3),
+  MapaResTrib4 NUMERIC(15,3),
+  MapaResTrib5 NUMERIC(15,3),
+  MapaResTrib6 NUMERIC(15,3),
+  MapaResTrib7 NUMERIC(15,3),
+  MapaResTrib8 NUMERIC(15,3),
+  MapaResTrib9 NUMERIC(15,3),
+  MapaResTrib10 NUMERIC(15,3),
+  MapaResTrib11 NUMERIC(15,3),
+  MapaResTrib12 NUMERIC(15,3),
+  MapaResTrib13 NUMERIC(15,3),
+  MapaResTrib14 NUMERIC(15,3),
+  MapaResTrib15 NUMERIC(15,3),
+  PENDENTE CHAR(1),
+  REGISTRO DATE,
+  PRIMARY KEY (ECFA13ID,MapaResData,MapaResNumEquip)
+);
+

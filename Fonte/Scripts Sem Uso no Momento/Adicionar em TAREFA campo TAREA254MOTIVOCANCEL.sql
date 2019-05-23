@@ -1,0 +1,2 @@
+alter table TAREFA add 
+  TAREA254MOTIVOCANCEL       CHAR(254) ;

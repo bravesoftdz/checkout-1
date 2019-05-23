@@ -1,0 +1,1 @@
+update PROFISSAO set Pendente = "N" where Pendente = "S"

@@ -1,0 +1,1 @@
+alter table CUPOMITEM add BOMBICOD INTEGER

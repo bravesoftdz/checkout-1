@@ -1,0 +1,1 @@
+Alter table PRODUTO add PRODA30INF01ETQBARRAS char(30)

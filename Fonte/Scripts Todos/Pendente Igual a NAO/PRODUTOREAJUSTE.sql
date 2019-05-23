@@ -1,0 +1,1 @@
+update PRODUTOREAJUSTE set Pendente = "N" where Pendente = "S"

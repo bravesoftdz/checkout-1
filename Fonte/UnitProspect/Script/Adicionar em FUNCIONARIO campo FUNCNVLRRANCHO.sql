@@ -1,0 +1,1 @@
+alter table FUNCIONARIO add   FUNCNVLRRANCHO NUMERIC(15, 3) ;

@@ -1,0 +1,1 @@
+alter table TRANSFERENCIA add  TRFECDIVERG CHAR(1)

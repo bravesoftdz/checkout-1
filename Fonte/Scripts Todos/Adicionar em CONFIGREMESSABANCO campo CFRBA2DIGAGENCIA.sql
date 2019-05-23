@@ -1,0 +1,1 @@
+alter table CONFIGREMESSABANCO add CFRBA2DIGAGENCIA char(2);

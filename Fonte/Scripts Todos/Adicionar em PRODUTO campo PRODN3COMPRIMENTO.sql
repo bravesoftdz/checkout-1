@@ -1,0 +1,1 @@
+alter table PRODUTO add PRODN3COMPRIMENTO numeric(15,3)

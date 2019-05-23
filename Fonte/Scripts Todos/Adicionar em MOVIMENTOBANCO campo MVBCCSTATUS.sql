@@ -1,0 +1,1 @@
+alter table MOVIMENTOBANCO add MVBCCSTATUS char(1)

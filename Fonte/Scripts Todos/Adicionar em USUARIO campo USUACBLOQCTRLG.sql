@@ -1,0 +1,1 @@
+alter table USUARIO add USUACBLOQCTRLG char(1);

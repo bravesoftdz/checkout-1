@@ -1,0 +1,10 @@
+CREATE TABLE PRODUCAOATIVCCUSTO 
+(
+  PRATA13ID                  CHAR(13) NOT NULL,
+  PRACICOD                   INTEGER,
+  CECUA15COD                 CHAR(15) NOT NULL,
+  PENDENTE                   CHAR(1),
+  REGISTRO                   TIMESTAMP,
+  PRACN2PERRATEIO            NUMERIC(15, 2),
+ PRIMARY KEY (CECUA15COD, PRATA13ID)
+);

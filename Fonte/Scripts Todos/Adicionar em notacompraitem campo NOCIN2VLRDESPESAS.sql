@@ -1,0 +1,1 @@
+ALTER TABLE notacompraitem ADD NOCIN2VLRDESPESAS numeric(15,2);

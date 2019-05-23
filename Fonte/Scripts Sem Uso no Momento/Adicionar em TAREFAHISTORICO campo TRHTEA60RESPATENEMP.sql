@@ -1,0 +1,2 @@
+alter table TAREFAHISTORICO add 
+  TRHTEA60RESPATENEMP        CHAR(60) ;

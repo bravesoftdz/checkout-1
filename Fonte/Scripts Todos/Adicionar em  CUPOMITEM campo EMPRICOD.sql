@@ -1,0 +1,1 @@
+alter table CUPOMITEM add EMPRICOD INTEGER

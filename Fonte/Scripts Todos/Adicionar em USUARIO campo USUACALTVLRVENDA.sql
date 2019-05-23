@@ -1,0 +1,1 @@
+alter table USUARIO add USUACALTVLRVENDA CHAR(1)

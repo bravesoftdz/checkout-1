@@ -1,0 +1,7 @@
+CREATE TABLE PRNEFORMAENVIO (
+       PNFEICOD             INTEGER NOT NULL,
+       PNFEA60DESCR         VARCHAR(20),
+       REGISTRO             DATE,
+       PENDENTE             CHAR(1),
+       PRIMARY KEY (PNFEICOD)
+);

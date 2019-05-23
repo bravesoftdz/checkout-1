@@ -1,0 +1,1 @@
+update NOTAFISCALITEM set Pendente = "N" where Pendente = "S"

@@ -1,0 +1,1 @@
+alter table PEDIDOVENDA add TRANICOD INTEGER

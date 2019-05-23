@@ -1,0 +1,1 @@
+alter table  FreteItem add FRITN2OUTRASDESP NUMERIC(15, 2)

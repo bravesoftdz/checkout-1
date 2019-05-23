@@ -1,0 +1,1 @@
+alter table PREVENDAITEM add DATA_PEDIDO INTEGER;

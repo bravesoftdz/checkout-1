@@ -1,0 +1,128 @@
+[FileVersion]
+Version=6.0
+[Compiler]
+A=8
+B=0
+C=1
+D=1
+E=0
+F=0
+G=1
+H=1
+I=1
+J=0
+K=0
+L=1
+M=0
+N=1
+O=1
+P=1
+Q=0
+R=0
+S=0
+T=0
+U=0
+V=1
+W=0
+X=1
+Y=1
+Z=1
+ShowHints=1
+ShowWarnings=1
+UnitAliases=WinTypes=Windows;WinProcs=Windows;DbiTypes=BDE;DbiProcs=BDE;DbiErrs=BDE;
+[Linker]
+MapFile=0
+OutputObjs=0
+ConsoleApp=1
+DebugInfo=0
+RemoteSymbols=0
+MinStackSize=16384
+MaxStackSize=1048576
+ImageBase=4194304
+ExeDescription=
+[Directories]
+OutputDir=C:\Unit\Gestao
+UnitOutputDir=e:\desenv\dcu
+PackageDLLOutputDir=
+PackageDCPOutputDir=
+SearchPath=
+Packages=vcl;rtl;vclx;VclSmp;vclshlctrls;dbrtl;adortl;vcldb;qrpt;bdertl;dsnap;cds;bdecds;teeui;teedb;tee;vcldbx;teeqr;ibxpress;visualclx;visualdbclx;vclie;xmlrtl;inet;inetdbbde;inetdbxpress;inetdb;nmfast;dbexpress;dbxcds;indy;dclOffice2k;TCFLib;rbTDBC61;rbRCL66;rbCIDE66;rbIDE66;rbBDE66;rbRIDE66;rbRAP66;rbDBDE66;rbDAD66;rbDIDE66;rbUSER66;rbDB66;rbADO66;rbDBE66;rbIBE66;RxCtl6;RxDB6;RxBDE6
+Conditionals=
+DebugSourceDirs=
+UsePackages=0
+[Parameters]
+RunParams=
+HostApplication=
+Launcher=
+UseLauncher=0
+DebugCWD=
+[Language]
+ActiveLang=
+ProjectLang=
+RootDir=C:\Arquivos de programas\Borland\Delphi6\Bin\
+[Version Info]
+IncludeVerInfo=0
+AutoIncBuild=0
+MajorVer=1
+MinorVer=0
+Release=0
+Build=0
+Debug=0
+PreRelease=0
+Special=0
+Private=0
+DLL=0
+Locale=1046
+CodePage=1252
+[Version Info Keys]
+CompanyName=
+FileDescription=
+FileVersion=1.0.0.0
+InternalName=
+LegalCopyright=
+LegalTrademarks=
+OriginalFilename=
+ProductName=
+ProductVersion=1.0.0.0
+Comments=
+[Excluded Packages]
+C:\ARQUIV~1\Borland\Delphi6\Projects\Bpl\RxCtl6.bpl=RX Library Component and Tools Package
+C:\ARQUIV~1\Borland\Delphi6\Projects\Bpl\RxBDE6.bpl=RX Library BDE DB Component Package
+C:\ARQUIV~1\Borland\Delphi6\Projects\Bpl\RxDB6.bpl=RX Library DB Component Package
+C:\ARQUIV~1\Borland\Delphi6\Projects\Bpl\JvCoreD6R.bpl=JVCL Core Runtime Package
+C:\ARQUIV~1\Borland\Delphi6\Projects\Bpl\JvAppFrmD6R.bpl=JVCL Application and Form Components Runtime Package
+C:\ARQUIV~1\Borland\Delphi6\Projects\Bpl\JvStdCtrlsD6R.bpl=JVCL Standard Controls Runtime Package
+C:\ARQUIV~1\Borland\Delphi6\Projects\Bpl\JvSystemD6R.bpl=JVCL System Runtime Package
+C:\ARQUIV~1\Borland\Delphi6\Projects\Bpl\JvBandsD6R.bpl=JVCL Band Objects Runtime Package
+C:\ARQUIV~1\Borland\Delphi6\Projects\Bpl\JvDBD6R.bpl=JVCL Database Components Runtime Package
+C:\ARQUIV~1\Borland\Delphi6\Projects\Bpl\JvCtrlsD6R.bpl=JVCL Controls Runtime Package
+C:\ARQUIV~1\Borland\Delphi6\Projects\Bpl\JvBDED6R.bpl=JVCL BDE Components Runtime Package
+C:\ARQUIV~1\Borland\Delphi6\Projects\Bpl\JvDlgsD6R.bpl=JVCL Dialog Controls Runtime Package
+C:\ARQUIV~1\Borland\Delphi6\Projects\Bpl\JvCmpD6R.bpl=JVCL Components Runtime Package
+C:\ARQUIV~1\Borland\Delphi6\Projects\Bpl\JvCryptD6R.bpl=JVCL Encryption and Compression Runtime Package
+C:\ARQUIV~1\Borland\Delphi6\Projects\Bpl\JvCustomD6R.bpl=JVCL Custom Controls Runtime Package
+C:\ARQUIV~1\Borland\Delphi6\Projects\Bpl\JvDockingD6R.bpl=JVCL Docking Components Runtime Package
+C:\ARQUIV~1\Borland\Delphi6\Projects\Bpl\JvDotNetCtrlsD6R.bpl=JVCL DotNet Controls Runtime Package
+C:\ARQUIV~1\Borland\Delphi6\Projects\Bpl\JvEDID6R.bpl=JVCL EDI Components
+C:\ARQUIV~1\Borland\Delphi6\Projects\Bpl\JvGlobusD6R.bpl=JVCL Globus Components
+C:\ARQUIV~1\Borland\Delphi6\Projects\Bpl\JvHMID6R.bpl=JVCL HMI Controls runtime package
+C:\ARQUIV~1\Borland\Delphi6\Projects\Bpl\JvInspectorD6R.bpl=JVCL Inspector Components Runtime Package
+C:\ARQUIV~1\Borland\Delphi6\Projects\Bpl\JvInterpreterD6R.bpl=JVCL Interpreter Components Runtime Package
+C:\ARQUIV~1\Borland\Delphi6\Projects\Bpl\JvJansD6R.bpl=JVCL Jans Components
+C:\ARQUIV~1\Borland\Delphi6\Projects\Bpl\JvManagedThreadsD6R.bpl=JVCL Managed Threads - runtime package
+C:\ARQUIV~1\Borland\Delphi6\Projects\Bpl\JvMMD6R.bpl=JVCL Multimedia and Image Components Runtime Package
+C:\ARQUIV~1\Borland\Delphi6\Projects\Bpl\JvNetD6R.bpl=JVCL Network Components Runtime Package
+C:\ARQUIV~1\Borland\Delphi6\Projects\Bpl\JvPageCompsD6R.bpl=JVCL Page Style Components Runtime Package
+C:\ARQUIV~1\Borland\Delphi6\Projects\Bpl\JvPluginD6R.bpl=JVCL Plugin Components Runtime Package
+C:\ARQUIV~1\Borland\Delphi6\Projects\Bpl\JvPrintPreviewD6R.bpl=JVCL Print Preview Components
+C:\ARQUIV~1\Borland\Delphi6\Projects\Bpl\JvTimeFrameworkD6R.bpl=JVCL Time Framework
+C:\ARQUIV~1\Borland\Delphi6\Projects\Bpl\JvUIBD6R.bpl=UIB - Unified Interbase Components
+C:\ARQUIV~1\Borland\Delphi6\Projects\Bpl\JvValidatorsD6R.bpl=JVCL Validators and Error Indicator Components
+C:\ARQUIV~1\Borland\Delphi6\Projects\Bpl\JvWizardD6R.bpl=JVCL Wizard Run Time Package
+C:\ARQUIV~1\Borland\Delphi6\Projects\Bpl\JvXPCtrlsD6R.bpl=JVCL XP Controls Runtime Package
+[HistoryLists\hlUnitAliases]
+Count=1
+Item0=WinTypes=Windows;WinProcs=Windows;DbiTypes=BDE;DbiProcs=BDE;DbiErrs=BDE;
+[HistoryLists\hlOutputDirectorry]
+Count=1
+Item0=C:\Unit\Gestao

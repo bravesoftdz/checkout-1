@@ -1,0 +1,1 @@
+alter table PRODUTO add PRODN2PERDA numeric(15,3)

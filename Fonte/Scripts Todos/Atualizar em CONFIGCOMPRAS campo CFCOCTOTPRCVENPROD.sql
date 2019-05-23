@@ -1,0 +1,5 @@
+update 
+  CONFIGCOMPRAS
+set 
+  CFCOCTOTPRCVENPROD = 'U'
+

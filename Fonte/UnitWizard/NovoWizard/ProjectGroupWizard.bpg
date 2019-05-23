@@ -1,0 +1,41 @@
+#------------------------------------------------------------------------------
+VERSION = BWS.01
+#------------------------------------------------------------------------------
+!ifndef ROOT
+ROOT = $(MAKEDIR)\..
+!endif
+#------------------------------------------------------------------------------
+MAKE = $(ROOT)\bin\make.exe -$(MAKEFLAGS) -f$**
+DCC = $(ROOT)\bin\dcc32.exe $**
+BRCC = $(ROOT)\bin\brcc32.exe $**
+#------------------------------------------------------------------------------
+PROJECTS = Wizard_Inicial.exe Wizard_Loja.exe Wizard_Cash.exe \
+  Wizard_Faturamento.exe Wizard_Compras.exe Wizard_Financeiro.exe \
+  Wizard_Standard.exe
+#------------------------------------------------------------------------------
+default: $(PROJECTS)
+#------------------------------------------------------------------------------
+
+
+Wizard_Inicial.exe: Inicial\Wizard_Inicial.dpr
+  $(DCC)
+
+Wizard_Loja.exe: ADM\Wizard_Loja.dpr
+  $(DCC)
+
+Wizard_Cash.exe: Cash\Wizard_Cash.dpr
+  $(DCC)
+
+Wizard_Faturamento.exe: Faturamento\Wizard_Faturamento.dpr
+  $(DCC)
+
+Wizard_Compras.exe: Compras\Wizard_Compras.dpr
+  $(DCC)
+
+Wizard_Financeiro.exe: Financeiro\Wizard_Financeiro.dpr
+  $(DCC)
+
+Wizard_Standard.exe: Standard\Wizard_Standard.dpr
+  $(DCC)
+
+

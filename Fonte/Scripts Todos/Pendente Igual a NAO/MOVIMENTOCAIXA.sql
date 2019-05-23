@@ -1,0 +1,1 @@
+update MOVIMENTOCAIXA set Pendente = "N" where Pendente = "S"

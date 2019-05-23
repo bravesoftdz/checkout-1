@@ -1,0 +1,1 @@
+alter table PEDIDOVENDA add VEICA13ID CHAR(13)

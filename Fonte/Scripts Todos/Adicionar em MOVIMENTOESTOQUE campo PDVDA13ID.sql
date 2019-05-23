@@ -1,0 +1,1 @@
+alter table movimentoestoque add PDVDA13ID char(13)

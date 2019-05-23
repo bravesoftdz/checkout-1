@@ -1,0 +1,10 @@
+CREATE TABLE TABELAFRETE 
+(
+  TBFTICOD                   INTEGER NOT NULL,
+  TBFTA60DESCRICAO           CHAR(60),
+  TBFTA60ORIGEM              CHAR(60),
+  TBFTA1000OBS               VARCHAR(1000),
+  REGISTRO                   TIMESTAMP,
+  PENDENTE                   CHAR(1),
+ PRIMARY KEY (TBFTICOD)
+);

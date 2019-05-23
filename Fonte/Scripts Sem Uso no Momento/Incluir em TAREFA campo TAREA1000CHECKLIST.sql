@@ -1,0 +1,1 @@
+alter table TAREFA add TAREA1000CHECKLIST char(1000)

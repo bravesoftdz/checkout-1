@@ -1,0 +1,1 @@
+ALTER TABLE notacompraitem ADD NOCA1CSTORIGEM CHAR(1);

@@ -1,0 +1,1 @@
+alter table ENCERRANTEDIARIO add PENDENTE CHAR(1)

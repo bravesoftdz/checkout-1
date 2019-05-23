@@ -1,0 +1,1 @@
+alter table ICMSUF add ICMUA30NOMEESTADO CHAR(30)

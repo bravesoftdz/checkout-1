@@ -1,0 +1,1 @@
+update NOTAFISCAL set Pendente = "N" where Pendente = "S"

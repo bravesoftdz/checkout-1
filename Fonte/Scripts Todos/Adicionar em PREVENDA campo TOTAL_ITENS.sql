@@ -1,0 +1,1 @@
+alter table PREVENDA add TOTAL_ITENS INTEGER;

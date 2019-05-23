@@ -1,0 +1,1 @@
+alter table OSITEM add OSITCGARANTIA char(1)

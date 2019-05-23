@@ -1,0 +1,1 @@
+update produto set PRODCIMPETIQCDBAR = 'S' where PRODCIMPETIQCDBAR = '' or PRODCIMPETIQCDBAR is null

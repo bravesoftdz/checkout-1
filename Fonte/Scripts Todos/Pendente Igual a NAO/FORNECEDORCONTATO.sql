@@ -1,0 +1,1 @@
+update FORNECEDORCONTATO set Pendente = "N" where Pendente = "S"

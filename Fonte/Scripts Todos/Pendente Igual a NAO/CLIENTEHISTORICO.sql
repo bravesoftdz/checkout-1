@@ -1,0 +1,1 @@
+update CLIENTEHISTORICO set Pendente = "N" where Pendente = "S"

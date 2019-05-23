@@ -1,0 +1,7 @@
+update 
+  CONTASRECEBER
+set 
+  CTRCN2TOTMULTACOBR = 0
+where
+  CTRCN2TOTMULTACOBR is null
+

@@ -1,0 +1,1 @@
+alter table AGENDA add AGENCALERTA CHAR(1)

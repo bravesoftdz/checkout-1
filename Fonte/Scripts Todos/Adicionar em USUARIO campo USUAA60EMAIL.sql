@@ -1,0 +1,1 @@
+Alter table usuario add USUAA60EMAIL char(60)

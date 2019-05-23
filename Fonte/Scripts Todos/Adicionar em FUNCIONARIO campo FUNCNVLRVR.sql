@@ -1,0 +1,1 @@
+alter table FUNCIONARIO add   FUNCNVLRVR NUMERIC(15, 3) ;

@@ -1,0 +1,1 @@
+alter table FUNCIONARIO add   FUNCA30BAIRRO CHAR(30) ;

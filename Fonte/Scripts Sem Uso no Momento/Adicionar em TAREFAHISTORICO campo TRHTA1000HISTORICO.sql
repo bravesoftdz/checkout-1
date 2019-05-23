@@ -1,0 +1,2 @@
+alter table TAREFAHISTORICO add 
+  TRHTA1000HISTORICO         VARCHAR(1000) ;

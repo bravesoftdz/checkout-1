@@ -1,0 +1,29 @@
+#------------------------------------------------------------------------------
+VERSION = BWS.01
+#------------------------------------------------------------------------------
+!ifndef ROOT
+ROOT = $(MAKEDIR)\..
+!endif
+#------------------------------------------------------------------------------
+MAKE = $(ROOT)\bin\make.exe -$(MAKEFLAGS) -f$**
+DCC = $(ROOT)\bin\dcc32.exe $**
+BRCC = $(ROOT)\bin\brcc32.exe $**
+#------------------------------------------------------------------------------
+PROJECTS = TEFDemo.exe Checkout.exe ECFTeste.exe ACBrNFe_demo.exe
+#------------------------------------------------------------------------------
+default: $(PROJECTS)
+#------------------------------------------------------------------------------
+
+TEFDemo.exe: ..\..\..\..\..\Acbr\trunk2\Exemplos\ACBrTEFD\Delphi\TEFDemo.dpr
+  $(DCC)
+
+Checkout.exe: Checkout.dpr
+  $(DCC)
+
+ECFTeste.exe: ..\..\..\..\..\Acbr\trunk2\Exemplos\ACBrSerial\ACBrECF\Delphi\ECFTeste.dpr
+  $(DCC)
+
+ACBrNFe_demo.exe: ..\..\..\..\..\Acbr\trunk2\Exemplos\ACBrDFe\ACBrNFe\Delphi - TEF\ACBrNFe_demo.dpr
+  $(DCC)
+
+

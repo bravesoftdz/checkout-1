@@ -1,0 +1,1 @@
+alter table ENCERRANTEDIARIO add REGISTRO DATE

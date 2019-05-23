@@ -1,0 +1,1 @@
+update PRODUTOBARRAS set Pendente = "N" where Pendente = "S"

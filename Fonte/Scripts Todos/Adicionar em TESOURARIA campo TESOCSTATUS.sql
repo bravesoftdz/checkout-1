@@ -1,0 +1,1 @@
+alter table TESOURARIA add TESOCSTATUS char(1)

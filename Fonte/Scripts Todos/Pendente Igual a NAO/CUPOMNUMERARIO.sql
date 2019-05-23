@@ -1,0 +1,1 @@
+update CUPOMNUMERARIO set Pendente = "N" where Pendente = "S"

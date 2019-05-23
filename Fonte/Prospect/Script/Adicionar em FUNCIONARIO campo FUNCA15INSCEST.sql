@@ -1,0 +1,1 @@
+alter table FUNCIONARIO add   FUNCA15INSCEST CHAR(15) ;

@@ -1,0 +1,1 @@
+alter table FRETEITEM add CFOPA5COD  CHAR(5)
