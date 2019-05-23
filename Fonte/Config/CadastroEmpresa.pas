@@ -268,6 +268,9 @@ type
     SQLTemplateUSUARIO_BRT: TStringField;
     SQLTemplateSENHA_BRT: TStringField;
     SQLTemplateBUSCAR_PRODUTO_BRT: TStringField;
+    Label26: TLabel;
+    DBEdit18: TDBEdit;
+    SQLTemplatePERC_FAIXASIMPLES: TFloatField;
     procedure FormCreate(Sender: TObject);
     procedure SQLTemplateBeforePost(DataSet: TDataSet);
     procedure SQLTemplateAfterPost(DataSet: TDataSet);
@@ -316,6 +319,13 @@ end;
 procedure TFormCadastroEmpresa.SQLTemplateBeforePost(DataSet: TDataSet);
 begin
   inherited;
+  if (SQLTemplateEMPRA3CRT.Value <> '1') and (SQLTemplatePERC_FAIXASIMPLES.Value > 0) Then
+    begin
+      Beep ;
+      Informa('Campo % faixa do simples só pode ser preenchido quanto o Regime Tributário for do Simples') ;
+      Abort ;
+    end;
+
   exit;
 
   if SQLTemplateEMPRA60RAZAOSOC.Value = '' Then
