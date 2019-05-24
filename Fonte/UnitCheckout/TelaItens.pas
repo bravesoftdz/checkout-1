@@ -779,9 +779,9 @@ begin
                       end;
                       if vPercSTEfe > 0 then
                       begin
-                        ICMS.vICMSEfet := (Prod.qCom * (Prod.vProd - Prod.vDesc));
+                        ICMS.vICMSEfet := (Prod.qCom * (Prod.vProd - Prod.vDesc)) * vPercSTEfe / 100;
                         ICMS.pICMSEfet := vPercSTEfe;
-                        ICMS.vBCEfet := (Prod.qCom * (Prod.vProd - Prod.vDesc)) * vPercSTEfe;
+                        ICMS.vBCEfet := (Prod.qCom * (Prod.vProd - Prod.vDesc));
                       end;
 //                      ICMS.vBCSTRet := 0; // Adilson, verificar melhor
 //                      ICMS.vICMSSTRet := 0; // Adilson, verificar melhor
@@ -819,9 +819,9 @@ begin
                     end;
                     if vPercSTEfe > 0 then
                     begin
-                      ICMS.vICMSEfet := (Prod.qCom * (Prod.vProd - Prod.vDesc));
+                      ICMS.vICMSEfet := (Prod.qCom * (Prod.vProd - Prod.vDesc)) * vPercSTEfe / 100;
                       ICMS.pICMSEfet := vPercSTEfe;
-                      ICMS.vBCEfet := (Prod.qCom * (Prod.vProd - Prod.vDesc)) * vPercSTEfe;
+                      ICMS.vBCEfet := (Prod.qCom * (Prod.vProd - Prod.vDesc));
                     end;
                   end;
                           // Base Calculo
