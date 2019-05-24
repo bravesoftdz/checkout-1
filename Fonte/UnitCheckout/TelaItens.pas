@@ -674,6 +674,9 @@ begin
 
         Prod.NCM := SQLLocate('NCM', 'NCMICOD', 'NCMA30CODIGO', SQLLocate('PRODUTO', 'PRODICOD', 'NCMICOD', SQLImpressaoCupom.fieldbyname('PRODICOD').AsString));
 
+        if SQLLocate('NCM', 'NCMICOD', 'ALIQ_ICMS', SQLLocate('PRODUTO', 'PRODICOD', 'NCMICOD', SQLImpressaoCupom.fieldbyname('PRODICOD').AsString)) <> '' then
+          vPercSTEfe := StrToFloat(SQLLocate('NCM', 'NCMICOD', 'ALIQ_ICMS', SQLLocate('PRODUTO', 'PRODICOD', 'NCMICOD', SQLImpressaoCupom.fieldbyname('PRODICOD').AsString)))
+        else
         if SQLLocate('ICMSUF', 'ICMUA2UF', 'ICMUN2ALIQUOTA', QuotedStr(Emit.EnderEmit.UF)) <> '' then
           vPercSTEfe := StrToFloat(SQLLocate('ICMSUF', 'ICMUA2UF', 'ICMUN2ALIQUOTA', QuotedStr(Emit.EnderEmit.UF)));
 
