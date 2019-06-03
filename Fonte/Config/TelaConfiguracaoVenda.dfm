@@ -317,7 +317,7 @@ inherited FormTelaConfiguracaoVenda: TFormTelaConfiguracaoVenda
               Font.Name = 'Tahoma'
               Font.Style = [fsBold]
               ParentFont = False
-              TabOrder = 10
+              TabOrder = 11
               ValueChecked = 'S'
               ValueUnchecked = 'N'
             end
@@ -335,7 +335,7 @@ inherited FormTelaConfiguracaoVenda: TFormTelaConfiguracaoVenda
               Font.Name = 'Tahoma'
               Font.Style = [fsBold]
               ParentFont = False
-              TabOrder = 11
+              TabOrder = 12
               ValueChecked = 'S'
               ValueUnchecked = 'N'
             end
@@ -353,7 +353,7 @@ inherited FormTelaConfiguracaoVenda: TFormTelaConfiguracaoVenda
               Font.Name = 'Tahoma'
               Font.Style = [fsBold]
               ParentFont = False
-              TabOrder = 12
+              TabOrder = 13
               ValueChecked = 'S'
               ValueUnchecked = 'N'
             end
@@ -371,7 +371,7 @@ inherited FormTelaConfiguracaoVenda: TFormTelaConfiguracaoVenda
               Font.Name = 'Tahoma'
               Font.Style = [fsBold]
               ParentFont = False
-              TabOrder = 13
+              TabOrder = 14
               ValueChecked = 'S'
               ValueUnchecked = 'N'
             end
@@ -389,7 +389,7 @@ inherited FormTelaConfiguracaoVenda: TFormTelaConfiguracaoVenda
               Font.Name = 'Tahoma'
               Font.Style = [fsBold]
               ParentFont = False
-              TabOrder = 14
+              TabOrder = 15
               ValueChecked = 'S'
               ValueUnchecked = 'N'
             end
@@ -407,7 +407,7 @@ inherited FormTelaConfiguracaoVenda: TFormTelaConfiguracaoVenda
               Font.Name = 'Tahoma'
               Font.Style = [fsBold]
               ParentFont = False
-              TabOrder = 8
+              TabOrder = 9
               ValueChecked = 'S'
               ValueUnchecked = 'N'
             end
@@ -467,7 +467,7 @@ inherited FormTelaConfiguracaoVenda: TFormTelaConfiguracaoVenda
             end
             object DBCheckBox19: TDBCheckBox
               Left = 268
-              Top = 138
+              Top = 140
               Width = 463
               Height = 20
               Caption = 
@@ -481,7 +481,7 @@ inherited FormTelaConfiguracaoVenda: TFormTelaConfiguracaoVenda
               Font.Name = 'Tahoma'
               Font.Style = [fsBold]
               ParentFont = False
-              TabOrder = 16
+              TabOrder = 17
               ValueChecked = 'S'
               ValueUnchecked = 'N'
             end
@@ -499,7 +499,7 @@ inherited FormTelaConfiguracaoVenda: TFormTelaConfiguracaoVenda
               Font.Name = 'Tahoma'
               Font.Style = [fsBold]
               ParentFont = False
-              TabOrder = 9
+              TabOrder = 10
               ValueChecked = 'S'
               ValueUnchecked = 'N'
             end
@@ -517,7 +517,25 @@ inherited FormTelaConfiguracaoVenda: TFormTelaConfiguracaoVenda
               Font.Name = 'Tahoma'
               Font.Style = [fsBold]
               ParentFont = False
-              TabOrder = 15
+              TabOrder = 16
+              ValueChecked = 'S'
+              ValueUnchecked = 'N'
+            end
+            object DBCheckBox2: TDBCheckBox
+              Left = 4
+              Top = 140
+              Width = 257
+              Height = 17
+              Caption = 'Utiliza pre'#231'o promocional na NF'
+              DataField = 'UTILIZA_PROMOCAO_PRODUTO'
+              DataSource = DSSQLConfigVenda
+              Font.Charset = ANSI_CHARSET
+              Font.Color = 8404992
+              Font.Height = -11
+              Font.Name = 'Tahoma'
+              Font.Style = [fsBold]
+              ParentFont = False
+              TabOrder = 8
               ValueChecked = 'S'
               ValueUnchecked = 'N'
             end
@@ -1106,7 +1124,6 @@ inherited FormTelaConfiguracaoVenda: TFormTelaConfiguracaoVenda
               Margin = 0
               ParentFont = False
               Spacing = 1
-              OnClick = BotaoGravarClick
             end
           end
         end
@@ -1417,6 +1434,12 @@ inherited FormTelaConfiguracaoVenda: TFormTelaConfiguracaoVenda
       Origin = 'DB.CONFIGVENDA.VALOR_LIMITE_PAGTO'
       DisplayFormat = '##0.00'
       EditFormat = '##0.00'
+    end
+    object SQLConfigVendaUTILIZA_PROMOCAO_PRODUTO: TStringField
+      FieldName = 'UTILIZA_PROMOCAO_PRODUTO'
+      Origin = 'DB.CONFIGVENDA.UTILIZA_PROMOCAO_PRODUTO'
+      FixedChar = True
+      Size = 1
     end
   end
   object ActionList1: TActionList

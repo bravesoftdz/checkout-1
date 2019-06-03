@@ -103,7 +103,7 @@ uses DataModulo, UnitLibrary, uExibeMenu, uObtemCampo;
 Function TdmSiTef.EfetuarPagamentoSiTef(FormaPagamento: Integer; Valor: Double; NumCOO:String):Boolean;
 begin
   Result := True;
-  if not ACBrTEFD1.TEFCliSiTef.Habilitado then exit;
+  if not ACBrTEFD1.TEFCliSiTef.Habilitado then  exit;
 
   fValor := Valor;
   InicializarSiTEF;

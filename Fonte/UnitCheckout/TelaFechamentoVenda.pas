@@ -465,7 +465,7 @@ end ;
 
 procedure TFormTelaFechamentoVenda.EntradaDadosKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
 Var
-  TotNumECF, vNUMECVISTAPRAZO : string ;
+  TotNumECF, vNUMECVISTAPRAZO, Sitef : string ;
   Valor1, Valor2, ValorDevido : double ;
   DiaVctoConvenio, MesVctoConvenio, MesVctoConvenioAnt, DataConevio : String;
   InicioCompraConvenio, FimCompraConveio, PrimeiraParcela, Ndias : TDateTime;
@@ -1374,6 +1374,7 @@ begin
                 )+'"');
 
               vNUMECVISTAPRAZO:= dm.SQLLocate('NUMERARIO','NUMEICOD','NUMECVISTAPRAZO',SQLParcelasVistaVendaTempNUMEICOD.AsString);
+              sitef := dm.SQLLocate('NUMERARIO','NUMEICOD','SITEF',SQLParcelasVistaVendaTempNUMEICOD.AsString);
 
               if (TipoPadrao = 'CRT') and (ProvedorCartao <> '') then
               begin
@@ -1383,7 +1384,10 @@ begin
                   EntradaDados.SelectAll ;
                   exit;
                 end
-                else fUsandoSitef := True;
+                else
+                if sitef = 'S' then
+                  fUsandoSitef := True
+                else fUsandoSitef := False;
               end;
 
               if (ECFAtual = 'ECF') and (not FileExists('Confirma.txt')) then
@@ -5262,7 +5266,7 @@ begin
     GravouItem := False;
     if (copy(EcfAtual,1,4) = 'NFCE') and (FormTelaItens.SQLItensVendaTempCANCELADO.Value = 'S') then
       Tentativa := 9;
-    Associado := SQLLocate('CLIENTE', 'CLIEA13ID', 'ASSOCIADO', ClienteVenda);
+    Associado := SQLLocate('CLIENTE', 'CLIEA13ID', 'ASSOCIADO', QuotedStr(ClienteVenda));
 
     while not GravouItem and (Tentativa < 4) do
       begin

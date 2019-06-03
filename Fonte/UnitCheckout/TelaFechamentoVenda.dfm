@@ -3,7 +3,7 @@ object FormTelaFechamentoVenda: TFormTelaFechamentoVenda
   Top = -8
   BorderIcons = []
   BorderStyle = bsNone
-  Caption = 'Fechamento da Venda'
+  Caption = 'q'
   ClientHeight = 742
   ClientWidth = 1362
   Color = 14731440

@@ -143,6 +143,8 @@ type
     SQLConfigVendaVALOR_LIMITE_PAGTO: TFloatField;
     GroupBox6: TGroupBox;
     DBEdit6: TDBEdit;
+    DBCheckBox2: TDBCheckBox;
+    SQLConfigVendaUTILIZA_PROMOCAO_PRODUTO: TStringField;
     procedure BotaoGravarClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
