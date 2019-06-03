@@ -79,6 +79,8 @@ type
     SQLTemplateNUMEN2TAXAADM: TFloatField;
     SQLTemplateNUMECBONUSTROCA: TStringField;
     DBCheckBox1: TDBCheckBox;
+    DBCheckBox2: TDBCheckBox;
+    SQLTemplateSITEF: TStringField;
     procedure FormCreate(Sender: TObject);
     procedure SQLTemplateBeforePost(DataSet: TDataSet);
     procedure Button1Click(Sender: TObject);
