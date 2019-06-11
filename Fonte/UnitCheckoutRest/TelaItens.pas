@@ -3106,7 +3106,12 @@ begin
               end ;
           //IMPRIMIR CUPOM FISCAL
           'X': begin
-                 LblNomeSistemaClick(Sender);
+                 ImpCupomAutomatico := True;
+                 try
+                   LblNomeSistemaClick(Sender);
+                 finally
+                   ImpCupomAutomatico := False;
+                 end;
                end;
           //TOTAIS CAIXA ATIVO
           'Z': begin
