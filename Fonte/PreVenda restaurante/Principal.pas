@@ -224,7 +224,7 @@ begin
     memo.Lines.Add('</ae>------------------------------------------------');
     memo.Lines.Add('</ad>ITENS R$ ' + FormatFloat('##0.00',TblPreVendaCabTotalNominal.Value)+'   ');
     memo.Lines.Add('Troco   R$ ' + FormatFloat('##0.00',TblPreVendaCabTroco.Value)+'   ');
-    memo.Lines.Add('Descto  R$ ' + FormatFloat('##0.00',TblPreVendaCabDesconto.Value+TotDesc)+'   ');
+    memo.Lines.Add('Descto  R$ ' + FormatFloat('##0.00',TblPreVendaCabDesconto.Value)+'   ');
     memo.Lines.Add('TOTAL   R$ ' + FormatFloat('##0.00',TblPreVendaCabTotalGeral.Value)+'   ');
 
     memo.Lines.Add('</ae>------------------------------------------------');

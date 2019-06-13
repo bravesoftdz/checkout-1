@@ -116,10 +116,22 @@ begin
     if SomaItens = 0 then
       Exit;
     IniFile             := TIniFile.Create('C:\Easy2Solutions\Gestao\Parceiro.ini');
-    ImpMarca            := IniFile.ReadString('Restaurante','ImpMarca','EPSON');
+    ImpMarca            := IniFile.ReadString('Restaurante','ImpCaixa','');
     ImpCaixaPorta       := IniFile.ReadString('Restaurante','ImpCozinhaPorta','');
     ImpCaixaVeloc       := IniFile.ReadString('Restaurante','ImpCaixaVeloc','38400');
     IniFile.Free;
+
+    if ImpMarca = 'EPSON'      then ACBrPosPrinter.Modelo := ppEscPosEpson;
+    if ImpMarca = 'ELGIN'      then ACBrPosPrinter.Modelo := ppEscVox;
+    if ImpMarca = 'BEMATECH'   then ACBrPosPrinter.Modelo := ppEscBematech;
+    if ImpMarca = 'DARUMA'     then ACBrPosPrinter.Modelo := ppEscDaruma;
+    if ImpMarca = 'NFCE DR700' then ACBrPosPrinter.Modelo := ppEscDaruma;
+    if ImpMarca = 'NFCE DR800' then ACBrPosPrinter.Modelo := ppEscDaruma;
+
+    ACBrPosPrinter.Device.Porta := ImpCaixaPorta;
+    ACBrPosPrinter.Device.Baud  := StrToint(ImpCaixaVeloc);
+    ACBrPosPrinter.Device.Desativar;
+
 
     memo.Lines.Add(' ');
     memo.Lines.Add(' ');
@@ -179,16 +191,8 @@ begin
     memo.Lines.Add(' ');
     memo.Lines.Add('</corte_parcial>');
 
-    if ImpMarca = 'EPSON'      then ACBrPosPrinter.Modelo := ppEscPosEpson;
-    if ImpMarca = 'ELGIN'      then ACBrPosPrinter.Modelo := ppEscVox;
-    if ImpMarca = 'BEMATECH'   then ACBrPosPrinter.Modelo := ppEscBematech;
-    if ImpMarca = 'DARUMA'     then ACBrPosPrinter.Modelo := ppEscDaruma;
-    if ImpMarca = 'NFCE DR700' then ACBrPosPrinter.Modelo := ppEscDaruma;
-    if ImpMarca = 'NFCE DR800' then ACBrPosPrinter.Modelo := ppEscDaruma;
-
-    ACBrPosPrinter.Device.Porta := ImpCaixaPorta;
-    ACBrPosPrinter.Device.Baud  := StrToint(ImpCaixaVeloc);
     ACBrPosPrinter.Device.Ativar;
+
     try
       ACBrPosPrinter.Imprimir(Memo.Lines.Text);
     finally

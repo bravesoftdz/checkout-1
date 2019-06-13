@@ -321,9 +321,9 @@ begin
         DM.TblTicketPreVendaItemTroca.Value      := 'N';
       end;
 
-    DM.TblTicketPreVendaItemValorUnitario.Value := (SQLCupomIt.FieldbyName('CPITN3VLRUNIT').Value + SQLCupomIt.FieldbyName('CPITN2DESC').Value) ;
-    DM.TblTicketPreVendaItemValorTotal.Value    := (SQLCupomIt.FieldbyName('CPITN3VLRUNIT').Value) *
-                                                   SQLCupomIt.FieldbyName('CPITN3QTD').Value ;
+    DM.TblTicketPreVendaItemValorUnitario.Value :=  SQLCupomIt.FieldbyName('CPITN3VLRUNIT').Value;
+    DM.TblTicketPreVendaItemValorTotal.Value    := (SQLCupomIt.FieldbyName('CPITN3VLRUNIT').Value * SQLCupomIt.FieldbyName('CPITN3QTD').Value) -
+                                                    SQLCupomIt.FieldbyName('CPITN2DESC').Value;
     DM.TblTicketPreVendaItemDesconto.Value       := SQLCupomIt.FieldbyName('CPITN2DESC').Value ;
 
     DM.TblTicketPreVendaItemBORDA01 .Value       := SQLCupomIt.FieldbyName('BORDA01').Value ;
