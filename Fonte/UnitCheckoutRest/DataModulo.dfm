@@ -5,6 +5,7 @@ inherited DM: TDM
   Height = 724
   Width = 859
   inherited DB: TDatabase
+    Connected = False
     Left = 32
   end
   inherited SQLTemplate: TRxQuery
@@ -1244,6 +1245,12 @@ inherited DM: TDM
     object SQLConfigGeralDATA_INI_SEM_NET: TDateTimeField
       FieldName = 'DATA_INI_SEM_NET'
       Origin = 'DB.CONFIGGERAL.DATA_INI_SEM_NET'
+    end
+    object SQLConfigGeralNAO_OBRIGA_FECHAR_CAIXA: TStringField
+      FieldName = 'NAO_OBRIGA_FECHAR_CAIXA'
+      Origin = 'DB.CONFIGGERAL.NAO_OBRIGA_FECHAR_CAIXA'
+      FixedChar = True
+      Size = 1
     end
   end
   object MemCtRecParc: TTable

@@ -2305,6 +2305,7 @@ begin
                        DM.SQLTemplate.SQL.Add('Set PRVDN2TOTITENS = PRVDN2TOTITENS + '+ConvFloatToStr(ValorSubTotal));
                      DM.SQLTemplate.SQL.Add('  ,TOTAL_ITENS='+IntToStr(SQLItensVendaTemp.RecordCount)+' , PDVCPRECONCLU="S", PRVDCIMPRESSO="N"  Where');
                      DM.SQLTemplate.SQL.Add('TERMICOD = ' + SQLItensVendaTempTERMICOD.AsString + ' And ');
+//                     DM.SQLTemplate.SQL.Add()
                      DM.SQLTemplate.SQL.Add('PRVDICOD = ' + IntToStr(ProxCod));
                      DM.SQLTemplate.Prepare;
                      DM.SQLTemplate.ExecSQL;
@@ -2329,6 +2330,9 @@ begin
                      DM.SQLTemplate.SQL.Clear;
                      DM.SQLTemplate.SQL.Add('Select Sum(PRVDN2TOTITENS) from PREVENDA');
                      DM.SQLTemplate.SQL.Add('Where PRVDCIMPORT = "N" and PDVCPreConclu = "S" and MESAICOD = ' + IntToStr(CodMesa));
+                    if DM.SQLConfigGeralNAO_OBRIGA_FECHAR_CAIXA.asstring <> 'S' then
+                      DM.SQLTemplate.sql.add(' and PDVDDHVENDA > ''' + FormatDateTime('mm/dd/yyyy', Date) + '''');
+
                      DM.SQLTemplate.Open;
 
                      dm.SQLMesaStatus.Edit;

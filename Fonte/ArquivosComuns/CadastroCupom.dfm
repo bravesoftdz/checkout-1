@@ -2142,7 +2142,7 @@ inherited FormCadastroCupom: TFormCadastroCupom
       OnClick = CupomEletronicoNFCe1Click
     end
     object MnReimprimirvendaatual: TMenuItem
-      Caption = 'PreVenda'
+      Caption = 'Pre Venda'
       OnClick = MnReimprimirvendaatualClick
     end
     object CarneAvulso1: TMenuItem

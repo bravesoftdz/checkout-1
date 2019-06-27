@@ -3408,6 +3408,7 @@ begin
             NomeClienteVenda := '';
           Application.CreateForm(TFormTelaImportarPreVenda, FormTelaImportarPreVenda);
           FormTelaImportarPreVenda.ShowModal;
+          EntradaDados.SetFocus;
         end
         else
         begin

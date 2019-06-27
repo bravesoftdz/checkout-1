@@ -6,7 +6,7 @@ uses
   VarSYS, Variants, Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
   Db, DBTables, StdCtrls, Grids, DBGrids, jpeg, ExtCtrls, RxQuery,
   DBCtrls, DBCGrids, MemTable, RXCtrls, EWall, Mask, Menus,
-  cxLookAndFeelPainters, cxButtons;
+  cxLookAndFeelPainters, cxButtons, WaitWindow;
 
 type
   TFormTelaImportarPreVenda = class(TForm)
@@ -239,6 +239,7 @@ implementation
 
 uses TelaFechamentoVenda, UnitLibrary, TelaItens, DataModulo,
      UnitCheckoutLibrary, TelaImpressaoPreVenda, DataModuloTemplate;
+Function BlockInput(fbLookIt:Boolean):Integer; stdcall; external 'user32.dll';
 
 {$R *.DFM}
 
@@ -693,8 +694,11 @@ begin
                       DM.SQLPreVendaItem1.Open;
 
                       //INCLUINDO OS ITENS DA PRE-VENDA
-                      DM.SQLPreVendaItem1.First;
-                      While Not DM.SQLPreVendaItem1.EOF Do
+                      MakeWindow(1,'Aguarde... Incluindo Itens...');
+                      Blockinput(True);
+                      try
+                        DM.SQLPreVendaItem1.First;
+                        While Not DM.SQLPreVendaItem1.EOF Do
                         Begin
                           If DM.SQLPreVendaItem1PVITN3QTDTROCA.Value > 0 then
                             Begin
@@ -722,7 +726,13 @@ begin
 
                           DM.SQLPreVendaItem1.Next;
                         end;
-                      // Preparando pra Finalizar a Venda
+                        // Preparando pra Finalizar a Venda
+                      finally
+                        begin
+                          DestroyWindow;
+                          Blockinput(False);
+                        end;
+                      end;
                       FormTelaItens.EstadoPDVChk  := 'InformandoItens';
                       VendedorVenda               := SQLImportarPrevendaSelVENDICOD.Value;
                       ClienteVenda                := SQLImportarPrevendaSelCLIEA13ID.Value;
@@ -758,7 +768,7 @@ begin
                         PedidosImportados := PedidosImportados + ',' + (SQLImportarPrevendaSelTERMICOD.AsString + '-' + FormatFloat('000000', SQLImportarPrevendaSelPRVDICOD.AsFloat)) ;
                     end ;
                   SQLImportarPrevendaSel.Next ;
-              end ;
+                end ;
               //APÓS INCLUIR OS ITENS
               if VendedorVenda > 0 then
                 begin

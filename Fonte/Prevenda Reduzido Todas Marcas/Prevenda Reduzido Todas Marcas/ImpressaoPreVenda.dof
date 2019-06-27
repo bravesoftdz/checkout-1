@@ -90,7 +90,7 @@ MaxStackSize=1048576
 ImageBase=4194304
 ExeDescription=
 [Directories]
-OutputDir=c:\easy2solutions
+OutputDir=d:\easy2solutions
 UnitOutputDir=
 PackageDLLOutputDir=
 PackageDCPOutputDir=
@@ -150,7 +150,8 @@ C:\Program Files (x86)\Borland\Delphi7\RBuilder\Lib\dclRBC107.bpl=ReportBuilder 
 Count=1
 Item0=WinTypes=Windows;WinProcs=Windows;DbiTypes=BDE;DbiProcs=BDE;DbiErrs=BDE;
 [HistoryLists\hlOutputDirectorry]
-Count=3
-Item0=c:\easy2solutions
-Item1=c:\easy2solutions\gestao
-Item2=C:\UNIT\GESTAO
+Count=4
+Item0=d:\easy2solutions
+Item1=c:\easy2solutions
+Item2=c:\easy2solutions\gestao
+Item3=C:\UNIT\GESTAO

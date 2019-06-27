@@ -238,6 +238,11 @@ begin
 
     TotConfissao := 0;
     memo.Lines.Add('</ae>------------------------------------------------');
+    if TblPreVendaCabBusca.Value = 'S' then
+      memo.Lines.Add('</ae>'+ 'Cliente ira retirar no local' );
+    if TblPreVendaCabLevarCasa.Value = 'S' then
+      memo.Lines.Add('</ae>'+ 'Estabelecimento fara a entrega');
+    memo.Lines.Add('</ae>------------------------------------------------');
     memo.Lines.Add('</ae>'+ Obs_Venda);
     memo.Lines.Add('</ae>------------------------------------------------');
     memo.Lines.Add(' ');

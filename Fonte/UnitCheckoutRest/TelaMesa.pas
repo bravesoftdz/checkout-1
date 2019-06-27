@@ -203,6 +203,7 @@ type
     SQLVendasCanceladasVENDICOD: TIntegerField;
     SQLVendasCanceladasPRODUTO: TStringField;
     SQLVendasCanceladasTOTALITEM: TFloatField;
+    TblMemPrevendaitemValorDesconto: TFloatField;
     procedure ImgDesligarClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
@@ -214,7 +215,7 @@ type
     Function  GravaCupomNumerario:Boolean;
     Function  GravaMovCaixa:Boolean;
     procedure btF4Click(Sender: TObject);
-    procedure DBGridItensKeyDown(Sender: TObject; var Key: Word;
+    procedure H(Sender: TObject; var Key: Word;
       Shift: TShiftState);
     procedure btF7Click(Sender: TObject);
     procedure DBGridItensCellClick(Column: TColumn);
@@ -251,6 +252,7 @@ type
     OriginalOptions : TDBGridOptions;
     procedure ItemSaveBoolean(Grid : TDBGrid) ;
     procedure ImprimirPreVenda(Terminal, Numero : string) ;
+    procedure Calcular_Desconto(ValorDesconto : Real);
   public
     { Public declarations }
     ExistePreVendaSelecionada, ExisteItemSelecionada, ErroGravando : Boolean;
@@ -422,7 +424,7 @@ begin
                   TblMemPrevendaitem.post;
                   TotalCalc := TotalCalc + TblMemPrevendaitemTotalItem.Value;
                   inc(i);
-               end;
+                end;
             end
           else
             begin
@@ -460,7 +462,6 @@ begin
             end;
           SQLPrevendaItem.next;
         end;
-
       DM.SQLPreVenda.Next;
     end ;
 
@@ -487,7 +488,9 @@ begin
       dm.SQLTemplate.Close;
       dm.SQLTemplate.sql.clear;
       dm.SQLTemplate.sql.add('Select Sum(PRVDN2TOTITENS) from prevenda where PRVDCIMPORT = "N" and PDVCPreConclu = "S"');
-      dm.SQLTemplate.sql.add(' and MESAICOD = ' + IntToStr(CodMesa)) ;
+      dm.SQLTemplate.sql.add(' and MESAICOD = ' + IntToStr(CodMesa));
+      if dm.SQLConfigGeralNAO_OBRIGA_FECHAR_CAIXA.asstring <> 'S' then
+        dm.SQLTemplate.sql.add(' and PDVDDHVENDA > ''' + FormatDateTime('mm/dd/yyyy', Date) + '''');
       if CodConta > 0 then
         dm.SQLTemplate.sql.add(' and CONTAICOD = ' + IntToStr(CodConta)) ;
       dm.SQLTemplate.Open;
@@ -860,7 +863,7 @@ begin
   EditValorPago.SetFocus;
 end;
 
-procedure TFormTelaMesa.DBGridItensKeyDown(Sender: TObject; var Key: Word;
+procedure TFormTelaMesa.H(Sender: TObject; var Key: Word;
   Shift: TShiftState);
 begin
   if (Key = VK_SPACE ) then
@@ -1146,7 +1149,6 @@ begin
         DM.TblTicketPreVendaCab.Post;
       end;
 
-
       // Gravar Cabecalho Cupom
       // ErroGravando := True;
       ErroGravando := False;
@@ -1221,6 +1223,9 @@ begin
       GravaMovCaixa;
 
       if FileExists('GAVETA.EXE') then WinExec(Pchar('GAVETA.EXE'),sw_Show);
+
+      if EditDesconto.Value > 0 then
+        Calcular_Desconto(EditDesconto.Value);
 
       if Pergunta('NAO', 'IMPRIMIR COMPROVANTE CLIENTE') then
         begin
@@ -1477,6 +1482,42 @@ procedure TFormTelaMesa.EditDescontoExit(Sender: TObject);
 begin
   EditValorPago.Value := EditTotal.Value - EditDesconto.Value;
   EditValorPago.SetFocus;
+end;
+
+procedure TFormTelaMesa.Calcular_Desconto(ValorDesconto : Real);
+var
+  vPercentual, Soma_Desconto, ValorTotal : Real;
+  vUltimo, vCont : Integer;
+begin
+  if TblMemPrevendaitem.IsEmpty then
+    Exit;
+  ValorTotal := 0;
+  TblMemPrevendaitem.First;
+  while not TblMemPrevendaitem.Eof do
+  begin
+    ValorTotal := ValorTotal + TblMemPrevendaitemTotalItem.Value;
+    TblMemPrevendaitem.Next;
+  end;
+
+  Soma_Desconto := 0;
+  vPercentual := 0;
+  vCont := 0;
+  vUltimo := TblMemPrevendaitem.RecordCount;
+  TblMemPrevendaitem.First;
+  while not TblMemPrevendaitem.Eof do
+  begin
+    Inc(vCont);
+    TblMemPrevendaitem.Edit;
+    vPercentual := TblMemPrevendaitemTotalItem.AsFloat / ValorTotal;
+    TblMemPrevendaitemValorDesconto.AsFloat := vPercentual * ValorDesconto;
+    Soma_Desconto := Soma_Desconto + TblMemPrevendaitemValorDesconto.AsFloat;
+    if (vCont = vUltimo) and (Soma_Desconto <> ValorDesconto) then
+    begin
+      TblMemPrevendaitemValorDesconto.AsFloat := (TblMemPrevendaitemValorDesconto.AsFloat - (Soma_Desconto - ValorDesconto));
+    end;
+    TblMemPrevendaitem.Post;
+    TblMemPrevendaitem.Next;
+  end;
 end;
 
 end.

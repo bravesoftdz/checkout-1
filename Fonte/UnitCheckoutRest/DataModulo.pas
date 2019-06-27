@@ -1056,6 +1056,7 @@ type
     cdsAPIAutorizacaoDIAS_AVISO: TStringField;
     cdsAPIAutorizacaoDATA_AUTORIZACAO: TStringField;
     TblTicketPreVendaCabSeq_Dia: TIntegerField;
+    SQLConfigGeralNAO_OBRIGA_FECHAR_CAIXA: TStringField;
     procedure DataModuleCreate(Sender: TObject);
     procedure SQLCupomNewRecord(DataSet: TDataSet);
     procedure SQLCupomBeforePost(DataSet: TDataSet);

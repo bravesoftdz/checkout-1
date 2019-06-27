@@ -1,6 +1,6 @@
 object FormTelaMesa: TFormTelaMesa
-  Left = 266
-  Top = 13
+  Left = 119
+  Top = 7
   BorderStyle = bsSingle
   ClientHeight = 687
   ClientWidth = 1016
@@ -406,7 +406,7 @@ object FormTelaMesa: TFormTelaMesa
     OnColExit = DBGridItensColExit
     OnDrawColumnCell = DBGridItensDrawColumnCell
     OnDblClick = DBGridItensDblClick
-    OnKeyDown = DBGridItensKeyDown
+    OnKeyDown = H
     Columns = <
       item
         Expanded = False
@@ -2539,6 +2539,9 @@ object FormTelaMesa: TFormTelaMesa
       FieldName = 'SABOR06'
       Origin = 'DB.PREVENDAITEM.SABOR06'
       Size = 60
+    end
+    object TblMemPrevendaitemValorDesconto: TFloatField
+      FieldName = 'ValorDesconto'
     end
   end
   object DSMemPrevendaItem: TDataSource

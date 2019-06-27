@@ -422,11 +422,6 @@ object FormTelaImportarPreVenda: TFormTelaImportarPreVenda
         Expanded = False
         FieldName = 'Vendedor'
         Title.Color = 13225421
-        Title.Font.Charset = ANSI_CHARSET
-        Title.Font.Color = clBlack
-        Title.Font.Height = -19
-        Title.Font.Name = 'Tahoma'
-        Title.Font.Style = [fsBold]
         Width = 194
         Visible = True
       end
@@ -434,11 +429,6 @@ object FormTelaImportarPreVenda: TFormTelaImportarPreVenda
         Expanded = False
         FieldName = 'ClienteNome'
         Title.Color = 13225421
-        Title.Font.Charset = ANSI_CHARSET
-        Title.Font.Color = clBlack
-        Title.Font.Height = -19
-        Title.Font.Name = 'Tahoma'
-        Title.Font.Style = [fsBold]
         Width = 355
         Visible = True
       end
@@ -447,11 +437,6 @@ object FormTelaImportarPreVenda: TFormTelaImportarPreVenda
         FieldName = 'PRVDN2TOTITENS'
         Title.Alignment = taRightJustify
         Title.Color = 13225421
-        Title.Font.Charset = ANSI_CHARSET
-        Title.Font.Color = clBlack
-        Title.Font.Height = -19
-        Title.Font.Name = 'Tahoma'
-        Title.Font.Style = [fsBold]
         Width = 143
         Visible = True
       end
@@ -461,11 +446,6 @@ object FormTelaImportarPreVenda: TFormTelaImportarPreVenda
         FieldName = 'PRVDCMARCADO'
         Title.Alignment = taCenter
         Title.Color = 13225421
-        Title.Font.Charset = ANSI_CHARSET
-        Title.Font.Color = clBlack
-        Title.Font.Height = -19
-        Title.Font.Name = 'Tahoma'
-        Title.Font.Style = [fsBold]
         Width = 66
         Visible = True
       end>
@@ -770,11 +750,6 @@ object FormTelaImportarPreVenda: TFormTelaImportarPreVenda
         FieldName = 'PRODICOD'
         Title.Caption = 'C'#243'd'
         Title.Color = 13225421
-        Title.Font.Charset = ANSI_CHARSET
-        Title.Font.Color = clBlack
-        Title.Font.Height = -13
-        Title.Font.Name = 'Tahoma'
-        Title.Font.Style = [fsBold]
         Width = 38
         Visible = True
       end
@@ -783,11 +758,6 @@ object FormTelaImportarPreVenda: TFormTelaImportarPreVenda
         FieldName = 'DescricaoRed'
         Title.Caption = 'Descri'#231#227'o'
         Title.Color = 13225421
-        Title.Font.Charset = ANSI_CHARSET
-        Title.Font.Color = clBlack
-        Title.Font.Height = -13
-        Title.Font.Name = 'Tahoma'
-        Title.Font.Style = [fsBold]
         Width = 138
         Visible = True
       end
@@ -797,11 +767,6 @@ object FormTelaImportarPreVenda: TFormTelaImportarPreVenda
         FieldName = 'PVITN3QTD'
         Title.Caption = 'Qtde'
         Title.Color = 13225421
-        Title.Font.Charset = ANSI_CHARSET
-        Title.Font.Color = clBlack
-        Title.Font.Height = -13
-        Title.Font.Name = 'Tahoma'
-        Title.Font.Style = [fsBold]
         Width = 72
         Visible = True
       end
@@ -811,11 +776,6 @@ object FormTelaImportarPreVenda: TFormTelaImportarPreVenda
         FieldName = 'PVITN3QTDTROCA'
         Title.Caption = 'Troca'
         Title.Color = 13225421
-        Title.Font.Charset = ANSI_CHARSET
-        Title.Font.Color = clBlack
-        Title.Font.Height = -13
-        Title.Font.Name = 'Tahoma'
-        Title.Font.Style = [fsBold]
         Width = 70
         Visible = True
       end
@@ -824,11 +784,6 @@ object FormTelaImportarPreVenda: TFormTelaImportarPreVenda
         FieldName = 'PVITN3VLRUNIT'
         Title.Caption = 'Vlr.Unit'
         Title.Color = 13225421
-        Title.Font.Charset = ANSI_CHARSET
-        Title.Font.Color = clBlack
-        Title.Font.Height = -13
-        Title.Font.Name = 'Tahoma'
-        Title.Font.Style = [fsBold]
         Width = 48
         Visible = True
       end>

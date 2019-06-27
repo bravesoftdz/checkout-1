@@ -649,6 +649,12 @@ begin
 
   //GRAVAR CABECALHO TICKET
   DM.TblTicketPreVendaCab.Append;
+  DM.TblTicketPreVendaCabEmpresaEmit.Value        := SQLLocate('EMPRESA','EMPRICOD','EMPRA60NOMEFANT',EmpresaPadrao);
+  DM.TblTicketPreVendaCabEmpresaEmit_Fone.Value   := SQLLocate('EMPRESA','EMPRICOD','EMPRA20FONE',EmpresaPadrao);
+  DM.TblTicketPreVendaCabEmpresaEmit_Ender.Value  := SQLLocate('EMPRESA','EMPRICOD','EMPRA60END',EmpresaPadrao)  + ', ' + SQLLocate('EMPRESA','EMPRICOD','EMPRIENDNRO',EmpresaPadrao);
+  DM.TblTicketPreVendaCabEmpresaEmit_Cidade.Value  := SQLLocate('EMPRESA','EMPRICOD','EMPRA60BAI',EmpresaPadrao) + ',' + SQLLocate('EMPRESA','EMPRICOD','EMPRA60CID',EmpresaPadrao);
+
+  DM.TblTicketPreVendaCabTerminal.Value := SQLLocate('TERMINAL','TERMICOD','TERMA60DESCR',SQLTemplateTERMICOD.AsString);
   DM.TblTicketPreVendaCabUsuarioVendaSTR.Value := UsuarioAtualNome;
   DM.TblTicketPreVendaCabDataEmissao.AsString := SQLTemplateCUPODEMIS.AsString;
   DM.TblTicketPreVendaCabTicketNumero.AsString := SQLTemplateCUPOA13ID.AsString;
@@ -728,6 +734,7 @@ begin
     DM.TblTicketPreVendaFinValor.AsVariant := SQLCupomNumerarioCPNMN2VLR.AsVariant;
     DM.TblTicketPreVendaFinNumerario.AsVariant := SQLCupomNumerarioNumerarioLookup.AsVariant;
     DM.TblTicketPreVendaFinVencimento.Value := SQLTemplateCUPODEMIS.Value;
+    DM.TblTicketPreVendaFinTipopadrao.Value := SQLLocate('NUMERARIO','NUMEICOD','NUMEA5TIPO',SQLCupomNumerarioNUMEICOD.AsString);
     DM.TblTicketPreVendaFin.Post;
     SQLCupomNumerario.Next;
   end;
@@ -743,6 +750,7 @@ begin
     DM.TblTicketPreVendaFinValor.AsVariant := SQLContasReceberCTRCN2VLR.AsVariant;
     DM.TblTicketPreVendaFinNumerario.AsVariant := SQLContasReceberNumerarioLookup.AsVariant;
     DM.TblTicketPreVendaFinVencimento.Value := SQLContasReceberCTRCDVENC.Value;
+    DM.TblTicketPreVendaFinTipopadrao.Value := SQLLocate('NUMERARIO','NUMEICOD','NUMEA5TIPO',SQLContasReceberNUMEICOD.AsString);
     DM.TblTicketPreVendaFin.Post;
     SQLContasReceber.Next;
   end;

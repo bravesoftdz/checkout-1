@@ -30,7 +30,6 @@ type
     TblPreVendaItemImpCozinha: TStringField;
     TblPreVendaItemImpVale: TStringField;
     TblPreVendaItemPRODA30COZINHA: TStringField;
-    ACBrPosPrinter: TACBrPosPrinter;
     Memo: TMemo;
     TblPreVendaCabTicketNumero: TStringField;
     TblPreVendaCabDataEmissao: TStringField;
@@ -73,6 +72,7 @@ type
     TblPreVendaCabTaxaTele: TFloatField;
     TblPreVendaCabSequencial: TIntegerField;
     TblPreVendaCabSeq_Dia: TIntegerField;
+    ACBrPosPrinter: TACBrPosPrinter;
     procedure FormCreate(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
   private
@@ -125,13 +125,12 @@ begin
     if ImpMarca = 'ELGIN'      then ACBrPosPrinter.Modelo := ppEscVox;
     if ImpMarca = 'BEMATECH'   then ACBrPosPrinter.Modelo := ppEscBematech;
     if ImpMarca = 'DARUMA'     then ACBrPosPrinter.Modelo := ppEscDaruma;
-    if ImpMarca = 'NFCE DR700' then ACBrPosPrinter.Modelo := ppEscDaruma;
-    if ImpMarca = 'NFCE DR800' then ACBrPosPrinter.Modelo := ppEscDaruma;
+    if ImpMarca = 'DR700' then ACBrPosPrinter.Modelo := ppEscDaruma;
+    if ImpMarca = 'DR800' then ACBrPosPrinter.Modelo := ppEscDaruma;
 
     ACBrPosPrinter.Device.Porta := ImpCaixaPorta;
     ACBrPosPrinter.Device.Baud  := StrToint(ImpCaixaVeloc);
     ACBrPosPrinter.Device.Desativar;
-
 
     memo.Lines.Add(' ');
     memo.Lines.Add(' ');
