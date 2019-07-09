@@ -10,7 +10,16 @@ uses
   JvMemoryDataset, cxStyles, cxCustomData, cxGraphics, cxFilter, cxData,
   cxDataStorage, cxEdit, cxDBData, cxGridCustomTableView, cxGridTableView,
   cxGridDBTableView, cxGridLevel, cxClasses, cxControls, cxGridCustomView,
-  cxGrid;
+  cxGrid,
+  dxSkinsCore, dxSkinBlack, dxSkinBlue, dxSkinCaramel, dxSkinCoffee,
+  dxSkinDarkRoom, dxSkinDarkSide, dxSkinFoggy, dxSkinGlassOceans,
+  dxSkiniMaginary, dxSkinLilian, dxSkinLiquidSky, dxSkinLondonLiquidSky,
+  dxSkinMcSkin, dxSkinMoneyTwins, dxSkinOffice2007Black,
+  dxSkinOffice2007Blue, dxSkinOffice2007Green, dxSkinOffice2007Pink,
+  dxSkinOffice2007Silver, dxSkinPumpkin, dxSkinSeven, dxSkinSharp,
+  dxSkinSilver, dxSkinSpringTime, dxSkinStardust, dxSkinSummer2008,
+  dxSkinsDefaultPainters, dxSkinValentine, dxSkinXmas2008Blue,
+  dxSkinscxPCPainter;
 type
   TFormTelaMovimentoCaixa = class(TForm)
     SQLOperacaoCaixa: TRxQuery;
@@ -1349,6 +1358,32 @@ begin
   //FECHAMENTO DO CAIXA
   if SQLOperacaoCaixaOPCXA5SIGLA.Value = 'FECHA' Then {Fechamento Caixa}
     begin
+      if DM.SQLConfigGeralVERIFICA_CUPOM_PENDENTE.AsString = 'S' then
+      begin
+        DecodeDate(Date,Ano,Mes,Dia);
+        dm.sqlConsulta.Close;
+        dm.sqlConsulta.SQL.Clear;
+        dm.sqlConsulta.SQL.Add('select * from CUPOM CUP ');
+        dm.sqlConsulta.SQL.Add('where CUP.CHAVEACESSO <> '''' and ');
+        dm.sqlConsulta.SQL.Add('coalesce(CUP.STNFE, '''') = '''' and ');
+        dm.sqlConsulta.SQL.Add('CUP.TERMICOD = ' + IntToStr(TerminalAtual) + ' and ');
+        dm.sqlConsulta.SQL.Add('extract(month from CUP.CUPODEMIS) = ''' +  IntToStr(Mes) + ''' and');
+        dm.sqlConsulta.SQL.Add('extract(year from CUP.CUPODEMIS) = ''' + IntToStr(Ano) + '''');
+        addLog('Instrução de busca cupons pendentes: ' + dm.sqlConsulta.sql.text);
+        dm.sqlConsulta.Open;
+        if not (dm.sqlConsulta.IsEmpty) then
+        begin
+          if Pergunta('SIM','Existem cupons pendentes de envio, deseja informar outro usuário! ') then
+            begin
+              RetornoCampoUsuario := AutenticaUsuario(UsuarioAtualNome,'PERMITE_FECHAMENTO_PENDENTE',InfoRetornoUser);
+              if RetornoCampoUsuario <> 'S' then
+                Exit;
+            end
+            else
+             exit;
+        end;
+      end;
+
       if DM.SQLUsuario.FieldByName('USUACPERMREDZ').AsString <> 'S' then
         if Pergunta('SIM','Você não tem permissão para realizar Fechamento de Caixa! Deseja Informar Outro Usuário?') then
           begin

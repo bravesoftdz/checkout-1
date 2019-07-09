@@ -85,6 +85,8 @@ type
     GroupBox6: TGroupBox;
     DBEdit2: TDBEdit;
     SQLConfigGeralDIAS_AVISO: TIntegerField;
+    DBCheckBox7: TDBCheckBox;
+    SQLConfigGeralVERIFICA_CUPOM_PENDENTE: TStringField;
     procedure FormCreate(Sender: TObject);
     procedure BotaoGravarClick(Sender: TObject);
     procedure DSSQLConfigGeralDataChange(Sender: TObject; Field: TField);

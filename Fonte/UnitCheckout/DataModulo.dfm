@@ -1,10 +1,11 @@
 inherited DM: TDM
   OldCreateOrder = True
   Left = 1
-  Top = 1
+  Top = 6
   Height = 726
   Width = 1364
   inherited DB: TDatabase
+    Connected = False
     AfterConnect = DBAfterConnect
     Left = 32
     Top = 8
@@ -1334,6 +1335,12 @@ inherited DM: TDM
     object SQLConfigGeralNAO_OBRIGA_FECHAR_CAIXA: TStringField
       FieldName = 'NAO_OBRIGA_FECHAR_CAIXA'
       ProviderFlags = [pfInUpdate]
+      Size = 1
+    end
+    object SQLConfigGeralVERIFICA_CUPOM_PENDENTE: TStringField
+      FieldName = 'VERIFICA_CUPOM_PENDENTE'
+      Origin = 'DB.CONFIGGERAL.VERIFICA_CUPOM_PENDENTE'
+      FixedChar = True
       Size = 1
     end
   end

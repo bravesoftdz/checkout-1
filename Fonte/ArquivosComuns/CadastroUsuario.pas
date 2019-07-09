@@ -142,6 +142,8 @@ type
     DBCheckBox42: TDBCheckBox;
     DBCheckBox43: TDBCheckBox;
     SQLTemplateUSUACCANCITEMVENDA: TStringField;
+    DBCheckBox44: TDBCheckBox;
+    SQLTemplatePERMITE_FECHAMENTO_PENDENTE: TStringField;
     procedure FormCreate(Sender: TObject);
     procedure SQLTemplateBeforePost(DataSet: TDataSet);
     procedure SQLTemplateNewRecord(DataSet: TDataSet);

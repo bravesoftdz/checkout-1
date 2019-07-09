@@ -229,6 +229,7 @@ type
     SQLTerminalAtivoTERMCMOVESTOQUE: TStringField;
     SQLConfigGeralCFGEDBLOQ: TDateTimeField;
     SQLConfigVendaCFVENIMPFINANC: TStringField;
+    SQLConfigGeralVERIFICA_CUPOM_PENDENTE: TStringField;
     procedure DataModuleCreate(Sender: TObject);
     procedure SQLConfigContaBeforeEdit(DataSet: TDataSet);
     procedure SQLConfigContaNewRecord(DataSet: TDataSet);

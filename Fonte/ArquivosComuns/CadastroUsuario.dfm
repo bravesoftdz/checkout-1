@@ -1,54 +1,54 @@
 inherited FormCadastroUsuario: TFormCadastroUsuario
-  Left = 252
-  Top = 77
+  Left = -8
+  Top = -8
   Caption = 'Cadastro de Usu'#225'rios'
-  ClientHeight = 569
-  ClientWidth = 837
+  ClientHeight = 706
+  ClientWidth = 1366
   OldCreateOrder = True
   PixelsPerInch = 96
   TextHeight = 13
   inherited ScrollBoxFundo: TScrollBox
-    Width = 837
-    Height = 569
+    Width = 1366
+    Height = 706
     inherited PanelCabecalho: TPanel
-      Width = 835
+      Width = 1364
       inherited ScrollBoxPanelCabecalho: TScrollBox
-        Width = 835
+        Width = 1364
         inherited Panel1: TPanel
-          Width = 833
+          Width = 1362
           inherited PanelNavigator: TPanel
-            Width = 833
+            Width = 1362
             inherited AdvPanelNavigator: TAdvOfficeStatusBar
-              Width = 833
+              Width = 1362
             end
           end
           inherited PanelLeft: TPanel
-            Left = 376
+            Left = 905
           end
         end
       end
     end
     inherited PanelCentral: TPanel
-      Width = 835
-      Height = 495
+      Width = 1364
+      Height = 632
       inherited PanelBarra: TPanel
-        Height = 495
+        Height = 632
       end
       inherited PanelFundoDados: TPanel
-        Width = 705
-        Height = 495
+        Width = 1234
+        Height = 632
         inherited Panel5: TPanel
-          Width = 705
-          Height = 495
+          Width = 1234
+          Height = 632
           inherited PagePrincipal: TPageControl
             Top = 138
-            Width = 705
-            Height = 357
+            Width = 1234
+            Height = 494
             ActivePage = TabSheetDadosPrincipais
             inherited TabSheetConsulta: TTabSheet
               inherited DBGridLista: TDBGrid
-                Width = 697
-                Height = 284
+                Width = 1226
+                Height = 421
                 Columns = <
                   item
                     Expanded = False
@@ -63,18 +63,18 @@ inherited FormCadastroUsuario: TFormCadastroUsuario
                   end>
               end
               inherited PanelProcura: TPanel
-                Width = 697
+                Width = 1226
                 inherited PanelBetween: TPanel
-                  Width = 303
+                  Width = 832
                   inherited AdvPanel1: TAdvPanel
-                    Width = 303
+                    Width = 832
                     FullHeight = 0
                   end
                 end
                 inherited PanelEditProcura: TPanel
-                  Width = 303
+                  Width = 832
                   inherited AdvPanelEditProcura: TAdvPanel
-                    Width = 303
+                    Width = 832
                     FullHeight = 0
                   end
                 end
@@ -805,6 +805,24 @@ inherited FormCadastroUsuario: TFormCadastroUsuario
                   ValueChecked = 'S'
                   ValueUnchecked = 'N'
                 end
+                object DBCheckBox44: TDBCheckBox
+                  Left = 6
+                  Top = 281
+                  Width = 300
+                  Height = 17
+                  Caption = 'Permite fechar o caixa com cupom pendente'
+                  DataField = 'PERMITE_FECHAMENTO_PENDENTE'
+                  DataSource = DSTemplate
+                  Font.Charset = DEFAULT_CHARSET
+                  Font.Color = 8404992
+                  Font.Height = -11
+                  Font.Name = 'Tahoma'
+                  Font.Style = [fsBold]
+                  ParentFont = False
+                  TabOrder = 37
+                  ValueChecked = 'S'
+                  ValueUnchecked = 'N'
+                end
               end
               object DBEdit5: TDBEdit
                 Left = 156
@@ -821,11 +839,11 @@ inherited FormCadastroUsuario: TFormCadastroUsuario
           end
           inherited PanelMaster: TPanel
             Top = 119
-            Width = 705
+            Width = 1234
             Height = 19
           end
           inherited PanelCodigoDescricao: TPanel
-            Width = 705
+            Width = 1234
             Height = 119
             object Label1: TLabel
               Left = 10
@@ -1472,6 +1490,12 @@ inherited FormCadastroUsuario: TFormCadastroUsuario
       FixedChar = True
       Size = 1
     end
+    object SQLTemplatePERMITE_FECHAMENTO_PENDENTE: TStringField
+      FieldName = 'PERMITE_FECHAMENTO_PENDENTE'
+      Origin = 'DB.USUARIO.PERMITE_FECHAMENTO_PENDENTE'
+      FixedChar = True
+      Size = 1
+    end
   end
   inherited UpdateSQLTemplate: TUpdateSQL
     ModifySQL.Strings = (
@@ -1519,7 +1543,7 @@ inherited FormCadastroUsuario: TFormCadastroUsuario
     DataPipeline = Pipe
     PrinterSetup.BinName = 'Default'
     PrinterSetup.DocumentName = 'Etiquetas de C'#243'digo de Barras'
-    PrinterSetup.PaperName = 'Carta'
+    PrinterSetup.PaperName = 'Letter'
     PrinterSetup.PrinterName = 'Default'
     PrinterSetup.mmMarginBottom = 7000
     PrinterSetup.mmMarginLeft = 2000

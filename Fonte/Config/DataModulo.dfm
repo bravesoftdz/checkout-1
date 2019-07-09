@@ -272,6 +272,12 @@ inherited DM: TDM
       FieldName = 'CFGEDBLOQ'
       Origin = 'DB.CONFIGGERAL.CFGEDBLOQ'
     end
+    object SQLConfigGeralVERIFICA_CUPOM_PENDENTE: TStringField
+      FieldName = 'VERIFICA_CUPOM_PENDENTE'
+      Origin = 'DB.CONFIGGERAL.VERIFICA_CUPOM_PENDENTE'
+      FixedChar = True
+      Size = 1
+    end
   end
   object SQLUsuarios: TQuery
     DatabaseName = 'DB'

@@ -48,7 +48,7 @@ inherited FormTelaConfiguracaoGeral: TFormTelaConfiguracaoGeral
       end
       object GroupBox4: TGroupBox
         Left = 135
-        Top = 218
+        Top = 235
         Width = 460
         Height = 44
         Caption = ' Localiza'#231#227'o dos arquivos de relat'#243'rios '
@@ -124,7 +124,7 @@ inherited FormTelaConfiguracaoGeral: TFormTelaConfiguracaoGeral
       end
       object GroupBox1: TGroupBox
         Left = 135
-        Top = 263
+        Top = 280
         Width = 460
         Height = 44
         Caption = 'Localiza'#231#227'o do aplicativo para impress'#227'o de duplicatas'
@@ -217,7 +217,7 @@ inherited FormTelaConfiguracaoGeral: TFormTelaConfiguracaoGeral
       end
       object DBRadioGroup1: TDBRadioGroup
         Left = 135
-        Top = 161
+        Top = 178
         Width = 460
         Height = 57
         Caption = 'Margem de lucro X pre'#231'o de venda'
@@ -239,7 +239,7 @@ inherited FormTelaConfiguracaoGeral: TFormTelaConfiguracaoGeral
       end
       object GroupBox2: TGroupBox
         Left = 136
-        Top = 308
+        Top = 325
         Width = 457
         Height = 105
         Caption = 'Opera'#231#227'o de Estoque para Transfer'#234'ncia de Produtos'
@@ -325,7 +325,7 @@ inherited FormTelaConfiguracaoGeral: TFormTelaConfiguracaoGeral
       end
       object GroupBox3: TGroupBox
         Left = 136
-        Top = 418
+        Top = 435
         Width = 193
         Height = 45
         Caption = ' Ultimo Bonus p/Cliente'
@@ -372,7 +372,7 @@ inherited FormTelaConfiguracaoGeral: TFormTelaConfiguracaoGeral
       end
       object GroupBox6: TGroupBox
         Left = 400
-        Top = 418
+        Top = 435
         Width = 193
         Height = 45
         Caption = 'Dias Aviso Bloqueio'
@@ -398,6 +398,24 @@ inherited FormTelaConfiguracaoGeral: TFormTelaConfiguracaoGeral
           ParentFont = False
           TabOrder = 0
         end
+      end
+      object DBCheckBox7: TDBCheckBox
+        Left = 134
+        Top = 155
+        Width = 411
+        Height = 18
+        Caption = 'Verifica cupons pendentes de envio no Fechamento do Caixa'
+        DataField = 'VERIFICA_CUPOM_PENDENTE'
+        DataSource = DSSQLConfigGeral
+        Font.Charset = ANSI_CHARSET
+        Font.Color = 8404992
+        Font.Height = -11
+        Font.Name = 'Tahoma'
+        Font.Style = [fsBold]
+        ParentFont = False
+        TabOrder = 14
+        ValueChecked = 'S'
+        ValueUnchecked = 'N'
       end
     end
     inherited ScrollBoxTopo: TScrollBox
@@ -703,6 +721,12 @@ inherited FormTelaConfiguracaoGeral: TFormTelaConfiguracaoGeral
     object SQLConfigGeralDIAS_AVISO: TIntegerField
       FieldName = 'DIAS_AVISO'
       Origin = 'DB.CONFIGGERAL.DIAS_AVISO'
+    end
+    object SQLConfigGeralVERIFICA_CUPOM_PENDENTE: TStringField
+      FieldName = 'VERIFICA_CUPOM_PENDENTE'
+      Origin = 'DB.CONFIGGERAL.VERIFICA_CUPOM_PENDENTE'
+      FixedChar = True
+      Size = 1
     end
   end
   object DSSQLConfigGeral: TDataSource
