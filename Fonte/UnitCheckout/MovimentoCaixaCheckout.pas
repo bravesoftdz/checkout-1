@@ -114,6 +114,7 @@ type
     sqlFechamentoDEBITO: TFloatField;
     sqlFechamentoCREDITO: TFloatField;
     SQLOperacaoCaixaCTCRICOD: TIntegerField;
+    SQLOperacaoCaixaCODIGO_ADM: TIntegerField;
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure FormDeactivate(Sender: TObject);
     procedure FormCreate(Sender: TObject);
@@ -296,6 +297,7 @@ begin
      dmSiTef.evMostrarMensagemCliente := nil;
      dmSiTef.evMostrarMensagemOperador := nil;
      dmSiTef.evGetMensagemOperador := nil;
+     dmSiTef.CodigoADM:= SQLOperacaoCaixaCODIGO_ADM.Value;
      if dmSiTef.AbrirADM then exit;
      Close;
    end;

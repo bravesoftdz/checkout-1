@@ -63,6 +63,7 @@ type
     fevMostrarMensagemOperador: TevMostrarMensagem;
     fevMostrarInstrucoes: TevMostrarMensagem;
     fevMostrarMensagemCliente: TevMostrarMensagem;
+    fCodigoADM: Integer;
     procedure ConfigurarCliSiTef;
     procedure InicializarSiTEF;
 
@@ -78,6 +79,7 @@ type
     property evMostrarMensagemCliente: TevMostrarMensagem read fevMostrarMensagemCliente write fevMostrarMensagemCliente;
     property evMostrarMensagemOperador: TevMostrarMensagem read fevMostrarMensagemOperador write fevMostrarMensagemOperador;
     property evGetMensagemOperador: TevGetMensagem read fevGetMensagem write fevGetMensagem;
+    property CodigoADM:Integer read fCodigoADM write fCodigoADM;
 
     Function EfetuarPagamentoSiTef(FormaPagamento: Integer; Valor: Double; NumCOO:String): Boolean;
     procedure FecharSiTEF;
@@ -722,6 +724,13 @@ begin
   fExecutandoADM:= True;
   try
     InicializarSiTEF;
+
+    if CodigoADM > 0 then
+    begin
+      if Assigned(ACBrTEFD1.TEFCliSiTef) then
+        ACBrTEFD1.TEFCliSiTef.OperacaoADM := CodigoADM;
+    end;
+
     ACBrTEFD1.ADM(ACBrTEFD1.GPAtual);  
     Result := True;
   finally
