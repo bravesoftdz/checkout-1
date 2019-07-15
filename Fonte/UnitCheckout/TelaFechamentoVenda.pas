@@ -5209,9 +5209,14 @@ begin
         GravouCupom := True;
         Application.ProcessMessages;
       except
-        DM.SQLCupom.Cancel;
-        GravouCupom := False;
-        Application.ProcessMessages;
+        on E : Exception do
+        begin
+          showmessage('Erro: ' + E.Message);
+          DM.SQLCupom.Cancel;
+          GravouCupom := False;
+          Application.ProcessMessages;
+        end;
+
       end;
     end;
 

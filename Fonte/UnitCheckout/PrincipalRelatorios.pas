@@ -195,18 +195,21 @@ type
     PipeCrediarioDetalhado: TppBDEPipeline;
     ppSubReport2: TppSubReport;
     ppChildReport2: TppChildReport;
-    ppTitleBand2: TppTitleBand;
+    TituloCrediarioDetalhado: TppTitleBand;
     ppLabel4: TppLabel;
     ppLabel5: TppLabel;
     ppLabel6: TppLabel;
     ppLabel14: TppLabel;
-    ppDetailBand3: TppDetailBand;
+    DetalheCrediarioDetalhado: TppDetailBand;
     ppDBText9: TppDBText;
     ppDBText10: TppDBText;
     ppDBText11: TppDBText;
-    ppSummaryBand1: TppSummaryBand;
-    ppDBCalc5: TppDBCalc;
+    SumarioCrediarioDetalhado: TppSummaryBand;
+    ppGroup2: TppGroup;
+    ppGroupHeaderBand2: TppGroupHeaderBand;
+    TotalCrediarioDetalhado: TppGroupFooterBand;
     ppLabel16: TppLabel;
+    ppDBCalc5: TppDBCalc;
     procedure FormCreate(Sender: TObject);
     procedure BtnVisualizarClick(Sender: TObject);
     procedure ReportTotaisPreviewFormCreate(Sender: TObject);
@@ -217,6 +220,7 @@ type
     procedure SumarioProdutosVendidosBeforePrint(Sender: TObject);
     procedure DetalheProdutosVendidosBeforePrint(Sender: TObject);
     procedure ReportTotaisPreviewFormClose(Sender: TObject);
+    procedure SumarioVendaCartoesBeforePrint(Sender: TObject);
   private
     { Private declarations }
   public
@@ -588,6 +592,23 @@ end;
 procedure TFormPrincipalRelatorios.ReportTotaisPreviewFormClose(Sender: TObject);
 begin
   Close;
+end;
+
+procedure TFormPrincipalRelatorios.SumarioVendaCartoesBeforePrint(
+  Sender: TObject);
+begin
+  if not chkCrediario.Checked then
+  begin
+    TituloCrediarioDetalhado.Visible := False;
+    DetalheCrediarioDetalhado.Visible := False;
+    TotalCrediarioDetalhado.Visible := False;
+  end
+  else
+  begin
+    TituloProdutosVendidos.Visible := True;
+    DetalheCrediarioDetalhado.Visible := True;
+    TotalCrediarioDetalhado.Visible := True;
+  end;
 end;
 
 end.
