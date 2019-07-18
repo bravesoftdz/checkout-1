@@ -115,6 +115,12 @@ type
     sqlFechamentoCREDITO: TFloatField;
     SQLOperacaoCaixaCTCRICOD: TIntegerField;
     SQLOperacaoCaixaCODIGO_ADM: TIntegerField;
+    PanelMensagem: TPanel;
+    PanelMensagemOperador: TPanel;
+    lblMensagemOperador: TLabel;
+    PanelMensagemCliente: TPanel;
+    lbl1: TLabel;
+    lblMensagemCliente: TLabel;
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure FormDeactivate(Sender: TObject);
     procedure FormCreate(Sender: TObject);
@@ -137,6 +143,11 @@ type
     procedure MostraMsg(Mensagem : string) ;
     procedure GerarTotalizadoresDiarios ;
     function  EstornoRecebimento : boolean ;
+
+    Procedure MostrarInstrucoes(pMsg:String);
+    Procedure MostrarMensagemOperador(pMsg:String);
+    Procedure MostrarMensagemCliente(pMsg:String);
+    Function GetMensagemOperador:String;
   public
   Result : TModalResult;
   NroUltCupom : Integer;
@@ -293,11 +304,12 @@ begin
    end;
    if SQLOperacaoCaixaOPCXA5SIGLA.Value = 'SITEF' then
    begin
-     dmSiTef.evMostrarInstrucoes := nil;
-     dmSiTef.evMostrarMensagemCliente := nil;
-     dmSiTef.evMostrarMensagemOperador := nil;
-     dmSiTef.evGetMensagemOperador := nil;
+     dmSiTef.evMostrarInstrucoes := MostrarInstrucoes;
+     dmSiTef.evMostrarMensagemCliente := MostrarMensagemCliente;
+     dmSiTef.evMostrarMensagemOperador := MostrarMensagemOperador;
+     dmSiTef.evGetMensagemOperador := GetMensagemOperador;
      dmSiTef.CodigoADM:= SQLOperacaoCaixaCODIGO_ADM.Value;
+
      if dmSiTef.AbrirADM then exit;
      Close;
    end;
@@ -1831,6 +1843,38 @@ procedure TFormTelaMovimentoCaixa.SQLOperacaoCaixaOPCXICODChange(
   Sender: TField);
 begin
   HabilitaFechamento;
+end;
+
+function TFormTelaMovimentoCaixa.GetMensagemOperador: String;
+begin
+  if panelMensagemOperador.Visible then
+    Result := lblMensagemOperador.Caption
+  else
+    Result := '';
+end;
+
+procedure TFormTelaMovimentoCaixa.MostrarInstrucoes(pMsg: String);
+begin
+  panelMensagemOperador.Visible := pMsg <> '';
+  lblMensagemOperador.Caption := pMsg;
+  panelMensagem.Visible := panelMensagemOperador.Visible or panelMensagemCliente.Visible;
+  Application.ProcessMessages;
+end;
+
+procedure TFormTelaMovimentoCaixa.MostrarMensagemCliente(pMsg: String);
+begin
+  panelMensagemCliente.Visible := pMsg <> '';
+  lblMensagemCliente.Caption := pMsg;
+  panelMensagem.Visible := panelMensagemOperador.Visible or panelMensagemCliente.Visible;
+  Application.ProcessMessages;
+end;
+
+procedure TFormTelaMovimentoCaixa.MostrarMensagemOperador(pMsg: String);
+begin
+  panelMensagemOperador.Visible := pMsg <> '';
+  lblMensagemOperador.Caption := pMsg;
+  panelMensagem.Visible := panelMensagemOperador.Visible or panelMensagemCliente.Visible;
+  Application.ProcessMessages;
 end;
 
 end.
