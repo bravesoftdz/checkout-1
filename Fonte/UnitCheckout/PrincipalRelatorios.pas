@@ -263,10 +263,10 @@ var
   x, y: string;
   espaco: Integer;
 begin
-  if ECFAtual = 'NFCE BEMATECH' then
-    espaco := 24
-  else
-    espaco := 20;
+//  if ECFAtual = 'NFCE BEMATECH' then
+//    espaco := 20
+//  else
+  espaco := 20;
   SQLTotaNumerario.Close;
   SQLTotaNumerario.MacrobyName('MEmpresa').Value := 'EMPRICOD  = ' + EmpresaPadrao;
   SQLTotaNumerario.MacroByName('MTerminal').Value := '0=0';
