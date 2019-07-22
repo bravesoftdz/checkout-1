@@ -188,7 +188,7 @@ procedure TdmSiTef.InicializarSiTEF;
 begin
   if fSiTEFIniciado then exit;
 
-  ACBrTEFD1.Inicializar( ACBrTEFD1.GPAtual ); 
+  ACBrTEFD1.Inicializar( ACBrTEFD1.GPAtual );
   fSiTEFIniciado:= True;
 end;
 
