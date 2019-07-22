@@ -11,7 +11,7 @@ uses
   Menus, ESkinPlus, AdvGlowButton, AdvOfficeStatusBar, AdvOfficeStatusBarStylers,
   AdvSmoothPanel, AdvReflectionLabel, AdvSmoothSlideShow, ComCtrls, TFlatPanelUnit,
   OleCtrls, SHDocVw, ACBrBAL, XMLIntf, XMLDoc, zlib, ACBrNFe, ACBrMail, ACBrBase, ACBrPosPrinter,
-  pcnConversao, ACBrUtil, ACBrDevice, RXClock, cxStyles, dxSkinsCore, pcnConversaoNFe;
+  pcnConversao, ACBrUtil, ACBrDevice, RXClock, cxStyles, dxSkinsCore, pcnConversaoNFe, ACBrDFeUtil;
 
 const
   //AS VARIAVEIS ABAIXO FORAM CRIADAS PARA NÃO CORRER O RISCO DE DIGITAR ERRADO
@@ -573,7 +573,8 @@ begin
   with dm.ACBrNFe.NotasFiscais.Add.NFe do
   begin
 
-    Ide.cNF := NumNFe; //Caso não seja preenchido será gerado um número aleatório pelo componente
+//    Ide.cNF := NumNFe; //Caso não seja preenchido será gerado um número aleatório pelo componente
+    Ide.cNF := GerarCodigoDFe(NumNFe);
     Ide.natOp := 'VENDA CONSUMIDOR';
     Ide.modelo := 65;
     Ide.serie := dm.SQLTerminalAtivoTERMICOD.Value;

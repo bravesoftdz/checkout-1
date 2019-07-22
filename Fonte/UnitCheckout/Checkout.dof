@@ -90,7 +90,7 @@ MaxStackSize=1048576
 ImageBase=4194304
 ExeDescription=
 [Directories]
-OutputDir=D:\Easy2Solutions
+OutputDir=C:\Easy2Solutions\Gestao
 UnitOutputDir=
 PackageDLLOutputDir=
 PackageDCPOutputDir=
@@ -135,20 +135,23 @@ ProductName=Advanced Control Cash
 ProductVersion=3.0.0.0
 Comments=Sistema de Gestão Empresarial
 [Excluded Packages]
-c:\program files (x86)\borland\delphi7\Projects\Bpl\xtradev7.bpl=Extra ReportBuilder Devices
 c:\program files (x86)\borland\delphi7\Bin\dcltee70.bpl=TeeChart Components
-c:\program files (x86)\borland\delphi7\Bin\dcldss70.bpl=Borland Decision Cube Components
-C:\Program Files (x86)\Borland\Delphi7\Projects\Bpl\JvGlobusD7D.bpl=JVCL Globus Components
-C:\Program Files (x86)\Borland\Delphi7\Projects\Bpl\JvInterpreterD7D.bpl=JVCL Interpreter Components
-C:\Program Files (x86)\Steema Software\TeeChart 6.01 for Delphi 7\Delphi7\Bin\DCLTQR67.bpl=TeeChart 6 for QuickReport
-C:\Program Files (x86)\Developer Express Inc\Library\Delphi7\dclcxWebTeeChartD7.bpl=ExpressWebTeeChart for EWF by Developer Express Inc.
+C:\Program Files (x86)\Borland\Delphi7\RBuilder\Lib\dclRBC107.bpl=ReportBuilder TeeChart 4.04 Components
+C:\Program Files (x86)\Developer Express Inc\Library\Delphi7\dclcxWebTeeChartD7.bpl=WebTeeChart for EWF by Developer Express Inc.
 C:\Program Files (x86)\Developer Express Inc\Library\Delphi7\dxPSTeeChartD7.bpl=ExpressPrinting System ReportLink for TeeChart by Developer Express Inc.
 C:\Program Files (x86)\Developer Express Inc\Library\Delphi7\dxPSDBTeeChartD7.bpl=ExpressPrinting System ReportLink for DBTeeChart by Developer Express Inc.
+c:\program files (x86)\borland\delphi7\Bin\dcldss70.bpl=Borland Decision Cube Components
+c:\program files (x86)\borland\delphi7\Bin\dclindy70.bpl=Internet Direct (Indy) for D7 Property and Component Editors
 C:\Program Files (x86)\Developer Express Inc\Library\Delphi7\dcldxPScxScheduler3LnkD7.bpl=ExpressPrinting System ReportLink for ExpressScheduler 3 by Developer Express Inc.
-C:\Program Files (x86)\Borland\Delphi7\RBuilder\Lib\dclRBC107.bpl=ReportBuilder TeeChart 6 Components
+C:\Program Files (x86)\Borland\Delphi7\Projects\Bpl\JvGlobusD7D.bpl=JVCL Globus Components
+C:\Program Files (x86)\Borland\Delphi7\Projects\Bpl\JvInterpreterD7D.bpl=JVCL Interpreter Components
+C:\Acbr\Lib\Delphi\LibD7\ACBr_NFCeECFVirtual.bpl=ACBr - Implementação ECF Virtual NFCe. Permite usar ACBrECF para emitir NFCe como se fosse um ECF
+C:\Acbr\Lib\Delphi\LibD7\ACBr_NFSe.bpl=ACBr - Nota Fiscal de Serviço Eletrônica - (http://www.projetoacbr.com.br/)
+C:\Acbr\Lib\Delphi\LibD7\ACBr_NFSeDanfseRL.bpl=ACBr - DANFSe em FortesReport - (http://www.projetoacbr.com.br/)
 [HistoryLists\hlUnitAliases]
 Count=1
 Item0=WinTypes=Windows;WinProcs=Windows;DbiTypes=BDE;DbiProcs=BDE;DbiErrs=BDE;
 [HistoryLists\hlOutputDirectorry]
-Count=1
-Item0=D:\Easy2Solutions
+Count=2
+Item0=C:\Easy2Solutions\Gestao
+Item1=D:\Easy2Solutions
