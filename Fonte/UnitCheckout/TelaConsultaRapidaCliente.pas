@@ -88,7 +88,22 @@ begin
             DBGridLista.Setfocus;
             exit;
           end;
-          if (Length(Valor.Text) = 13 ) and (IsNumeric(Valor.Text,'FLOAT')) then
+          if SQLCliente.IsEmpty then
+          begin
+            if (Length(Valor.Text) > 0) and (IsNumeric(Valor.Text,'FLOAT')) then
+            begin
+              SQLCliente.Close ;
+              SQLCliente.SQL.Clear ;
+              SQLCliente.SQL.Add('select * from CLIENTE') ;
+              SQLCliente.SQL.Add('where CLIECATIVO="S" and ') ;
+              SQLCliente.SQL.Add('CLIEA35NROCARTCRED = "' + Valor.text + '"') ;
+              SQLCliente.Open ;
+              if not SQLCliente.EOF then
+                DBGridLista.Setfocus ;
+            end;
+          end;
+
+          if (Length(Valor.Text) = 13 ) and (IsNumeric(Valor.Text,'FLOAT')) and (SQLCliente.IsEmpty) then
             begin
               SQLCliente.Close ;
               SQLCliente.SQL.Clear ;
@@ -102,6 +117,7 @@ begin
                 DBGridLista.Setfocus ;
             end
           else
+            if (SQLCliente.IsEmpty) then
             begin
               SQLCliente.Close ;
               SQLCliente.SQL.Clear ;

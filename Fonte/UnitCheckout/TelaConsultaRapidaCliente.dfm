@@ -122,11 +122,6 @@ object FormTelaConsultaRapidaCliente: TFormTelaConsultaRapidaCliente
         Font.Style = [fsBold]
         Title.Caption = 'ID Cliente'
         Title.Color = 13225421
-        Title.Font.Charset = ANSI_CHARSET
-        Title.Font.Color = clBlack
-        Title.Font.Height = -11
-        Title.Font.Name = 'Tahoma'
-        Title.Font.Style = [fsBold]
         Width = 98
         Visible = True
       end
@@ -140,11 +135,6 @@ object FormTelaConsultaRapidaCliente: TFormTelaConsultaRapidaCliente
         Font.Style = [fsBold]
         Title.Caption = 'Nome'
         Title.Color = 13225421
-        Title.Font.Charset = ANSI_CHARSET
-        Title.Font.Color = clBlack
-        Title.Font.Height = -11
-        Title.Font.Name = 'Tahoma'
-        Title.Font.Style = [fsBold]
         Width = 230
         Visible = True
       end
@@ -157,11 +147,6 @@ object FormTelaConsultaRapidaCliente: TFormTelaConsultaRapidaCliente
         Font.Name = 'Tahoma'
         Font.Style = [fsBold]
         Title.Color = 13225421
-        Title.Font.Charset = ANSI_CHARSET
-        Title.Font.Color = clBlack
-        Title.Font.Height = -11
-        Title.Font.Name = 'Tahoma'
-        Title.Font.Style = [fsBold]
         Width = 89
         Visible = True
       end
@@ -174,11 +159,6 @@ object FormTelaConsultaRapidaCliente: TFormTelaConsultaRapidaCliente
         Font.Name = 'Tahoma'
         Font.Style = [fsBold]
         Title.Color = 13225421
-        Title.Font.Charset = ANSI_CHARSET
-        Title.Font.Color = clBlack
-        Title.Font.Height = -11
-        Title.Font.Name = 'Tahoma'
-        Title.Font.Style = [fsBold]
         Width = 75
         Visible = True
       end
@@ -193,11 +173,6 @@ object FormTelaConsultaRapidaCliente: TFormTelaConsultaRapidaCliente
         Font.Style = [fsBold]
         Title.Alignment = taCenter
         Title.Color = 13225421
-        Title.Font.Charset = ANSI_CHARSET
-        Title.Font.Color = clBlack
-        Title.Font.Height = -11
-        Title.Font.Name = 'Tahoma'
-        Title.Font.Style = [fsBold]
         Width = 56
         Visible = True
       end
@@ -212,11 +187,6 @@ object FormTelaConsultaRapidaCliente: TFormTelaConsultaRapidaCliente
         Font.Style = [fsBold]
         Title.Alignment = taCenter
         Title.Color = 13225421
-        Title.Font.Charset = ANSI_CHARSET
-        Title.Font.Color = clBlack
-        Title.Font.Height = -11
-        Title.Font.Name = 'Tahoma'
-        Title.Font.Style = [fsBold]
         Width = 55
         Visible = True
       end
@@ -231,11 +201,6 @@ object FormTelaConsultaRapidaCliente: TFormTelaConsultaRapidaCliente
         Font.Style = [fsBold]
         Title.Alignment = taCenter
         Title.Color = 13225421
-        Title.Font.Charset = ANSI_CHARSET
-        Title.Font.Color = clBlack
-        Title.Font.Height = -11
-        Title.Font.Name = 'Tahoma'
-        Title.Font.Style = [fsBold]
         Width = 43
         Visible = True
       end>
@@ -271,11 +236,6 @@ object FormTelaConsultaRapidaCliente: TFormTelaConsultaRapidaCliente
         Expanded = False
         FieldName = 'CLDPA60NOME'
         Title.Color = 13225421
-        Title.Font.Charset = ANSI_CHARSET
-        Title.Font.Color = clBlack
-        Title.Font.Height = -11
-        Title.Font.Name = 'Tahoma'
-        Title.Font.Style = [fsBold]
         Width = 433
         Visible = True
       end
@@ -283,11 +243,6 @@ object FormTelaConsultaRapidaCliente: TFormTelaConsultaRapidaCliente
         Expanded = False
         FieldName = 'CLDPA15PARENTESCO'
         Title.Color = 13225421
-        Title.Font.Charset = ANSI_CHARSET
-        Title.Font.Color = clBlack
-        Title.Font.Height = -11
-        Title.Font.Name = 'Tahoma'
-        Title.Font.Style = [fsBold]
         Width = 125
         Visible = True
       end
@@ -295,11 +250,6 @@ object FormTelaConsultaRapidaCliente: TFormTelaConsultaRapidaCliente
         Expanded = False
         FieldName = 'AutorizadoCalcField'
         Title.Color = 13225421
-        Title.Font.Charset = ANSI_CHARSET
-        Title.Font.Color = clBlack
-        Title.Font.Height = -11
-        Title.Font.Name = 'Tahoma'
-        Title.Font.Style = [fsBold]
         Visible = True
       end>
   end
