@@ -1,6 +1,6 @@
 inherited FormTelaConfiguracaoGeral: TFormTelaConfiguracaoGeral
-  Left = -8
-  Top = -8
+  Left = -5
+  Top = 56
   Width = 1382
   Height = 744
   Caption = 'Configura'#231#245'es Gerais'
@@ -48,7 +48,7 @@ inherited FormTelaConfiguracaoGeral: TFormTelaConfiguracaoGeral
       end
       object GroupBox4: TGroupBox
         Left = 135
-        Top = 235
+        Top = 252
         Width = 460
         Height = 44
         Caption = ' Localiza'#231#227'o dos arquivos de relat'#243'rios '
@@ -58,7 +58,7 @@ inherited FormTelaConfiguracaoGeral: TFormTelaConfiguracaoGeral
         Font.Name = 'Tahoma'
         Font.Style = [fsBold]
         ParentFont = False
-        TabOrder = 2
+        TabOrder = 11
         object DBEdit11: TDBEdit
           Left = 3
           Top = 16
@@ -100,7 +100,7 @@ inherited FormTelaConfiguracaoGeral: TFormTelaConfiguracaoGeral
         Font.Name = 'Tahoma'
         Font.Style = [fsBold]
         ParentFont = False
-        TabOrder = 3
+        TabOrder = 2
         ValueChecked = 'S'
         ValueUnchecked = 'N'
       end
@@ -118,13 +118,13 @@ inherited FormTelaConfiguracaoGeral: TFormTelaConfiguracaoGeral
         Font.Name = 'Tahoma'
         Font.Style = [fsBold]
         ParentFont = False
-        TabOrder = 4
+        TabOrder = 3
         ValueChecked = 'S'
         ValueUnchecked = 'N'
       end
       object GroupBox1: TGroupBox
         Left = 135
-        Top = 280
+        Top = 297
         Width = 460
         Height = 44
         Caption = 'Localiza'#231#227'o do aplicativo para impress'#227'o de duplicatas'
@@ -134,7 +134,7 @@ inherited FormTelaConfiguracaoGeral: TFormTelaConfiguracaoGeral
         Font.Name = 'Tahoma'
         Font.Style = [fsBold]
         ParentFont = False
-        TabOrder = 5
+        TabOrder = 12
         object ButtonDialog: TSpeedButton
           Left = 435
           Top = 16
@@ -173,7 +173,7 @@ inherited FormTelaConfiguracaoGeral: TFormTelaConfiguracaoGeral
         Font.Name = 'Tahoma'
         Font.Style = [fsBold]
         ParentFont = False
-        TabOrder = 6
+        TabOrder = 4
         ValueChecked = 'S'
         ValueUnchecked = 'N'
       end
@@ -193,7 +193,7 @@ inherited FormTelaConfiguracaoGeral: TFormTelaConfiguracaoGeral
         Font.Name = 'Tahoma'
         Font.Style = [fsBold]
         ParentFont = False
-        TabOrder = 7
+        TabOrder = 6
         ValueChecked = 'N'
         ValueUnchecked = 'S'
       end
@@ -211,13 +211,13 @@ inherited FormTelaConfiguracaoGeral: TFormTelaConfiguracaoGeral
         Font.Name = 'Tahoma'
         Font.Style = [fsBold]
         ParentFont = False
-        TabOrder = 9
+        TabOrder = 5
         ValueChecked = 'S'
         ValueUnchecked = 'N'
       end
       object DBRadioGroup1: TDBRadioGroup
         Left = 135
-        Top = 178
+        Top = 195
         Width = 460
         Height = 57
         Caption = 'Margem de lucro X pre'#231'o de venda'
@@ -239,7 +239,7 @@ inherited FormTelaConfiguracaoGeral: TFormTelaConfiguracaoGeral
       end
       object GroupBox2: TGroupBox
         Left = 136
-        Top = 325
+        Top = 342
         Width = 457
         Height = 105
         Caption = 'Opera'#231#227'o de Estoque para Transfer'#234'ncia de Produtos'
@@ -249,7 +249,7 @@ inherited FormTelaConfiguracaoGeral: TFormTelaConfiguracaoGeral
         Font.Name = 'Tahoma'
         Font.Style = [fsBold]
         ParentFont = False
-        TabOrder = 11
+        TabOrder = 13
         object Label11: TLabel
           Left = 9
           Top = 20
@@ -325,7 +325,7 @@ inherited FormTelaConfiguracaoGeral: TFormTelaConfiguracaoGeral
       end
       object GroupBox3: TGroupBox
         Left = 136
-        Top = 435
+        Top = 452
         Width = 193
         Height = 45
         Caption = ' Ultimo Bonus p/Cliente'
@@ -335,7 +335,7 @@ inherited FormTelaConfiguracaoGeral: TFormTelaConfiguracaoGeral
         Font.Name = 'Tahoma'
         Font.Style = [fsBold]
         ParentFont = False
-        TabOrder = 12
+        TabOrder = 14
         object DBEdit7: TDBEdit
           Left = 11
           Top = 17
@@ -366,13 +366,13 @@ inherited FormTelaConfiguracaoGeral: TFormTelaConfiguracaoGeral
         Font.Name = 'Tahoma'
         Font.Style = [fsBold]
         ParentFont = False
-        TabOrder = 8
+        TabOrder = 7
         ValueChecked = 'N'
         ValueUnchecked = 'S'
       end
       object GroupBox6: TGroupBox
         Left = 400
-        Top = 435
+        Top = 452
         Width = 193
         Height = 45
         Caption = 'Dias Aviso Bloqueio'
@@ -382,7 +382,7 @@ inherited FormTelaConfiguracaoGeral: TFormTelaConfiguracaoGeral
         Font.Name = 'Tahoma'
         Font.Style = [fsBold]
         ParentFont = False
-        TabOrder = 13
+        TabOrder = 15
         object DBEdit2: TDBEdit
           Left = 11
           Top = 17
@@ -413,7 +413,25 @@ inherited FormTelaConfiguracaoGeral: TFormTelaConfiguracaoGeral
         Font.Name = 'Tahoma'
         Font.Style = [fsBold]
         ParentFont = False
-        TabOrder = 14
+        TabOrder = 8
+        ValueChecked = 'S'
+        ValueUnchecked = 'N'
+      end
+      object DBCheckBox8: TDBCheckBox
+        Left = 134
+        Top = 173
+        Width = 187
+        Height = 18
+        Caption = 'Utiliza o Credi'#225'rio OnLine'
+        DataField = 'UTILIZA_CREDIARIO_ONLINE'
+        DataSource = DSSQLConfigGeral
+        Font.Charset = ANSI_CHARSET
+        Font.Color = 8404992
+        Font.Height = -11
+        Font.Name = 'Tahoma'
+        Font.Style = [fsBold]
+        ParentFont = False
+        TabOrder = 9
         ValueChecked = 'S'
         ValueUnchecked = 'N'
       end
@@ -725,6 +743,18 @@ inherited FormTelaConfiguracaoGeral: TFormTelaConfiguracaoGeral
     object SQLConfigGeralVERIFICA_CUPOM_PENDENTE: TStringField
       FieldName = 'VERIFICA_CUPOM_PENDENTE'
       Origin = 'DB.CONFIGGERAL.VERIFICA_CUPOM_PENDENTE'
+      FixedChar = True
+      Size = 1
+    end
+    object SQLConfigGeralNAO_OBRIGA_FECHAR_CAIXA: TStringField
+      FieldName = 'NAO_OBRIGA_FECHAR_CAIXA'
+      Origin = 'DB.CONFIGGERAL.NAO_OBRIGA_FECHAR_CAIXA'
+      FixedChar = True
+      Size = 1
+    end
+    object SQLConfigGeralUTILIZA_CREDIARIO_ONLINE: TStringField
+      FieldName = 'UTILIZA_CREDIARIO_ONLINE'
+      Origin = 'DB.CONFIGGERAL.UTILIZA_CREDIARIO_ONLINE'
       FixedChar = True
       Size = 1
     end

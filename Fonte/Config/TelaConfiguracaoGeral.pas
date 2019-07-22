@@ -87,6 +87,9 @@ type
     SQLConfigGeralDIAS_AVISO: TIntegerField;
     DBCheckBox7: TDBCheckBox;
     SQLConfigGeralVERIFICA_CUPOM_PENDENTE: TStringField;
+    DBCheckBox8: TDBCheckBox;
+    SQLConfigGeralNAO_OBRIGA_FECHAR_CAIXA: TStringField;
+    SQLConfigGeralUTILIZA_CREDIARIO_ONLINE: TStringField;
     procedure FormCreate(Sender: TObject);
     procedure BotaoGravarClick(Sender: TObject);
     procedure DSSQLConfigGeralDataChange(Sender: TObject; Field: TField);
