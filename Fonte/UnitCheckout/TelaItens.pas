@@ -1302,6 +1302,7 @@ var
   Servidor_HostName := IniFile.ReadString('SERVIDOR', 'HostName', '');
   Servidor_Database := IniFile.ReadString('SERVIDOR', 'Database', '');
   Obs_Venda := IniFile.ReadString('IB_SOFTWARE', 'Obs_Venda', '');
+  CrediarioOnLine := IniFile.ReadString('IB_SOFTWARE', 'Crediario_Online', '');
   IniFile.Free;
 
   TabelaMaisTerminal := 'ItensVendaTemp_' + FormatFloat('###000', TerminalAtual);

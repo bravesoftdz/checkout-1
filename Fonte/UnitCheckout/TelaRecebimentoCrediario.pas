@@ -376,6 +376,7 @@ type
     FinalizandoRecto : boolean;
     TotalTroco : Double;
     v_Abatimento_Original: Extended;
+    AliasName : String;
     function fCompoemValor(AJuros, AMulta, AValorPago: Extended): Extended;
     function fCompoemValorJuros(AJuros, AMulta, AValorPago: Extended): Extended;
     function fCompoemValorMulta(AMulta, AValorPago: Extended): Extended;
@@ -384,6 +385,8 @@ type
     function VerificaCartaoCredito : Boolean;
     Procedure RDPrintAutentica ;
     Procedure GravarRenegociacao(id : String);
+    procedure ConectaOnLine;
+    procedure DisconectaOnline;
   public
     { Public declarations }
     NumerarioCod,
@@ -2663,6 +2666,12 @@ end ;
 
 procedure TFormTelaRecebimentoCrediario.FormShow(Sender: TObject);
 begin
+  if CrediarioOnline = 'S' then
+  begin
+    AliasName := DM.DB.AliasName;
+    ConectaOnLine;
+  end;
+
   LblNUMERARIO.Caption := '' ;
 
   DM.SQLTemplate.Close ;
@@ -3147,6 +3156,8 @@ end;
 procedure TFormTelaRecebimentoCrediario.FormClose(Sender: TObject;
   var Action: TCloseAction);
 begin
+  if CrediarioOnLine = 'S' then
+    DisconectaOnline;
   dm.ACBrPosPrinter.Device.Desativar;
   Action := CaFree;
 end;
@@ -3268,6 +3279,45 @@ begin
     SQLRenegociacaoCTRCA4ANOCOMP.Value := SQLPesquisa.FieldByName('CTRCA4ANOCOMP').Value;
   SQLRenegociacaoCTRCA254HIST.Value := 'Renegociacao: ' + SQLPesquisa.FieldByName('CTRCA13ID').Value;
   SQLRenegociacao.Post;
+end;
+
+procedure TFormTelaRecebimentoCrediario.ConectaOnLine;
+begin
+  DM.DB.Connected := False;
+  DM.DB.AliasName := DM.DB.AliasName + 'ONLINE';
+  try
+    DM.DB.Connected := True;
+    dm.SQLConfigGeral.Close;
+    dm.SQLConfigGeral.Open;
+    dm.SQLConfigVenda.Close;
+    dm.SQLConfigVenda.Open;
+  except
+    on e: Exception do
+    begin
+     Showmessage('Erro ao acessar o servidor: ' + e.Message);
+     DM.DB.Connected := False;
+     DM.DB.AliasName := AliasName;
+     DM.DB.Connected := True;
+    end;
+  end;
+end;
+
+procedure TFormTelaRecebimentoCrediario.DisconectaOnline;
+begin
+  DM.DB.Connected := False;
+  DM.DB.AliasName := AliasName;
+  try
+    DM.DB.Connected := True;
+    dm.SQLConfigGeral.Close;
+    dm.SQLConfigGeral.Open;
+    dm.SQLConfigVenda.Close;
+    dm.SQLConfigVenda.Open;
+  except
+    on e: Exception do
+    begin
+     Showmessage('Erro ao acessar a base local: ' + e.Message);
+    end;
+  end;
 end;
 
 end.
