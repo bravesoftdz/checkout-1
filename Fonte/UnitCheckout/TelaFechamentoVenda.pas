@@ -631,7 +631,8 @@ begin
               FormTelaConsultaRapidaCliente.ShowModal ;
               EntradaDados.text := ClienteVenda ;
             end ;
-          if (Length(EntradaDados.Text) > 0) and (Length(EntradaDados.Text) < 11) then
+
+          if (Length(EntradaDados.Text) > 0) and IsNumeric(EntradaDados.Text, 'FLOAT') then
             begin
               DM.SQLTemplate.Close ;
               DM.SQLTemplate.SQL.Clear ;
@@ -640,7 +641,7 @@ begin
               DM.SQLTemplate.SQL.Add('CLIEA35NROCARTCRED = "' + EntradaDados.text + '"') ;
               DM.SQLTemplate.Open ;
             end;
-          if Length(EntradaDados.Text) = 11 then
+          if (Length(EntradaDados.Text) = 11) and (DM.SQLTemplate.IsEmpty) then
             begin
               DM.SQLTemplate.Close ;
               DM.SQLTemplate.SQL.Clear ;
@@ -649,7 +650,7 @@ begin
               DM.SQLTemplate.SQL.Add('CLIEA11CPF = "' + EntradaDados.text + '"') ;
               DM.SQLTemplate.Open ;
             end;
-          if Length(EntradaDados.Text) = 12 then
+          if (Length(EntradaDados.Text) = 12) and (DM.SQLTemplate.IsEmpty) then
             begin
               DM.SQLTemplate.Close ;
               DM.SQLTemplate.SQL.Clear ;
@@ -658,7 +659,7 @@ begin
               DM.SQLTemplate.SQL.Add('CLIEA13ID = "0' + EntradaDados.text + '"') ;
               DM.SQLTemplate.Open ;
             end ;
-          if Length(EntradaDados.Text) = 13 then
+          if (Length(EntradaDados.Text) = 13) and (DM.SQLTemplate.IsEmpty) then
             begin
               DM.SQLTemplate.Close ;
               DM.SQLTemplate.SQL.Clear ;
@@ -667,7 +668,7 @@ begin
               DM.SQLTemplate.SQL.Add('CLIEA13ID = "' + EntradaDados.text + '"') ;
               DM.SQLTemplate.Open ;
             end ;
-          if Length(EntradaDados.Text) = 14 then
+          if (Length(EntradaDados.Text) = 14) and (DM.SQLTemplate.IsEmpty) then
             begin
               DM.SQLTemplate.Close ;
               DM.SQLTemplate.SQL.Clear ;
