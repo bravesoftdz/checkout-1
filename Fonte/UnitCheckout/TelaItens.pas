@@ -292,6 +292,7 @@ type
     SQLItensDescTempQUANTIDADE: TFloatField;
     SQLItensDescTempVALOR: TFloatField;
     SQLItensDescTempCALCULAR_DESC: TStringField;
+    SQLProdutoPRODVASILHAME: TStringField;
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure FormCreate(Sender: TObject);
     procedure EntradaDadosKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
@@ -344,7 +345,7 @@ type
     FormatStrQuant, FormatStrVlrVenda,
       InfDesc,
       Tributo, sXML: string;
-    VerCaixa, TemProdutoSemSubsTrib, TemProdutoComSubsTrib, AplicarDescontoItem: boolean;
+    VerCaixa, TemProdutoSemSubsTrib, TemProdutoComSubsTrib, AplicarDescontoItem, TemProdutoVasilhame: boolean;
     Tecla: Word;
 
     Peso: Double;
@@ -410,6 +411,8 @@ type
     procedure StatusServicoNFE;
     function Transmite_NFCe(idCupom: string): Boolean;
     procedure ImprimirConfissaoDeDivida(pTotalPrazo:Double; nomeCliente:String);
+    procedure CalcularVasilhame(CodigoBarra : string);
+
   end;
 
 var
@@ -440,7 +443,7 @@ uses DataModulo, UnitLibrary, TelaTipoDescontoItem, TelaConsultaRapidaItem,
   pcnNFe, ACBrDFeConfiguracoes, pcnAuxiliar, ACBrDFeSSL, pcnNFeRTXT,
   ACBrNFeNotasFiscais, TelaDadosCliente, TelaImpressaoPreVenda,
   ACBrNFeWebServices, ACBrDFeWebService, TelaProdutoDimensao, udmECF,
-  udmSiTef;
+  udmSiTef, TelaVasilhame;
 
 {$R *.DFM}
 
@@ -2786,7 +2789,8 @@ begin
           TemProdutoComSubsTrib := True
         else
           TemProdutoSemSubsTrib := True;
-
+        if SQLProdutoPRODVASILHAME.AsString = 'S' then
+          TemProdutoVasilhame := True;
         CodigoProduto := '';
         CodigoBarrasProduto := '';
         NroSerieProduto := '';
@@ -3163,6 +3167,11 @@ begin
           except
             Application.ProcessMessages;
           end;
+        end;
+        if TemProdutoVasilhame then
+        begin
+          Application.CreateForm(TFormTelaVasilhame, FormTelaVasilhame);
+          FormTelaVasilhame.ShowModal;
         end;
 
         Application.CreateForm(TFormTelaFechamentoVenda, FormTelaFechamentoVenda);
@@ -6684,6 +6693,7 @@ begin
   E_Orcamento := false;
   TemProdutoSemSubsTrib := False;
   TemProdutoComSubsTrib := False;
+  TemProdutoVasilhame := False;
   CodigoAntigoCupom := '';
   SaldoEstoqueAtual := 0;
   ItemCancelado := 0;
@@ -7128,6 +7138,73 @@ begin
       end;
     end;
   end;
+end;
+
+procedure TFormTelaItens.CalcularVasilhame(CodigoBarra : string);
+var
+  vQtde, vQtdeRestante,vCodigoProduto : Integer;
+  vValorVasilhame, vValorAcrescimo : Real;
+begin
+  //buscar valores do ticket do produtovasilhame
+  vValorVasilhame := 0;
+  DM.sqlConsulta.Close;
+  DM.sqlConsulta.SQL.Clear;
+  DM.sqlConsulta.SQL.Add('Select * from PRODUTOVASILHAME where CODIGO = ''' + CodigoBarra + '''');
+  DM.sqlConsulta.Open;
+  if DM.sqlConsulta.IsEmpty then
+    exit;
+  if dm.sqlConsulta.FieldByName('DATA_UTILIZACAO').AsDateTime > 0 then
+  begin
+    Informa('Ticket já utilizado em:' + #13 + FormatDateTime('mm/dd/yyyy', dm.sqlConsulta.FieldByName('DATA_UTILIZACAO').AsDateTime));
+    Exit;
+  end;
+
+  if dm.sqlConsulta.FieldByName('QUANTIDADE').AsInteger > 0 then
+    vQtdeRestante := dm.sqlConsulta.FieldByName('QUANTIDADE').AsInteger
+  else
+   vQtdeRestante := 0;
+
+//  vQtdeRestante := dm.sqlConsulta.FieldByName('QUANTIDADE').AsInteger;
+  vCodigoProduto := dm.sqlConsulta.FieldByName('PRODICOD').AsInteger;
+
+  //Busca a composição (vasilhame cadastrado)
+  DM.sqlConsulta.Close;
+  DM.sqlConsulta.SQL.Clear;
+  DM.sqlConsulta.SQL.Add('SELECT * FROM PRODUTOCOMPOSICAO WHERE PRODICOD = ' + IntToStr(vCodigoProduto));
+  DM.sqlConsulta.Open;
+  DM.sqlConsulta.First;
+  if DM.sqlConsulta.IsEmpty then
+  begin
+    Informa('Produto Sem cadastro de Vasilhame' + #13 + 'Codigo: ' + IntToStr(vCodigoProduto));
+    Exit;
+  end;
+  vValorVasilhame := dm.sqlConsulta.FieldByName('PRODN3VLRTOTAL').AsFloat;
+
+  //Lança desconto no item do produto
+  SQLItensVendaTemp.First;
+  while not SQLItensVendaTemp.Eof do
+  begin
+    if SQLItensVendaTempCODIGO.AsInteger = vCodigoProduto then
+    begin
+      vQtdeRestante := vQtdeRestante - SQLItensVendaTempQUANTIDADE.AsInteger;
+      if vQtdeRestante < 0 then
+      begin
+        vQtde := vQtdeRestante * -1;
+        vQtdeRestante := 0;
+        SQLItensVendaTemp.Edit;
+        SQLItensVendaTempVLRUNITBRUT.AsFloat := SQLItensVendaTempVLRUNITBRUT.AsFloat + (vQtde * vValorVasilhame);
+        SQLItensVendaTempVLRTOTAL.AsFloat := (SQLItensVendaTempVLRUNITBRUT.AsFloat - SQLItensVendaTempVLRDESC.AsFloat) * SQLItensVendaTempQUANTIDADE.AsFloat;
+        SQLItensVendaTemp.Post;
+      end;
+    end;
+    SQLItensVendaTemp.Next;
+  end;
+  DM.SQLTemplate.Close;
+  DM.SQLTemplate.SQL.Clear;
+  DM.SQLTemplate.SQL.Add('UPDATE PRODUTOVASILHAME SET DATA_UTILIZACAO = ');
+  DM.SQLTemplate.SQL.Add(QuotedStr(FormatDateTime('mm/dd/yyyy', Date)));
+  DM.SQLTemplate.SQL.Add('Where CODIGO = ''' + CodigoBarra + '''');
+  DM.SQLTemplate.ExecSQL;
 end;
 
 end.

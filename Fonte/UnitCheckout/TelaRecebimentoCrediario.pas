@@ -684,6 +684,8 @@ begin
                           if  Application.findcomponent('FormTelaConsultaContratosCliente') = nil then
                             BuscaParcelaMaisAntiga;
 
+                          if not SQLParcelasReceberTemp.Active then
+                            SQLParcelasReceberTemp.Open;
                           SQLParcelasReceberTemp.Append;
                           SQLParcelasReceberTempTERMICOD.Value    := TerminalAtual;
                           if SQLContasReceberCUPOA13ID.AsString <> '' then
