@@ -5,7 +5,6 @@ inherited DM: TDM
   Height = 724
   Width = 859
   inherited DB: TDatabase
-    Connected = False
     Left = 32
   end
   inherited SQLTemplate: TRxQuery
@@ -3103,6 +3102,30 @@ inherited DM: TDM
       FieldName = 'LevarCasa'
       Size = 1
     end
+    object TblTicketPreVendaCabEmpresaEmit: TStringField
+      FieldName = 'EmpresaEmit'
+      Size = 60
+    end
+    object TblTicketPreVendaCabEmpresaEmit_Ender: TStringField
+      FieldName = 'EmpresaEmit_Ender'
+      Size = 60
+    end
+    object TblTicketPreVendaCabEmpresaEmit_Bairro: TStringField
+      FieldName = 'EmpresaEmit_Bairro'
+      Size = 60
+    end
+    object TblTicketPreVendaCabEmpresaEmit_Cidade: TStringField
+      FieldName = 'EmpresaEmit_Cidade'
+      Size = 60
+    end
+    object TblTicketPreVendaCabEmpresaEmit_Fone: TStringField
+      FieldName = 'EmpresaEmit_Fone'
+      Size = 15
+    end
+    object TblTicketPreVendaCabTerminal: TStringField
+      FieldName = 'Terminal'
+      Size = 30
+    end
     object TblTicketPreVendaCabBairroClienteVenda: TStringField
       FieldName = 'BairroClienteVenda'
       Size = 60
@@ -5383,6 +5406,14 @@ inherited DM: TDM
     TableName = 'PedidoFinan.DB'
     Left = 449
     Top = 229
+    object TblTicketPreVendaFinTipopadrao: TStringField
+      FieldName = 'Tipopadrao'
+      Size = 5
+    end
+    object TblTicketPreVendaFinBonusTroca: TStringField
+      FieldName = 'BonusTroca'
+      Size = 1
+    end
     object TblTicketPreVendaFinPedICod: TStringField
       FieldName = 'PedICod'
       Size = 13
