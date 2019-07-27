@@ -281,7 +281,7 @@ begin
   FormStorage.IniFileName := Application.Title + '.ini' ;
   FormStorage.IniSection  := Name ;
   FormStorage.Active      := true ;
-  
+
   SQLTerminal.Close ;
   if FileExists('NaoTestaTerminal.txt') then
     SQLTerminal.MacroByName('MFiltro').Value := '0=0'

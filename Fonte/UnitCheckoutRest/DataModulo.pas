@@ -1057,6 +1057,14 @@ type
     cdsAPIAutorizacaoDATA_AUTORIZACAO: TStringField;
     TblTicketPreVendaCabSeq_Dia: TIntegerField;
     SQLConfigGeralNAO_OBRIGA_FECHAR_CAIXA: TStringField;
+    TblTicketPreVendaCabEmpresaEmit: TStringField;
+    TblTicketPreVendaCabEmpresaEmit_Ender: TStringField;
+    TblTicketPreVendaCabEmpresaEmit_Bairro: TStringField;
+    TblTicketPreVendaCabEmpresaEmit_Cidade: TStringField;
+    TblTicketPreVendaCabEmpresaEmit_Fone: TStringField;
+    TblTicketPreVendaCabTerminal: TStringField;
+    TblTicketPreVendaFinTipopadrao: TStringField;
+    TblTicketPreVendaFinBonusTroca: TStringField;
     procedure DataModuleCreate(Sender: TObject);
     procedure SQLCupomNewRecord(DataSet: TDataSet);
     procedure SQLCupomBeforePost(DataSet: TDataSet);
