@@ -210,6 +210,24 @@ type
     TotalCrediarioDetalhado: TppGroupFooterBand;
     ppLabel16: TppLabel;
     ppDBCalc5: TppDBCalc;
+    PipeTotalCupom: TppBDEPipeline;
+    ppField1: TppField;
+    ppField2: TppField;
+    ppField3: TppField;
+    ppField4: TppField;
+    SQLTotalCupom: TRxQuery;
+    DSSQLTotalCupom: TDataSource;
+    SQLTotalCupomVALOR_TOTAL: TFloatField;
+    SQLTotalCupomQTDE_CUPOM: TIntegerField;
+    SQLCancelados: TRxQuery;
+    DSSQLCancelados: TDataSource;
+    ppBDEPipeline1: TppBDEPipeline;
+    ppField5: TppField;
+    ppField6: TppField;
+    ppField7: TppField;
+    ppField8: TppField;
+    SQLCanceladosVALOR_CANCELADO: TFloatField;
+    SQLCanceladosQTDE_CANCELADO: TIntegerField;
     procedure FormCreate(Sender: TObject);
     procedure BtnVisualizarClick(Sender: TObject);
     procedure ReportTotaisPreviewFormCreate(Sender: TObject);
@@ -270,97 +288,73 @@ begin
   SQLTotaNumerario.Close;
   SQLTotaNumerario.MacrobyName('MEmpresa').Value := 'EMPRICOD  = ' + EmpresaPadrao;
   SQLTotaNumerario.MacroByName('MTerminal').Value := '0=0';
-
   if (HoraInicial.Text = '') and (HoraInicial.Text = '') then
     SQLTotaNumerario.MacroByName('MData').Value := 'MOVIMENTOCAIXA.MVCXDMOV >= "' + FormatDateTime('mm/dd/yyyy', De.Date) + '" and ' + 'MOVIMENTOCAIXA.MVCXDMOV <= "' + FormatDateTime('mm/dd/yyyy', Ate.Date) + '"'
   else
     SQLTotaNumerario.MacroByName('MData').Value := 'MOVIMENTOCAIXA.REGISTRO >= "' + FormatDateTime('mm/dd/yyyy ', De.Date) + HoraInicial.Text + '" and ' + 'MOVIMENTOCAIXA.REGISTRO <= "' + FormatDateTime('mm/dd/yyyy ', Ate.Date) + HoraFinal.Text + '"';
-
   SQLTotaNumerario.MacroByName('MTerminal').Value := '0=0';
-
   if ComboTerminal.Value <> '' then
     SQLTotaNumerario.MacroByName('MTerminal').Value := 'MOVIMENTOCAIXA.TERMICOD = ' + ComboTerminal.Value;
-
   if ComboTerminal2.Value <> '' then
     SQLTotaNumerario.MacroByName('MTerminal').Value := SQLTotaNumerario.MacroByName('MTerminal').Value + ' or ' + 'MOVIMENTOCAIXA.TERMICOD = ' + ComboTerminal2.Value;
-
   if ComboOperador.Value <> '' then
     SQLTotaNumerario.MacroByName('MOperador').Value := 'MOVIMENTOCAIXA.USUAICOD = ' + ComboOperador.Value
   else
     SQLTotaNumerario.MacroByName('MOperador').Value := '0=0';
-
   SQLTotaNumerario.Open;
 
+  //Operacoes de caixa
   SQLTotalOperacao.Close;
   SQLTotalOperacao.MacrobyName('MEmpresa').Value := 'EMPRICOD  = ' + EmpresaPadrao;
   SQLTotalOperacao.MacroByName('MTerminal').Value := '0=0';
-
   if (HoraInicial.Text = '') and (HoraInicial.Text = '') then
     SQLTotalOperacao.MacroByName('MData').Value := 'MOVIMENTOCAIXA.MVCXDMOV >= "' + FormatDateTime('mm/dd/yyyy', De.Date) + '" and ' + 'MOVIMENTOCAIXA.MVCXDMOV <= "' + FormatDateTime('mm/dd/yyyy', Ate.Date) + '"'
   else
     SQLTotalOperacao.MacroByName('MData').Value := 'MOVIMENTOCAIXA.REGISTRO >= "' + FormatDateTime('mm/dd/yyyy ', De.Date) + HoraInicial.Text + '" and ' + 'MOVIMENTOCAIXA.REGISTRO <= "' + FormatDateTime('mm/dd/yyyy ', Ate.Date) + HoraFinal.Text + '"';
-
   if ComboTerminal.Value <> '' then
     SQLTotalOperacao.MacroByName('MTerminal').Value := 'MOVIMENTOCAIXA.TERMICOD = ' + ComboTerminal.Value;
-
   if ComboTerminal2.Value <> '' then
     SQLTotalOperacao.MacroByName('MTerminal').Value := SQLTotalOperacao.MacroByName('MTerminal').Value + ' or ' + 'MOVIMENTOCAIXA.TERMICOD = ' + ComboTerminal2.Value;
-
   if ComboOperador.Value <> '' then
     SQLTotalOperacao.MacroByName('MOperador').Value := 'MOVIMENTOCAIXA.USUAICOD = ' + ComboOperador.Value
   else
     SQLTotalOperacao.MacroByName('MOperador').Value := '0=0';
-
   SQLTotalOperacao.Open;
 
   // Produtos Vendidos
   SQLItensVendidos.Close;
-
   SQLItensVendidos.MacrobyName('MEmpresa').Value := 'EMPRICOD  = ' + EmpresaPadrao;
-
   if (HoraInicial.Text = '') and (HoraInicial.Text = '') then
     SQLItensVendidos.MacroByName('MData').Value := 'CUPOM.CUPODEMIS >= "' + FormatDateTime('mm/dd/yyyy', De.Date) + '" and ' + 'CUPOM.CUPODEMIS <= "' + FormatDateTime('mm/dd/yyyy', Ate.Date) + '"'
   else
     SQLItensVendidos.MacroByName('MData').Value := 'CUPOM.REGISTRO >= "' + FormatDateTime('mm/dd/yyyy ', De.Date) + HoraInicial.Text + '" and ' + 'CUPOM.REGISTRO <= "' + FormatDateTime('mm/dd/yyyy ', Ate.Date) + HoraFinal.Text + '"';
-
   SQLItensVendidos.MacroByName('MTerminal').Value := '0=0';
-
   if ComboTerminal.Value <> '' then
     SQLItensVendidos.MacroByName('MTerminal').Value := 'CUPOM.TERMICOD = ' + ComboTerminal.Value;
-
   if ComboTerminal2.Value <> '' then
     SQLItensVendidos.MacroByName('MTerminal').Value := SQLItensVendidos.MacroByName('MTerminal').Value + ' or ' + 'CUPOM.TERMICOD = ' + ComboTerminal2.Value;
-
   if ComboOperador.Value <> '' then
     SQLItensVendidos.MacroByName('MOperador').Value := 'CUPOM.USUAICODVENDA = ' + ComboOperador.Value
   else
     SQLItensVendidos.MacroByName('MOperador').Value := '0=0';
-
   SQLItensVendidos.Open;
 
  // Venda Cartoes , Cheques e Crediario
   SQLVendaCartoesCheques.Close;
-
   SQLVendaCartoesCheques.MacrobyName('MEmpresa').Value := 'EMPRICOD  = ' + EmpresaPadrao;
-
   if (HoraInicial.Text = '') and (HoraInicial.Text = '') then
     SQLVendaCartoesCheques.MacroByName('MData').Value := 'CUPOM.CUPODEMIS >= "' + FormatDateTime('mm/dd/yyyy', De.Date) + '" and ' + 'CUPOM.CUPODEMIS <= "' + FormatDateTime('mm/dd/yyyy', Ate.Date) + '"'
   else
     SQLVendaCartoesCheques.MacroByName('MData').Value := 'CUPOM.CUPODEMIS >= "' + FormatDateTime('mm/dd/yyyy ', De.Date) + HoraInicial.Text + '" and ' + 'CUPOM.CUPODEMIS <= "' + FormatDateTime('mm/dd/yyyy ', Ate.Date) + HoraFinal.Text + '"';
-
   SQLVendaCartoesCheques.MacroByName('MTerminal').Value := '0=0';
-
   if ComboTerminal.Value <> '' then
     SQLVendaCartoesCheques.MacroByName('MTerminal').Value := 'CUPOM.TERMICOD = ' + ComboTerminal.Value;
-
   if ComboTerminal2.Value <> '' then
     SQLVendaCartoesCheques.MacroByName('MTerminal').Value := SQLItensVendidos.MacroByName('MTerminal').Value + ' or ' + 'CUPOM.TERMICOD = ' + ComboTerminal2.Value;
-
   if ComboOperador.Value <> '' then
     SQLVendaCartoesCheques.MacroByName('MOperador').Value := 'CUPOM.USUAICODVENDA = ' + ComboOperador.Value
   else
     SQLVendaCartoesCheques.MacroByName('MOperador').Value := '0=0';
-
   SQLVendaCartoesCheques.Open;
 
   if chkCrediario.Checked then
@@ -368,27 +362,53 @@ begin
     SQLCrediarioDetalhado.Close;
     SQLCrediarioDetalhado.MacrobyName('MEmpresa').Value := 'EMPRICOD  = ' + EmpresaPadrao;
     SQLCrediarioDetalhado.MacroByName('MTerminal').Value := '0=0';
-
     if (HoraInicial.Text = '') and (HoraInicial.Text = '') then
       SQLCrediarioDetalhado.MacroByName('MData').Value := 'MVCXDMOV >= "' + FormatDateTime('mm/dd/yyyy', De.Date) + '" and ' + 'MVCXDMOV <= "' + FormatDateTime('mm/dd/yyyy', Ate.Date) + '"'
     else
       SQLCrediarioDetalhado.MacroByName('MData').Value := 'REGISTRO >= "' + FormatDateTime('mm/dd/yyyy ', De.Date) + HoraInicial.Text + '" and ' + 'REGISTRO <= "' + FormatDateTime('mm/dd/yyyy ', Ate.Date) + HoraFinal.Text + '"';
-
     SQLCrediarioDetalhado.MacroByName('MTerminal').Value := '0=0';
-
     if ComboTerminal.Value <> '' then
       SQLCrediarioDetalhado.MacroByName('MTerminal').Value := 'TERMICOD = ' + ComboTerminal.Value;
-
     if ComboTerminal2.Value <> '' then
       SQLCrediarioDetalhado.MacroByName('MTerminal').Value := SQLTotaNumerario.MacroByName('MTerminal').Value + ' or ' + 'TERMICOD = ' + ComboTerminal2.Value;
-
     if ComboOperador.Value <> '' then
       SQLCrediarioDetalhado.MacroByName('MOperador').Value := 'USUAICOD = ' + ComboOperador.Value
     else
       SQLCrediarioDetalhado.MacroByName('MOperador').Value := '0=0';
-
     SQLCrediarioDetalhado.Open;
   end;
+
+  //Total de cupom
+  SQLTotalCupom.MacrobyName('MEmpresa').Value := 'EMPRICOD  = ' + EmpresaPadrao;
+  if ComboTerminal.Value <> '' then
+    SQLTotalCupom.MacroByName('MTerminal').Value := 'C.TERMICOD = ' + ComboTerminal.Value;
+  if ComboTerminal2.Value <> '' then
+    SQLTotalCupom.MacroByName('MTerminal').Value := SQLItensVendidos.MacroByName('MTerminal').Value + ' or ' + 'C.TERMICOD = ' + ComboTerminal2.Value;
+  if ComboOperador.Value <> '' then
+    SQLTotalCupom.MacroByName('MOperador').Value := 'C.USUAICODVENDA = ' + ComboOperador.Value
+  else
+    SQLTotalCupom.MacroByName('MOperador').Value := '0=0';
+  if (HoraInicial.Text = '') and (HoraInicial.Text = '') then
+    SQLTotalCupom.MacroByName('MData').Value := 'CUPODEMIS >= "' + FormatDateTime('mm/dd/yyyy', De.Date) + '" and ' + 'CUPODEMIS <= "' + FormatDateTime('mm/dd/yyyy', Ate.Date) + '"'
+  else
+    SQLTotalCupom.MacroByName('MDat').Value := 'REGISTRO >= "' + FormatDateTime('mm/dd/yyyy ', De.Date) + HoraInicial.Text + '" and ' + 'REGISTRO <= "' + FormatDateTime('mm/dd/yyyy ', Ate.Date) + HoraFinal.Text + '"';
+  SQLTotalCupom.Open;
+
+  //Cancelados
+  SQLCancelados.MacrobyName('MEmpresa').Value := 'EMPRICOD  = ' + EmpresaPadrao;
+  if ComboTerminal.Value <> '' then
+    SQLCancelados.MacroByName('MTerminal').Value := 'C.TERMICOD = ' + ComboTerminal.Value;
+  if ComboTerminal2.Value <> '' then
+    SQLCancelados.MacroByName('MTerminal').Value := SQLItensVendidos.MacroByName('MTerminal').Value + ' or ' + 'C.TERMICOD = ' + ComboTerminal2.Value;
+  if ComboOperador.Value <> '' then
+    SQLCancelados.MacroByName('MOperador').Value := 'C.USUAICODVENDA = ' + ComboOperador.Value
+  else
+    SQLCancelados.MacroByName('MOperador').Value := '0=0';
+  if (HoraInicial.Text = '') and (HoraInicial.Text = '') then
+    SQLCancelados.MacroByName('MData').Value := 'C.CUPODEMIS >= "' + FormatDateTime('mm/dd/yyyy', De.Date) + '" and ' + 'C.CUPODEMIS <= "' + FormatDateTime('mm/dd/yyyy', Ate.Date) + '"'
+  else
+    SQLCancelados.MacroByName('MData').Value := 'REGISTRO >= "' + FormatDateTime('mm/dd/yyyy ', De.Date) + HoraInicial.Text + '" and ' + 'REGISTRO <= "' + FormatDateTime('mm/dd/yyyy ', Ate.Date) + HoraFinal.Text + '"';
+  SQLCancelados.Open;
 
   if not ckBobina.checked then
     ReportTotais.Print
@@ -455,6 +475,11 @@ begin
 //    vValorSangria := vSaldoTotal + vValorSangria;
 //    memo.Lines.Add('<ad><n>TOTAL DE VENDA => ' + FormatFloat('R$ ##0.00', vValorSangria) + '</n></ad>');
 
+    memo.Lines.Add('<ad><n>TOTAL Cupons  => ' + SQLTotalCupomQTDE_CUPOM.AsString + '  ' + FormatFloat('R$ ##0.00', SQLTotalCupomVALOR_TOTAL.AsFloat) + '</n></ad>');
+    memo.Lines.Add('------------------------------------------------');
+
+    memo.Lines.Add('<ad><n>Cancelados  => ' + SQLCanceladosQTDE_CANCELADO.AsString + '  ' + FormatFloat('R$ ##0.00', SQLCanceladosVALOR_CANCELADO.AsFloat) + '</n></ad>');
+    memo.Lines.Add('------------------------------------------------');
 
       // Produtos Vendidos
     if ckImpProdutosVendidos.Checked then

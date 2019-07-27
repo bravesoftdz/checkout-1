@@ -1,6 +1,6 @@
 object FormPrincipalRelatorios: TFormPrincipalRelatorios
-  Left = 255
-  Top = 244
+  Left = 301
+  Top = 180
   Width = 604
   Height = 412
   Caption = 'Relat'#243'rio para Resumo de Caixa'
@@ -1466,7 +1466,7 @@ object FormPrincipalRelatorios: TFormPrincipalRelatorios
     PrinterSetup.mmMarginTop = 6350
     PrinterSetup.mmPaperHeight = 297000
     PrinterSetup.mmPaperWidth = 210000
-    PrinterSetup.PaperSize = 256
+    PrinterSetup.PaperSize = 9
     DeviceType = 'Screen'
     EmailSettings.ReportFormat = 'PDF'
     OnPreviewFormClose = ReportTotaisPreviewFormClose
@@ -1477,7 +1477,7 @@ object FormPrincipalRelatorios: TFormPrincipalRelatorios
     OutlineSettings.Visible = False
     TextSearchSettings.DefaultString = '<FindText>'
     TextSearchSettings.Enabled = False
-    Left = 395
+    Left = 451
     Top = 315
     Version = '10.06'
     mmColumnWidth = 0
@@ -1878,7 +1878,7 @@ object FormPrincipalRelatorios: TFormPrincipalRelatorios
           PrinterSetup.mmMarginTop = 6350
           PrinterSetup.mmPaperHeight = 297000
           PrinterSetup.mmPaperWidth = 210000
-          PrinterSetup.PaperSize = 256
+          PrinterSetup.PaperSize = 9
           Version = '10.06'
           mmColumnWidth = 0
           DataPipelineName = 'PipeNumerario'
@@ -2167,7 +2167,7 @@ object FormPrincipalRelatorios: TFormPrincipalRelatorios
                 PrinterSetup.mmMarginTop = 6350
                 PrinterSetup.mmPaperHeight = 297000
                 PrinterSetup.mmPaperWidth = 210000
-                PrinterSetup.PaperSize = 256
+                PrinterSetup.PaperSize = 9
                 Version = '10.06'
                 mmColumnWidth = 0
                 DataPipelineName = 'PipeItensVendidos'
@@ -2359,7 +2359,7 @@ object FormPrincipalRelatorios: TFormPrincipalRelatorios
                       PrinterSetup.mmMarginTop = 6350
                       PrinterSetup.mmPaperHeight = 297000
                       PrinterSetup.mmPaperWidth = 210000
-                      PrinterSetup.PaperSize = 256
+                      PrinterSetup.PaperSize = 9
                       Version = '10.06'
                       mmColumnWidth = 0
                       DataPipelineName = 'PipeVendasCartoesCheques'
@@ -2706,7 +2706,7 @@ object FormPrincipalRelatorios: TFormPrincipalRelatorios
                             PrinterSetup.mmMarginTop = 6350
                             PrinterSetup.mmPaperHeight = 297000
                             PrinterSetup.mmPaperWidth = 210000
-                            PrinterSetup.PaperSize = 256
+                            PrinterSetup.PaperSize = 9
                             Version = '10.06'
                             mmColumnWidth = 0
                             DataPipelineName = 'PipeCrediarioDetalhado'
@@ -3592,6 +3592,184 @@ object FormPrincipalRelatorios: TFormPrincipalRelatorios
       Position = 2
     end
     object PipeCrediarioDetalhadoppField4: TppField
+      FieldAlias = 'TIPO'
+      FieldName = 'TIPO'
+      FieldLength = 9
+      DisplayWidth = 9
+      Position = 3
+    end
+  end
+  object PipeTotalCupom: TppBDEPipeline
+    DataSource = DSSQLTotalCupom
+    UserName = 'PipeTotalCupom'
+    Left = 380
+    Top = 315
+    object ppField1: TppField
+      Alignment = taRightJustify
+      FieldAlias = 'MVCXN2VLRDEB'
+      FieldName = 'MVCXN2VLRDEB'
+      FieldLength = 0
+      DataType = dtDouble
+      DisplayWidth = 0
+      Position = 0
+    end
+    object ppField2: TppField
+      Alignment = taRightJustify
+      FieldAlias = 'MVCXN2VLRCRED'
+      FieldName = 'MVCXN2VLRCRED'
+      FieldLength = 0
+      DataType = dtDouble
+      DisplayWidth = 10
+      Position = 1
+    end
+    object ppField3: TppField
+      FieldAlias = 'NUMEA30DESCR'
+      FieldName = 'NUMEA30DESCR'
+      FieldLength = 30
+      DisplayWidth = 30
+      Position = 2
+    end
+    object ppField4: TppField
+      FieldAlias = 'TIPO'
+      FieldName = 'TIPO'
+      FieldLength = 9
+      DisplayWidth = 9
+      Position = 3
+    end
+  end
+  object SQLTotalCupom: TRxQuery
+    DatabaseName = 'DB'
+    SQL.Strings = (
+      
+        'select sum(C.CUPON2TOTITENS)Valor_Total, count(c.cupoa13id)Qtde_' +
+        'Cupom'
+      'from CUPOM C'
+      'where C.CUPOCSTATUS <> '#39'C'#39' and'
+      '      %MTERMINAL and'
+      '      %MDATA and'
+      '      %MOperador and'
+      '      %MEmpresa')
+    Macros = <
+      item
+        DataType = ftString
+        Name = 'MTERMINAL'
+        ParamType = ptInput
+        Value = '0=0'
+      end
+      item
+        DataType = ftString
+        Name = 'MDATA'
+        ParamType = ptInput
+        Value = '0=0'
+      end
+      item
+        DataType = ftString
+        Name = 'MOperador'
+        ParamType = ptInput
+        Value = '0=0'
+      end
+      item
+        DataType = ftString
+        Name = 'MEmpresa'
+        ParamType = ptInput
+        Value = '0=0'
+      end>
+    Left = 34
+    Top = 257
+    object SQLTotalCupomVALOR_TOTAL: TFloatField
+      FieldName = 'VALOR_TOTAL'
+    end
+    object SQLTotalCupomQTDE_CUPOM: TIntegerField
+      FieldName = 'QTDE_CUPOM'
+    end
+  end
+  object DSSQLTotalCupom: TDataSource
+    DataSet = SQLTotalCupom
+    Left = 62
+    Top = 257
+  end
+  object SQLCancelados: TRxQuery
+    DatabaseName = 'DB'
+    SQL.Strings = (
+      
+        'select sum(C.CUPON2TOTITENS)Valor_Cancelado, count(c.cupoa13id)Q' +
+        'tde_Cancelado'
+      'from CUPOM C'
+      'where C.CUPOCSTATUS = '#39'C'#39' and'
+      '      %MTERMINAL and'
+      '      %MDATA and'
+      '      %MOperador and'
+      '      %MEmpresa')
+    Macros = <
+      item
+        DataType = ftString
+        Name = 'MTERMINAL'
+        ParamType = ptInput
+        Value = '0=0'
+      end
+      item
+        DataType = ftString
+        Name = 'MDATA'
+        ParamType = ptInput
+        Value = '0=0'
+      end
+      item
+        DataType = ftString
+        Name = 'MOperador'
+        ParamType = ptInput
+        Value = '0=0'
+      end
+      item
+        DataType = ftString
+        Name = 'MEmpresa'
+        ParamType = ptInput
+        Value = '0=0'
+      end>
+    Left = 34
+    Top = 289
+    object SQLCanceladosVALOR_CANCELADO: TFloatField
+      FieldName = 'VALOR_CANCELADO'
+    end
+    object SQLCanceladosQTDE_CANCELADO: TIntegerField
+      FieldName = 'QTDE_CANCELADO'
+    end
+  end
+  object DSSQLCancelados: TDataSource
+    DataSet = SQLCancelados
+    Left = 62
+    Top = 289
+  end
+  object ppBDEPipeline1: TppBDEPipeline
+    DataSource = DSSQLCancelados
+    UserName = 'PipeTotalCupom1'
+    Left = 404
+    Top = 315
+    object ppField5: TppField
+      Alignment = taRightJustify
+      FieldAlias = 'MVCXN2VLRDEB'
+      FieldName = 'MVCXN2VLRDEB'
+      FieldLength = 0
+      DataType = dtDouble
+      DisplayWidth = 0
+      Position = 0
+    end
+    object ppField6: TppField
+      Alignment = taRightJustify
+      FieldAlias = 'MVCXN2VLRCRED'
+      FieldName = 'MVCXN2VLRCRED'
+      FieldLength = 0
+      DataType = dtDouble
+      DisplayWidth = 10
+      Position = 1
+    end
+    object ppField7: TppField
+      FieldAlias = 'NUMEA30DESCR'
+      FieldName = 'NUMEA30DESCR'
+      FieldLength = 30
+      DisplayWidth = 30
+      Position = 2
+    end
+    object ppField8: TppField
       FieldAlias = 'TIPO'
       FieldName = 'TIPO'
       FieldLength = 9
