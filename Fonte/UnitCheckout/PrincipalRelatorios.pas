@@ -462,8 +462,8 @@ begin
     end;
     if ckImpNumerario.Checked then
     begin
-      memo.Lines.Add('</fn>------------------------------------------------');
-      memo.Lines.Add('</ad><e><n>TOTAL => ' + FormatFloat('R$ ##0.00', vSaldoTotal) + '</n></e>');
+//      memo.Lines.Add('</fn>------------------------------------------------');
+//      memo.Lines.Add('</ad><e><n>TOTAL => ' + FormatFloat('R$ ##0.00', vSaldoTotal) + '</n></e>');
     end;
     SQLTotalOperacao.First;
 
@@ -482,13 +482,12 @@ begin
     end;
     memo.Lines.Add('------------------------------------------------');
     memo.Lines.Add('<ad><n>TOTAL => ' + FormatFloat('R$ ##0.00', vSaldoTotal) + '</n></ad>');
-    memo.Lines.Add('------------------------------------------------');
+//    memo.Lines.Add('------------------------------------------------');
 //    vValorSangria := vSaldoTotal + vValorSangria;
 //    memo.Lines.Add('<ad><n>TOTAL DE VENDA => ' + FormatFloat('R$ ##0.00', vValorSangria) + '</n></ad>');
 
-    memo.Lines.Add('<ad><n>TOTAL Cupons  => ' + SQLTotalCupomQTDE_CUPOM.AsString + '  ' + FormatFloat('R$ ##0.00', SQLTotalCupomVALOR_TOTAL.AsFloat) + '</n></ad>');
     memo.Lines.Add('------------------------------------------------');
-
+    memo.Lines.Add('<ad><n>TOTAL Cupons  => ' + SQLTotalCupomQTDE_CUPOM.AsString + '  ' + FormatFloat('R$ ##0.00', SQLTotalCupomVALOR_TOTAL.AsFloat) + '</n></ad>');
     memo.Lines.Add('<ad><n>Cancelados  => ' + SQLCanceladosQTDE_CANCELADO.AsString + '  ' + FormatFloat('R$ ##0.00', SQLCanceladosVALOR_CANCELADO.AsFloat) + '</n></ad>');
     memo.Lines.Add('------------------------------------------------');
 

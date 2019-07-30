@@ -2,7 +2,7 @@ unit TelaMesa;
 
 interface
 
-uses
+uses         
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, jpeg, ExtCtrls, Grids, DBGrids, DB, DBTables, RxQuery, RXCtrls, Inifiles,
   StdCtrls, Buttons, ConerBtn, Mask, ToolEdit, CurrEdit, RDprint, RxLookup,
@@ -135,7 +135,6 @@ type
     TblMemPrevendaitemVendedor: TStringField;
     TblMemPrevendaitemMesaICod: TIntegerField;
     TblMemPrevendaitemContaICod: TIntegerField;
-    rdpExtrato: TRDprint;
     RxLabel1: TRxLabel;
     BtReturn: TSpeedButton;
     BtBackSpace: TSpeedButton;
@@ -204,6 +203,7 @@ type
     SQLVendasCanceladasPRODUTO: TStringField;
     SQLVendasCanceladasTOTALITEM: TFloatField;
     TblMemPrevendaitemValorDesconto: TFloatField;
+    rdpExtrato: TRDprint;
     procedure ImgDesligarClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
@@ -1049,7 +1049,7 @@ var temItensPendentes : boolean;
 var Inifile: TInifile;
 var Linha, vCol : integer;
 var ImpCaixa : String;
-var Total, TotalPedido, TotalRecebido : Double;
+var Total, TotalPedido, TotalRecebido, ValorDesconto : Double;
 var RetornoUser : TInfoRetornoUser;
 begin
   if key = 13 then
@@ -1077,7 +1077,9 @@ begin
           EditValorPago.SetFocus;
           Exit;
         end;
-
+      ValorDesconto := 0;
+      if EditDesconto.Value > 0 then
+        ValorDesconto := EditDesconto.Value;
       {Atualizar Tabela Temp}
       SQLParcelasVistaVendaTemp.Close ;
       SQLParcelasVistaVendaTemp.SQL.Clear ;
@@ -1154,6 +1156,9 @@ begin
       ErroGravando := False;
       GravaCupom;
 
+      if EditDesconto.Value > 0 then
+        Calcular_Desconto(EditDesconto.Value);
+  
       ItemECF:=0;
       TblMemPreVendaItem.first;
       while not TblMemPreVendaItem.eof do
@@ -1175,7 +1180,9 @@ begin
               DM.SQLCupomItemCPITN3QTDTROCA.Value          := 0;
               DM.SQLCupomItemCPITN3VLRUNIT.Value           := TblMemPreVendaItemPVITN3VLRUNIT.Value;
               DM.SQLCupomItemCPITN3VLRCUSTUNIT.Value       := 0;
-              DM.SQLCupomItemCPITN2DESC.Value              := 0;
+
+              DM.SQLCupomItemCPITN2DESC.Value              := TblMemPrevendaitemValorDesconto.Value;
+
               DM.SQLCupomItemCPITN2VLRDESCSOBTOT.Value     := 0;
               DM.SQLCupomItemCPITN3VLRUNITLUCR.Value       := 0;
               DM.SQLCupomItemVENDICOD.asstring             := dm.SQLMesaStatusVENDICOD.asstring;
@@ -1223,9 +1230,6 @@ begin
       GravaMovCaixa;
 
       if FileExists('GAVETA.EXE') then WinExec(Pchar('GAVETA.EXE'),sw_Show);
-
-      if EditDesconto.Value > 0 then
-        Calcular_Desconto(EditDesconto.Value);
 
       if Pergunta('NAO', 'IMPRIMIR COMPROVANTE CLIENTE') then
         begin

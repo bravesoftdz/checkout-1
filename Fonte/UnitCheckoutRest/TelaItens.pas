@@ -12,7 +12,7 @@ uses
   AdvOfficeStatusBar, AdvOfficeStatusBarStylers, AdvSmoothPanel, OleCtrls,
   SHDocVw, ACBrNFe, pcnConversao, ACBrUtil, ACBrNFeDANFEClass, ACBrNFeDANFeESCPOS,
   ACBrBase, ACBrDFe, XMLIntf, XMLDoc, zlib, ACBrMail, ACBrNFeDANFeRLClass,
-  ACBrPosPrinter;
+  ACBrPosPrinter, ACBrDFeUtil;
 
 const
   // AS VARIAVEIS ABAIXO FORAM CRIADAS PARA NÃO CORRER O RISCO DE DIGITAR ERRADO
@@ -540,7 +540,7 @@ begin
   dm.ACBrNFe.NotasFiscais.Clear;
   with dm.ACBrNFe.NotasFiscais.Add.NFe do
      begin
-       Ide.cNF       := NumNFe; //Caso não seja preenchido será gerado um número aleatório pelo componente
+       Ide.cNF       := GerarCodigoDFe(NumNFe); //Caso não seja preenchido será gerado um número aleatório pelo componente
        Ide.natOp     := 'VENDA CONSUMIDOR';
        Ide.modelo    := 65;
        Ide.serie     := dm.SQLTerminalAtivoTERMICOD.Value;
