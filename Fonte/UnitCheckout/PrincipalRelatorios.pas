@@ -390,6 +390,7 @@ begin
   end;
 
   //Total de cupom
+  SQLTotalCupom.Close;
   SQLTotalCupom.MacrobyName('MEmpresa').Value := 'EMPRICOD  = ' + EmpresaPadrao;
   if ComboTerminal.Value <> '' then
     SQLTotalCupom.MacroByName('MTerminal').Value := 'C.TERMICOD = ' + ComboTerminal.Value;
@@ -406,6 +407,7 @@ begin
   SQLTotalCupom.Open;
 
   //Cancelados
+  SQLCancelados.Close;
   SQLCancelados.MacrobyName('MEmpresa').Value := 'EMPRICOD  = ' + EmpresaPadrao;
   if ComboTerminal.Value <> '' then
     SQLCancelados.MacroByName('MTerminal').Value := 'C.TERMICOD = ' + ComboTerminal.Value;

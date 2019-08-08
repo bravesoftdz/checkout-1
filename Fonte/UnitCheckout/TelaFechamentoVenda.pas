@@ -3850,7 +3850,6 @@ begin
                                 True,
                                 False,
                                 '');
-
            end ;
     VK_F12:begin
              if dmSiTef.AbrirADM then exit;

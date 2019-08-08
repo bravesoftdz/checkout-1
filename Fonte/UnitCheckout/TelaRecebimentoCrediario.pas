@@ -340,7 +340,6 @@ type
     SQLRenegociacaoCLDPICOD: TIntegerField;
     SQLRenegociacaoCTRCN2TOTCORRECAO: TFloatField;
     SQLRenegociacaoCTRCA15NOSSONUMERO: TStringField;
-    SQLRenegociacaoCTRCA5NOSSONUMERO: TStringField;
     SQLRenegociacaoLOTEREMESSABANCO: TIntegerField;
     SQLRenegociacaoAUTORIZACAO: TIntegerField;
     SQLRenegociacaoCODIGOBARRA: TStringField;
@@ -350,6 +349,7 @@ type
     SQLRenegociacaoVALOR_LIQUIDO: TFloatField;
     UdpateRenegociacao: TUpdateSQL;
     SQLRenegociacaoID_CTRCA13ID: TStringField;
+    shpStatusServidor: TShape;
     procedure EntradaDadosKeyDown(Sender: TObject; var Key: Word;
       Shift: TShiftState);
     procedure FormCreate(Sender: TObject);
@@ -1637,6 +1637,8 @@ begin
                                                SQLParcelasReceberTempN2VLRJURO.VALUE+
                                                SQLParcelasReceberTempN2VLRMULTA.VALUE-
                                                SQLParcelasReceberTempN2VLRDESC.VALUE;
+                  if TotalRecbto > SQLParcelasReceberTempN2VLRAMORT.Value then
+                    TotalRecbto := SQLParcelasReceberTempN2VLRAMORT.Value;
                   TotalDescto := TotalDescto + SQLParcelasReceberTempN2VLRDESC.value;
                   TotalJuros  := TotalJuros  + SQLParcelasReceberTempN2VLRJURO.value;
 
@@ -2440,6 +2442,12 @@ end ;
 
 procedure TFormTelaRecebimentoCrediario.FormCreate(Sender: TObject);
 begin
+  if CrediarioOnline = 'S' then
+  begin
+    AliasName := DM.DB.AliasName;
+    ConectaOnLine;
+  end;
+
   DataCalculo := Date ;
   DataBaixa   := Date ;
 
@@ -2550,6 +2558,7 @@ function TFormTelaRecebimentoCrediario.TotalParc : Currency;
 var Valor : double ;
     Pos   : integer ;
 begin
+  if not SQLParcelasReceberTemp.Active then SQLParcelasReceberTemp.Open;
   SQLParcelasReceberTemp.DisableControls ;
   SQLParcelasReceberTemp.First ;
   Pos := 1 ;
@@ -2668,12 +2677,6 @@ end ;
 
 procedure TFormTelaRecebimentoCrediario.FormShow(Sender: TObject);
 begin
-  if CrediarioOnline = 'S' then
-  begin
-    AliasName := DM.DB.AliasName;
-    ConectaOnLine;
-  end;
-
   LblNUMERARIO.Caption := '' ;
 
   DM.SQLTemplate.Close ;
@@ -3285,14 +3288,18 @@ end;
 
 procedure TFormTelaRecebimentoCrediario.ConectaOnLine;
 begin
+
   DM.DB.Connected := False;
   DM.DB.AliasName := DM.DB.AliasName + 'ONLINE';
+  shpStatusServidor.Brush.Color := clLime;
   try
     DM.DB.Connected := True;
     dm.SQLConfigGeral.Close;
     dm.SQLConfigGeral.Open;
     dm.SQLConfigVenda.Close;
     dm.SQLConfigVenda.Open;
+    dm.SQLUsuario.Close;
+    dm.SQLUsuario.Open;
   except
     on e: Exception do
     begin
@@ -3308,12 +3315,15 @@ procedure TFormTelaRecebimentoCrediario.DisconectaOnline;
 begin
   DM.DB.Connected := False;
   DM.DB.AliasName := AliasName;
+  shpStatusServidor.Brush.Color := clRed;
   try
     DM.DB.Connected := True;
     dm.SQLConfigGeral.Close;
     dm.SQLConfigGeral.Open;
     dm.SQLConfigVenda.Close;
     dm.SQLConfigVenda.Open;
+    dm.SQLUsuario.Close;
+    dm.SQLUsuario.Open;
   except
     on e: Exception do
     begin

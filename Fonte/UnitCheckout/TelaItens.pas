@@ -7103,14 +7103,15 @@ begin
         begin
           if SQLItensDescTempCALCULAR_DESC.AsString <> 'S' then
           begin
-            SQLItensVendaTemp.First;
+            SQLItensVendaTemp.First;                                                                   
             while not SQLItensVendaTemp.Eof do
             begin
               if SQLItensVendaTempCODIGO.AsInteger = SQLItensDescTempCODIGO.AsInteger then
               begin
                 SQLItensVendaTemp.Edit;
                 SQLItensVendaTempVLRDESC.AsFloat := (SQLItensVendaTempVLRUNITBRUT.AsFloat - DM.SQLProduto_DescontosPRECO.AsFloat) * SQLItensVendaTempQUANTIDADE.AsFloat;
-                SQLItensVendaTempVLRTOTAL.AsFloat := (SQLItensVendaTempVLRUNITBRUT.AsFloat - SQLItensVendaTempVLRDESC.AsFloat) * SQLItensVendaTempQUANTIDADE.AsFloat;
+//                SQLItensVendaTempVLRTOTAL.AsFloat := (SQLItensVendaTempVLRUNITBRUT.AsFloat - SQLItensVendaTempVLRDESC.AsFloat) * SQLItensVendaTempQUANTIDADE.AsFloat;
+                SQLItensVendaTempVLRTOTAL.AsFloat := (SQLItensVendaTempVLRUNITBRUT.AsFloat * SQLItensVendaTempQUANTIDADE.AsFloat) - SQLItensVendaTempVLRDESC.AsFloat;
                 SQLItensVendaTemp.Post;
               end;
               SQLItensDescTempCALCULAR_DESC.AsString := 'S';
@@ -7121,7 +7122,9 @@ begin
           begin
             SQLItensVendaTemp.Edit;
             SQLItensVendaTempVLRDESC.AsFloat := (SQLItensVendaTempVLRUNITBRUT.AsFloat - DM.SQLProduto_DescontosPRECO.AsFloat) * SQLItensVendaTempQUANTIDADE.AsFloat; ;
-            SQLItensVendaTempVLRTOTAL.AsFloat := (SQLItensVendaTempVLRUNITBRUT.AsFloat - SQLItensVendaTempVLRDESC.AsFloat) * SQLItensVendaTempQUANTIDADE.AsFloat;
+            SQLItensVendaTempVLRTOTAL.AsFloat := (SQLItensVendaTempVLRUNITBRUT.AsFloat * SQLItensVendaTempQUANTIDADE.AsFloat) - SQLItensVendaTempVLRDESC.AsFloat ;
+//            SQLItensVendaTempVLRTOTAL.AsFloat := (SQLItensVendaTempVLRUNITBRUT.AsFloat - SQLItensVendaTempVLRDESC.AsFloat) * SQLItensVendaTempQUANTIDADE.AsFloat;
+            SQLItensDescTempCALCULAR_DESC.AsString := 'S';
             SQLItensVendaTemp.Post;
           end;
           SQLItensDescTemp.Post;

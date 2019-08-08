@@ -99,6 +99,14 @@ object FormTelaRecebimentoCrediario: TFormTelaRecebimentoCrediario
     Font.Style = []
     ParentFont = False
   end
+  object shpStatusServidor: TShape
+    Left = 696
+    Top = 564
+    Width = 10
+    Height = 10
+    Brush.Color = clRed
+    Shape = stCircle
+  end
   object Panel7: TPanel
     Left = 5
     Top = 61
@@ -1759,7 +1767,7 @@ object FormTelaRecebimentoCrediario: TFormTelaRecebimentoCrediario
     PrinterSetup.mmMarginTop = 6350
     PrinterSetup.mmPaperHeight = 0
     PrinterSetup.mmPaperWidth = 0
-    PrinterSetup.PaperSize = 256
+    PrinterSetup.PaperSize = 160
     Units = utMillimeters
     AllowPrintToFile = True
     BeforePrint = ReportAutenticBeforePrint
@@ -2408,7 +2416,7 @@ object FormTelaRecebimentoCrediario: TFormTelaRecebimentoCrediario
     PrinterSetup.mmMarginTop = 6350
     PrinterSetup.mmPaperHeight = 0
     PrinterSetup.mmPaperWidth = 0
-    PrinterSetup.PaperSize = 256
+    PrinterSetup.PaperSize = 160
     Units = utMillimeters
     AllowPrintToFile = True
     BeforePrint = ReportAutenticBeforePrint
@@ -3307,11 +3315,6 @@ object FormTelaRecebimentoCrediario: TFormTelaRecebimentoCrediario
       FieldName = 'CTRCA15NOSSONUMERO'
       Origin = 'DB.CONTASRECEBER.CTRCA15NOSSONUMERO'
       Size = 15
-    end
-    object SQLRenegociacaoCTRCA5NOSSONUMERO: TStringField
-      FieldName = 'CTRCA5NOSSONUMERO'
-      Origin = 'DB.CONTASRECEBER.CTRCA5NOSSONUMERO'
-      Size = 5
     end
     object SQLRenegociacaoLOTEREMESSABANCO: TIntegerField
       FieldName = 'LOTEREMESSABANCO'

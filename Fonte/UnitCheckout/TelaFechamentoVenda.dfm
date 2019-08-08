@@ -1,6 +1,6 @@
 object FormTelaFechamentoVenda: TFormTelaFechamentoVenda
-  Left = 11
-  Top = 17
+  Left = -1385
+  Top = -82
   BorderIcons = []
   BorderStyle = bsNone
   Caption = 'Tela Fechamento de Venda'
@@ -1426,7 +1426,7 @@ object FormTelaFechamentoVenda: TFormTelaFechamentoVenda
       object LblVendedor: TRxLabel
         Left = 28
         Top = 91
-        Width = 92
+        Width = 91
         Height = 20
         Caption = 'Vendedor:'
         Color = 10567680
@@ -1523,7 +1523,7 @@ object FormTelaFechamentoVenda: TFormTelaFechamentoVenda
       object LblBonusTroca: TRxLabel
         Left = 569
         Top = 91
-        Width = 115
+        Width = 113
         Height = 20
         Caption = 'B'#244'nus Troca:'
         Color = 10567680
@@ -2023,7 +2023,7 @@ object FormTelaFechamentoVenda: TFormTelaFechamentoVenda
       object LblTotalVenda: TRxLabel
         Left = 5
         Top = 55
-        Width = 90
+        Width = 86
         Height = 32
         Caption = 'TOTAL'
         Color = 32767
@@ -2042,7 +2042,7 @@ object FormTelaFechamentoVenda: TFormTelaFechamentoVenda
       object LblValorDescontoAcrescimo: TRxLabel
         Left = 5
         Top = 118
-        Width = 140
+        Width = 139
         Height = 29
         Caption = 'DESCONTO'
         Color = 32767
