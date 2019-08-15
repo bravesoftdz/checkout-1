@@ -955,6 +955,12 @@ inherited DM: TDM
       FieldName = 'CFCRINRODIACARTA1A'
       Origin = 'DB.CONFIGCREDIARIO.CFCRINRODIACARTA1A'
     end
+    object SQLConfigCrediarioIMPRIMIR_RESUMO: TStringField
+      FieldName = 'IMPRIMIR_RESUMO'
+      Origin = 'DB.CONFIGCREDIARIO.IMPRIMIR_RESUMO'
+      FixedChar = True
+      Size = 1
+    end
   end
   object SQLClienteDadChq: TRxQuery
     DatabaseName = 'DB'
@@ -4887,7 +4893,7 @@ inherited DM: TDM
     PrinterSetup.mmMarginTop = 6350
     PrinterSetup.mmPaperHeight = 0
     PrinterSetup.mmPaperWidth = 0
-    PrinterSetup.PaperSize = 177
+    PrinterSetup.PaperSize = 160
     DeviceType = 'Screen'
     EmailSettings.ReportFormat = 'PDF'
     OutlineSettings.CreateNode = True

@@ -1637,10 +1637,14 @@ begin
                                                SQLParcelasReceberTempN2VLRJURO.VALUE+
                                                SQLParcelasReceberTempN2VLRMULTA.VALUE-
                                                SQLParcelasReceberTempN2VLRDESC.VALUE;
-                  if TotalRecbto > SQLParcelasReceberTempN2VLRAMORT.Value then
-                    TotalRecbto := SQLParcelasReceberTempN2VLRAMORT.Value;
                   TotalDescto := TotalDescto + SQLParcelasReceberTempN2VLRDESC.value;
                   TotalJuros  := TotalJuros  + SQLParcelasReceberTempN2VLRJURO.value;
+                  if TotalRecbto > SQLParcelasReceberTempN2VLRAMORT.Value then
+                  begin
+                    TotalRecbto := SQLParcelasReceberTempN2VLRAMORT.Value;
+                    TotalDescto := 0;
+                    TotalJuros  := 0;
+                  end;
 
                   if SQLParcelasReceberTempBAIXAR_PARCELA.AsString = 'S' then
                     GravarRenegociacao(SQLParcelasReceberTempCTRCA13ID.Value);

@@ -330,6 +330,7 @@ type
     function  Pontos(NumPOntos : Integer) : string ;
     function  VerificaCartaoCredito : Boolean;
 
+    Procedure ImprimirComprovanteCrediario;
     Procedure MostrarInstrucoes(pMsg:String);
     Procedure MostrarMensagemOperador(pMsg:String);
     Procedure MostrarMensagemCliente(pMsg:String);
@@ -6388,36 +6389,32 @@ begin
 
       //TESTAR SE CLIENTE TEM MOTIVO DE BLOQUEIO
       MotivoBloqueio := SQLLocate('CLIENTE', 'CLIEA13ID', 'MTBLICOD', '"' + ClienteVenda + '"');
-      if MotivoBloqueio <> '' then
-        if MotivoBloqueio <> '0' then
-          TipoBloqueio := 1 ;
+      if (MotivoBloqueio <> '') and (MotivoBloqueio <> '0') then
+        TipoBloqueio := 1;
 
 
       //TESTAR SE CLIENTE ESTA EM 1 AVISO
       if DM.SQLConfigCrediarioCFCRCBLOQVENDCLI1AV.Value = 'S' then
         begin
           MotivoBloqueio := SQLLocate('CARTAPRIMEIROAVISO', 'CLIEA13ID', 'CLIEA13ID', '"' + ClienteVenda + '"');
-          if MotivoBloqueio <> '' then
-            if MotivoBloqueio <> '0' then
-              TipoBloqueio := 2 ;
+          if (MotivoBloqueio <> '') and (MotivoBloqueio <> '0') then
+            TipoBloqueio := 2;
         end;
 
       //TESTAR SE CLIENTE ESTA EM 2 AVISO
       if DM.SQLConfigCrediarioCFCRCBLOQVENDCLI2AV.Value = 'S' then
         begin
           MotivoBloqueio := SQLLocate('CARTASEGUNDOAVISO', 'CLIEA13ID', 'CLIEA13ID', '"' + ClienteVenda + '"');
-            if MotivoBloqueio <> '' then
-              if MotivoBloqueio <> '0' then
-                TipoBloqueio := 3 ;
+            if (MotivoBloqueio <> '') and (MotivoBloqueio <> '0') then
+              TipoBloqueio := 3 ;
         end;
 
       //TESTAR SE CLIENTE ESTA EM SPC
       if DM.SQLConfigCrediarioCFCRCBLOQVENDCLI3AV.Value = 'S' then
         begin
           MotivoBloqueio := SQLLocate('CARTAAVISOSPC', 'CLIEA13ID', 'CLIEA13ID', '"' + ClienteVenda + '"');
-            if MotivoBloqueio <> '' then
-              if MotivoBloqueio <> '0' then
-                TipoBloqueio := 4 ;
+            if (MotivoBloqueio <> '') and (MotivoBloqueio <> '0') then
+              TipoBloqueio := 4 ;
         end;
 
       // TESTAR SE TEM ALGUM CHEQUE COM SITUACAO Q TEM BLOQUEIO
@@ -6474,6 +6471,7 @@ begin
               Result := False; // Usuario esta autorizado a Vender para clientes bloqueados para Venda no Crediario ou Chq.
 
           if ((TipoPadrao = 'CRD') or (TipoPadrao = 'CRTF')) and (TipoBloqueio = 9) then // Limite de Compras Excedido
+          begin
             if SQLLocate('USUARIO', 'USUAICOD', 'USUACVENDCLIBLOQ', IntToStr(DM.UsuarioAtual)) <> 'S' then
               begin
                 RetornoCampoUsuario := AutenticaUsuario(UsuarioAtualNome,'USUACVENDCLIBLOQ',InfoRetornoUser);
@@ -6484,7 +6482,9 @@ begin
               end
             else
               Result := False; // Usuario esta autorizado a Vender para clientes bloqueados para Venda no Crediario por Limite Excedido
+          end;
           if (copy(TipoPadrao,1,3) = 'CHQ') and (TipoBloqueio = 9) then // Limite de Compras Excedido
+          begin
             if SQLLocate('USUARIO', 'USUAICOD', 'USUACVENDCLIBLOQCHQ', IntToStr(DM.UsuarioAtual)) <> 'S' then
               begin
                 RetornoCampoUsuario := AutenticaUsuario(UsuarioAtualNome,'USUACVENDCLIBLOQCHQ',InfoRetornoUser);
@@ -6492,10 +6492,45 @@ begin
                   Result := True
                 else
                   Result := False;
-              end
-            else
-              Result := False; // Usuario esta autorizado a Vender para clientes bloqueados para Venda no Cheque
-        end;
+              end;
+          end
+          else
+            Result := False; // Usuario esta autorizado a Vender para clientes bloqueados para Venda no Cheque
+        end
+      else
+      begin
+         if DM.SQLConfigCrediarioIMPRIMIR_RESUMO.AsString = 'S' then
+         begin
+           MemoRetorno.Lines.Clear;
+           MemoRetorno.Lines.Add('</ce><n>Cliente:' + SQLLocate('Cliente','CLIEA13ID','CLIEA60RAZAOSOC',ClienteVenda)+'</e>');
+           MemoRetorno.Lines.Add('</fn>------------------------------------------------');
+           MemoRetorno.Lines.Add('<ad><n>Valor do Limeite inicial ' + FormatFloat('R$ ##0.00', LimiteOrigemCre) + '</n></ad>');
+           MemoRetorno.Lines.Add('<ad><n>Parcelas Abertas S/encargos ' + FormatFloat('R$ ##0.00', (DebitoCre-CreditoCre)) + '</n></ad>');
+           MemoRetorno.Lines.Add('<ad><n>Juros, Multas, Descontos ' + FormatFloat('R$ ##0.00', JurosCre) + '</n></ad>');
+           MemoRetorno.Lines.Add('</fn>------------------------------------------------');
+           MemoRetorno.Lines.Add('<ad><n>Valor do Limite Atual ' + FormatFloat('R$ ##0.00', LimiteCre) + '</n></ad>');
+           MemoRetorno.Lines.Add('<ad><n>Valor da Compra Atual ' + FormatFloat('R$ ##0.00', ValorCompraCre) + '</n></ad>');
+           MemoRetorno.Lines.Add('</fn>------------------------------------------------');
+           MemoRetorno.Lines.Add('<ad><n>Limite para novas Compras ' + FormatFloat('R$ ##0.00', (LimiteCre - ValorCompraCre)) + '</n></ad>');
+           MemoRetorno.Lines.Add(' ');
+           MemoRetorno.Lines.Add(' ');
+           MemoRetorno.Lines.Add(' ');
+           MemoRetorno.Lines.Add(' ');
+           MemoRetorno.Lines.Add('</corte_parcial>');
+           try
+             dm.ACBrPosPrinter.Device.Desativar;
+             dm.ACBrPosPrinter.Device.Ativar;
+             dm.ACBrPosPrinter.Imprimir(MemoRetorno.Lines.Text);
+             if (ECFAtual = 'NFCE DR800') then
+             begin
+               sleep(100);
+             end;
+             dm.ACBrPosPrinter.Device.Desativar;
+           except
+             Application.ProcessMessages;
+           end;
+         end;
+      end;
     end
   else
     Result := false ;
@@ -6837,6 +6872,11 @@ end;
 procedure TFormTelaFechamentoVenda.lMensagemClienteClick(Sender: TObject);
 begin
   pMensagem.Visible := False;
+end;
+
+procedure TFormTelaFechamentoVenda.ImprimirComprovanteCrediario;
+begin
+//
 end;
 
 end.

@@ -1,22 +1,22 @@
 inherited FormTelaConfiguracaoCrediario: TFormTelaConfiguracaoCrediario
-  Left = 152
-  Top = 69
-  Width = 733
-  Height = 550
+  Left = -8
+  Top = -8
+  Width = 1382
+  Height = 744
   Caption = 'Configura'#231#245'es de Credi'#225'rio'
   OldCreateOrder = True
   PixelsPerInch = 96
   TextHeight = 13
   inherited ScrollBoxFundo: TScrollBox
-    Width = 717
-    Height = 511
+    Width = 1366
+    Height = 705
     inherited PanelCentral: TPanel
-      Width = 713
-      Height = 427
+      Width = 1362
+      Height = 621
       ParentFont = False
       inherited PanelBarra: TPanel
         Width = 0
-        Height = 427
+        Height = 621
         TabOrder = 7
       end
       object GroupBox1: TGroupBox
@@ -719,15 +719,27 @@ inherited FormTelaConfiguracaoCrediario: TFormTelaConfiguracaoCrediario
           TabOrder = 0
         end
       end
+      object chkImprimirResumo: TDBCheckBox
+        Left = 8
+        Top = 416
+        Width = 97
+        Height = 17
+        Caption = 'Imprimir Resumo'
+        DataField = 'IMPRIMIR_RESUMO'
+        DataSource = DSSQLConfigCrediario
+        TabOrder = 8
+        ValueChecked = 'S'
+        ValueUnchecked = 'N'
+      end
     end
     inherited ScrollBoxTopo: TScrollBox
-      Width = 713
+      Width = 1362
       inherited PanelCabecalho: TPanel
-        Width = 713
+        Width = 1362
         inherited PanelNavigator: TPanel
-          Width = 713
+          Width = 1362
           inherited AdvPanelNavigator: TAdvOfficeStatusBar
-            Width = 713
+            Width = 1362
             inherited BtnFecharTela: TSpeedButton
               Left = 413
             end
@@ -917,6 +929,12 @@ inherited FormTelaConfiguracaoCrediario: TFormTelaConfiguracaoCrediario
       FieldName = 'CFCRA255PATHCARTPE'
       Origin = 'DB.CONFIGCREDIARIO.CFCRA255PATHCARTPE'
       Size = 254
+    end
+    object SQLConfigCrediarioIMPRIMIR_RESUMO: TStringField
+      FieldName = 'IMPRIMIR_RESUMO'
+      Origin = 'DB.CONFIGCREDIARIO.IMPRIMIR_RESUMO'
+      FixedChar = True
+      Size = 1
     end
   end
   object DSSQLConfigCrediario: TDataSource

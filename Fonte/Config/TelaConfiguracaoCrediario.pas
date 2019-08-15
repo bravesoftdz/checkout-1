@@ -88,6 +88,8 @@ type
     DBEdit17: TDBEdit;
     ArqCartasPerson: TFilenameEdit;
     LabelGravar: TSpeedButton;
+    chkImprimirResumo: TDBCheckBox;
+    SQLConfigCrediarioIMPRIMIR_RESUMO: TStringField;
     procedure SQLConfigCrediarioAfterEdit(DataSet: TDataSet);
     procedure SQLConfigCrediarioAfterPost(DataSet: TDataSet);
     procedure FormCreate(Sender: TObject);

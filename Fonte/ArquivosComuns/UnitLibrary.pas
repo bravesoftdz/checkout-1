@@ -155,6 +155,8 @@ var
   NroUltItem : Integer;
   DataAtualizacaoEstoque, DataNotaCompra : TDateTime;
   Imprimir_Nfce : Boolean = True;
+  LimiteOrigemCre, ValorCompraCre, LimiteCre, DebitoCre, CreditoCre, JurosCre, MultaCre : Real;
+  MensagemCre : string;
   
 function ExecSql(xsql: string; Tipo: Integer = 0): TQuery;
 function  LocateByDisplayLabel(DataSet:TDataSet;DisplayLabel:String):Integer ;
@@ -1004,12 +1006,21 @@ end;
 Function VerificaLimiteCredito(Cliente : String;ValorCompra : Double;SQLParcelas, SQLCliente : TQuery) : Boolean;
 var
   Documento : String;
-  Limite, LimiteOrigem, Debito, JurosMultaDescPendentes, SaldoParc, JuroParc, MultaParc, DescParc, JuroParcTot, MultaParcTot, DescParcTot : Double;
+  Limite, LimiteOrigem, Debito, Credito, JurosMultaDescPendentes, SaldoParc, JuroParc, MultaParc, DescParc, JuroParcTot, MultaParcTot, DescParcTot : Double;
   Vencimento : TDate;
   hMutex :THandle;
   Aplicativo :THandle;
 begin
   {Testa pra ver se esta rodando nessa maquina. Se achou é pq usa PDV Off e tem que procurar o limite no banco Servidor}
+  LimiteOrigemCre := 0;
+  ValorCompraCre := 0;
+  LimiteCre := 0;
+  DebitoCre := 0;
+  CreditoCre := 0;
+  JurosCre := 0;
+  MultaCre := 0;
+  MensagemCre := '';
+
   Aplicativo := FindWindow(nil, pchar('IntegradorPDVs'));
   if Aplicativo = 0 then {Consulta no Banco do PDV}
     begin
@@ -1141,18 +1152,21 @@ begin
             begin
               SQLParcelas.Close;
               SQLParcelas.SQL.Clear;
-              SQLParcelas.SQL.Add('Select sum(CTRCN2VLR) from CONTASRECEBER where CLIEA13ID = '+ '''' + Cliente + '''' +  ' AND CTRCN2VLR > CTRCN2TOTREC');
+              SQLParcelas.SQL.Add('Select sum(CTRCN2VLR) Debito, sum(CTRCN2TOTREC - CTRCN2TOTJUROREC - CTRCN2TOTMULTAREC + CTRCN2TOTDESCREC) CREDITO ');
+              SQLParcelas.SQL.Add('from CONTASRECEBER where CLIEA13ID = '+ '''' + Cliente + '''' +  ' AND CTRCN2VLR > CTRCN2TOTREC');
               SQLParcelas.SQL.Add('AND (CTRCA5TIPOPADRAO NOT IN (''CRT'',''CONV'') or CTRCA5TIPOPADRAO is null) ');
               SQLParcelas.SQL.Add('AND (CTRCCSTATUS = ''A'' or CTRCCSTATUS = ''N'')') ;
               SQLParcelas.Open;
               if not SQLParcelas.IsEmpty then
-                Debito := SQLParcelas.FieldByName('SUM').AsFloat;
+              begin
+                Debito := SQLParcelas.FieldByName('Debito').AsFloat;
+                Credito := SQLParcelas.FieldByName('Credito').AsFloat;
+              end;
 
               Limite := LimiteOrigem;
               // Se Subtrai as Parcelas Abertas do Limite
               if DM.SQLConfigVenda.FieldByName('CFVECSUBDEBNOLIMITE').AsString = 'S' then
-                Limite := Limite - (Debito + JurosMultaDescPendentes)
-
+                Limite := Limite + Credito - (Debito + JurosMultaDescPendentes)
             end;
 
           if Limite < ValorCompra then
@@ -1166,10 +1180,10 @@ begin
                     FormTelaAvisoDebito.lblSaldoFinal.font.Color := clRed;
                     FormTelaAvisoDebito.lblCliente.Caption       :=  SQLCliente.FieldByName('CLIEA60RAZAOSOC').AsVariant;
                     FormTelaAvisoDebito.lblLimiteInicial.Caption :=  FormatFloat('###0.00',LimiteOrigem) ;
-                    FormTelaAvisoDebito.lblParcelas.Caption      :=  FormatFloat('###0.00',Debito);
+                    FormTelaAvisoDebito.lblParcelas.Caption      :=  FormatFloat('###0.00',Debito-Credito);
                     FormTelaAvisoDebito.lbljuros.Caption         :=  FormatFloat('###0.00',JurosMultaDescPendentes);
-                    FormTelaAvisoDebito.lblSaldoAtual.Caption    :=  FormatFloat('###0.00',LimiteOrigem - (Debito+JurosMultaDescPendentes));
-                    if LimiteOrigem - (Debito+JurosMultaDescPendentes) > 0 then
+                    FormTelaAvisoDebito.lblSaldoAtual.Caption    :=  FormatFloat('###0.00',LimiteOrigem - (Debito-Credito+JurosMultaDescPendentes));
+                    if LimiteOrigem - (Debito-Credito+JurosMultaDescPendentes) > 0 then
                       FormTelaAvisoDebito.lblSaldoAtual.Font.Color := clGreen
                     Else
                       FormTelaAvisoDebito.lblSaldoAtual.Font.Color := clRed;
@@ -1199,10 +1213,10 @@ begin
                     FormTelaAvisoDebito.lblSaldoFinal.font.Color := clRed;
                     FormTelaAvisoDebito.lblCliente.Caption       :=  SQLCliente.FieldByName('CLIEA60RAZAOSOC').AsVariant;
                     FormTelaAvisoDebito.lblLimiteInicial.Caption :=  FormatFloat('###0.00',LimiteOrigem) ;
-                    FormTelaAvisoDebito.lblParcelas.Caption      :=  FormatFloat('###0.00',Debito);
+                    FormTelaAvisoDebito.lblParcelas.Caption      :=  FormatFloat('###0.00',Debito-Credito);
                     FormTelaAvisoDebito.lbljuros.Caption         :=  FormatFloat('###0.00',JurosMultaDescPendentes);
-                    FormTelaAvisoDebito.lblSaldoAtual.Caption    :=  FormatFloat('###0.00',LimiteOrigem - (Debito+JurosMultaDescPendentes));
-                    if LimiteOrigem - (Debito+JurosMultaDescPendentes) > 0 then
+                    FormTelaAvisoDebito.lblSaldoAtual.Caption    :=  FormatFloat('###0.00',LimiteOrigem - (Debito-Credito+JurosMultaDescPendentes));
+                    if LimiteOrigem - (Debito-Credito+JurosMultaDescPendentes) > 0 then
                       FormTelaAvisoDebito.lblSaldoAtual.Font.Color := clGreen
                     Else
                       FormTelaAvisoDebito.lblSaldoAtual.Font.Color := clRed;
@@ -1214,7 +1228,7 @@ begin
                     if not FileExists('MostraLimiteComprasReduzido.txt') then
                       ShowMessage('Cliente => ' + SQLCliente.FieldByName('CLIEA60RAZAOSOC').AsVariant                   + #13 + #13 +
                                   'Valor do Limite Inicial.            =>  R$ ' + FormatFloat('###0.00',LimiteOrigem)         + #13 +
-                                  'Parcelas Abertas S/Encargos =>  R$ ' + FormatFloat('###0.00',Debito)                       + #13 +
+                                  'Parcelas Abertas S/Encargos =>  R$ ' + FormatFloat('###0.00',Debito - Credito)             + #13 +
                                   'Juros, Multas, Descontos       =>  R$ ' + FormatFloat('###0.00',JurosMultaDescPendentes)   + #13 +
                                   '----------------------------------------------------------'                                + #13 +
                                   'Valor do Limite Atual              =>  R$ ' + FormatFloat('###0.00',Limite)                + #13 +
@@ -1273,7 +1287,7 @@ begin
                     FormTelaAvisoDebito.lblSaldoFinal.font.Color := clGreen;
                     FormTelaAvisoDebito.lblCliente.Caption       :=  SQLCliente.FieldByName('CLIEA60RAZAOSOC').AsVariant;
                     FormTelaAvisoDebito.lblLimiteInicial.Caption :=  FormatFloat('###0.00',LimiteOrigem) ;
-                    FormTelaAvisoDebito.lblParcelas.Caption      :=  FormatFloat('###0.00',Debito);
+                    FormTelaAvisoDebito.lblParcelas.Caption      :=  FormatFloat('###0.00',Debito-Credito);
                     FormTelaAvisoDebito.lbljuros.Caption         :=  FormatFloat('###0.00',JurosMultaDescPendentes);
                     FormTelaAvisoDebito.lblSaldoAtual.Caption    :=  FormatFloat('###0.00',LimiteOrigem - (Debito+JurosMultaDescPendentes));
                     if LimiteOrigem - (Debito+JurosMultaDescPendentes) > 0 then
@@ -1288,7 +1302,7 @@ begin
                     if not FileExists('MostraLimiteComprasReduzido.txt') then
                       ShowMessage('Cliente => ' + SQLCliente.FieldByName('CLIEA60RAZAOSOC').AsVariant                   + #13 + #13 +
                                   'Valor do Limite Inicial.            =>  R$ ' + FormatFloat('###0.00',LimiteOrigem)         + #13 +
-                                  'Parcelas Abertas S/Encargos =>  R$ ' + FormatFloat('###0.00',Debito)                       + #13 +
+                                  'Parcelas Abertas S/Encargos =>  R$ ' + FormatFloat('###0.00',Debito-Credito)               + #13 +
                                   'Juros, Multas, Descontos       =>  R$ ' + FormatFloat('###0.00',JurosMultaDescPendentes)   + #13 +
                                   '----------------------------------------------------------'                                + #13 +
                                   'Valor do Limite Atual              =>  R$ ' + FormatFloat('###0.00',Limite)                + #13 +
@@ -1299,6 +1313,13 @@ begin
                   End;
                   Result := True;
                 end;
+                LimiteOrigemCre := LimiteOrigem;
+                ValorCompraCre := ValorCompra;
+                LimiteCre := Limite;
+                DebitoCre := Debito;
+                CreditoCre := CreditoCre;
+                JurosCre := JurosMultaDescPendentes;
+                MensagemCre := '';
             end;
         end;
     end
@@ -1437,12 +1458,16 @@ begin
                 begin
                   dm.zServidor_Consulta.Close;
                   dm.zServidor_Consulta.SQL.Clear;
-                  dm.zServidor_Consulta.SQL.Add('Select sum(CTRCN2VLR) from CONTASRECEBER where CLIEA13ID = ''' + Cliente + ''' AND CTRCN2VLR > CTRCN2TOTREC');
+                  dm.zServidor_Consulta.SQL.Add('Select sum(CTRCN2VLR) DEBITO, sum(CTRCN2TOTREC - CTRCN2TOTJUROREC - CTRCN2TOTMULTAREC) CREDITO ');
+                  dm.zServidor_Consulta.SQL.Add('from CONTASRECEBER where CLIEA13ID = ''' + Cliente + ''' AND CTRCN2VLR > CTRCN2TOTREC');
                   dm.zServidor_Consulta.SQL.Add('AND (CTRCA5TIPOPADRAO NOT IN (''CRT'',''CONV'') or CTRCA5TIPOPADRAO is null) ');
                   dm.zServidor_Consulta.SQL.Add('AND (CTRCCSTATUS = ''A'' or CTRCCSTATUS = ''N'')') ;
                   dm.zServidor_Consulta.Open;
                   if not dm.zServidor_Consulta.IsEmpty then
-                    Debito := dm.zServidor_Consulta.FieldByName('SUM').AsFloat;
+                  begin
+                    Debito := dm.zServidor_Consulta.FieldByName('DEBITO').AsFloat;
+                    Credito := dm.zServidor_Consulta.FieldByName('CREDITO').AsFloat;
+                  end;
 
                   Limite := LimiteOrigem;
                   // Se Subtrai as Parcelas Abertas do Limite
@@ -1461,10 +1486,10 @@ begin
                         FormTelaAvisoDebito.lblSaldoFinal.font.Color := clRed;
                         FormTelaAvisoDebito.lblCliente.Caption       :=  SQLCliente.FieldByName('CLIEA60RAZAOSOC').AsVariant;
                         FormTelaAvisoDebito.lblLimiteInicial.Caption :=  FormatFloat('###0.00',LimiteOrigem) ;
-                        FormTelaAvisoDebito.lblParcelas.Caption      :=  FormatFloat('###0.00',Debito);
+                        FormTelaAvisoDebito.lblParcelas.Caption      :=  FormatFloat('###0.00',Debito-Credito);
                         FormTelaAvisoDebito.lbljuros.Caption         :=  FormatFloat('###0.00',JurosMultaDescPendentes);
-                        FormTelaAvisoDebito.lblSaldoAtual.Caption    :=  FormatFloat('###0.00',LimiteOrigem - (Debito+JurosMultaDescPendentes));
-                        if LimiteOrigem - (Debito+JurosMultaDescPendentes) > 0 then
+                        FormTelaAvisoDebito.lblSaldoAtual.Caption    :=  FormatFloat('###0.00',LimiteOrigem - (Debito-Credito+JurosMultaDescPendentes));
+                        if LimiteOrigem - (Debito-Credito+JurosMultaDescPendentes) > 0 then
                           FormTelaAvisoDebito.lblSaldoAtual.Font.Color := clGreen
                         Else
                           FormTelaAvisoDebito.lblSaldoAtual.Font.Color := clRed;
@@ -1494,10 +1519,10 @@ begin
                         FormTelaAvisoDebito.lblSaldoFinal.font.Color := clRed;
                         FormTelaAvisoDebito.lblCliente.Caption       :=  SQLCliente.FieldByName('CLIEA60RAZAOSOC').AsVariant;
                         FormTelaAvisoDebito.lblLimiteInicial.Caption :=  FormatFloat('###0.00',LimiteOrigem) ;
-                        FormTelaAvisoDebito.lblParcelas.Caption      :=  FormatFloat('###0.00',Debito);
+                        FormTelaAvisoDebito.lblParcelas.Caption      :=  FormatFloat('###0.00',Debito-Credito);
                         FormTelaAvisoDebito.lbljuros.Caption         :=  FormatFloat('###0.00',JurosMultaDescPendentes);
-                        FormTelaAvisoDebito.lblSaldoAtual.Caption    :=  FormatFloat('###0.00',LimiteOrigem - (Debito+JurosMultaDescPendentes));
-                        if LimiteOrigem - (Debito+JurosMultaDescPendentes) > 0 then
+                        FormTelaAvisoDebito.lblSaldoAtual.Caption    :=  FormatFloat('###0.00',LimiteOrigem - (Debito-Credito+JurosMultaDescPendentes));
+                        if LimiteOrigem - (Debito-Credito+JurosMultaDescPendentes) > 0 then
                           FormTelaAvisoDebito.lblSaldoAtual.Font.Color := clGreen
                         Else
                           FormTelaAvisoDebito.lblSaldoAtual.Font.Color := clRed;
@@ -1509,7 +1534,7 @@ begin
                         if not FileExists('MostraLimiteComprasReduzido.txt') then
                           ShowMessage('Cliente => ' + SQLCliente.FieldByName('CLIEA60RAZAOSOC').AsVariant                   + #13 + #13 +
                                       'Valor do Limite Inicial.            =>  R$ ' + FormatFloat('###0.00',LimiteOrigem)         + #13 +
-                                      'Parcelas Abertas S/Encargos =>  R$ ' + FormatFloat('###0.00',Debito)                       + #13 +
+                                      'Parcelas Abertas S/Encargos =>  R$ ' + FormatFloat('###0.00',Debito-Credito)               + #13 +
                                       'Juros, Multas, Descontos       =>  R$ ' + FormatFloat('###0.00',JurosMultaDescPendentes)   + #13 +
                                       '----------------------------------------------------------'                                + #13 +
                                       'Valor do Limite Atual              =>  R$ ' + FormatFloat('###0.00',Limite)                + #13 +
@@ -1539,10 +1564,10 @@ begin
                         FormTelaAvisoDebito.lblSaldoFinal.Font.Color := clGreen;
                         FormTelaAvisoDebito.lblCliente.Caption       :=  SQLCliente.FieldByName('CLIEA60RAZAOSOC').AsVariant;
                         FormTelaAvisoDebito.lblLimiteInicial.Caption :=  FormatFloat('###0.00',LimiteOrigem) ;
-                        FormTelaAvisoDebito.lblParcelas.Caption      :=  FormatFloat('###0.00',Debito);
+                        FormTelaAvisoDebito.lblParcelas.Caption      :=  FormatFloat('###0.00',Debito-Credito);
                         FormTelaAvisoDebito.lbljuros.Caption         :=  FormatFloat('###0.00',JurosMultaDescPendentes);
-                        FormTelaAvisoDebito.lblSaldoAtual.Caption    :=  FormatFloat('###0.00',LimiteOrigem - (Debito+JurosMultaDescPendentes));
-                        if LimiteOrigem - (Debito+JurosMultaDescPendentes) > 0 then
+                        FormTelaAvisoDebito.lblSaldoAtual.Caption    :=  FormatFloat('###0.00',LimiteOrigem - (Debito-Credito+JurosMultaDescPendentes));
+                        if LimiteOrigem - (Debito-Credito+JurosMultaDescPendentes) > 0 then
                           FormTelaAvisoDebito.lblSaldoAtual.Font.Color := clGreen
                         Else
                           FormTelaAvisoDebito.lblSaldoAtual.Font.Color := clRed;
@@ -1568,10 +1593,10 @@ begin
                         FormTelaAvisoDebito.lblSaldoFinal.font.Color := clGreen;
                         FormTelaAvisoDebito.lblCliente.Caption       :=  SQLCliente.FieldByName('CLIEA60RAZAOSOC').AsVariant;
                         FormTelaAvisoDebito.lblLimiteInicial.Caption :=  FormatFloat('###0.00',LimiteOrigem) ;
-                        FormTelaAvisoDebito.lblParcelas.Caption      :=  FormatFloat('###0.00',Debito);
+                        FormTelaAvisoDebito.lblParcelas.Caption      :=  FormatFloat('###0.00',Debito-Credito);
                         FormTelaAvisoDebito.lbljuros.Caption         :=  FormatFloat('###0.00',JurosMultaDescPendentes);
-                        FormTelaAvisoDebito.lblSaldoAtual.Caption    :=  FormatFloat('###0.00',LimiteOrigem - (Debito+JurosMultaDescPendentes));
-                        if LimiteOrigem - (Debito+JurosMultaDescPendentes) > 0 then
+                        FormTelaAvisoDebito.lblSaldoAtual.Caption    :=  FormatFloat('###0.00',LimiteOrigem - (Debito-Credito+JurosMultaDescPendentes));
+                        if LimiteOrigem - (Debito-Credito+JurosMultaDescPendentes) > 0 then
                           FormTelaAvisoDebito.lblSaldoAtual.Font.Color := clGreen
                         Else
                           FormTelaAvisoDebito.lblSaldoAtual.Font.Color := clRed;
@@ -1583,7 +1608,7 @@ begin
                         if not FileExists('MostraLimiteComprasReduzido.txt') then
                           ShowMessage('Cliente => ' + SQLCliente.FieldByName('CLIEA60RAZAOSOC').AsVariant                   + #13 + #13 +
                                       'Valor do Limite Inicial.            =>  R$ ' + FormatFloat('###0.00',LimiteOrigem)         + #13 +
-                                      'Parcelas Abertas S/Encargos =>  R$ ' + FormatFloat('###0.00',Debito)                       + #13 +
+                                      'Parcelas Abertas S/Encargos =>  R$ ' + FormatFloat('###0.00',Debito-Credito)               + #13 +
                                       'Juros, Multas, Descontos       =>  R$ ' + FormatFloat('###0.00',JurosMultaDescPendentes)   + #13 +
                                       '----------------------------------------------------------'                                + #13 +
                                       'Valor do Limite Atual              =>  R$ ' + FormatFloat('###0.00',Limite)                + #13 +

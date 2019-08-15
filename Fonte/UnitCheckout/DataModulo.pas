@@ -1171,6 +1171,7 @@ type
     SQLCupomItemBASE_ST_RETIDO: TFloatField;
     SQLCupomItemVALOR_ST_RETIDO: TFloatField;
     SQLConfigGeralVERIFICA_CUPOM_PENDENTE: TStringField;
+    SQLConfigCrediarioIMPRIMIR_RESUMO: TStringField;
     procedure DataModuleCreate(Sender: TObject);
     procedure SQLCupomNewRecord(DataSet: TDataSet);
     procedure SQLCupomBeforePost(DataSet: TDataSet);
