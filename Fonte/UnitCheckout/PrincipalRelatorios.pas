@@ -9,7 +9,7 @@ uses
   ppProd, ppDB, ppComm, ppRelatv, ppDBPipe, ppDBBDE, RxQuery, ppViewr, ppModule,
   raCodMod, ppMemo, Placemnt, AdvSmoothPanel, RXCtrls, AdvOfficeStatusBar,
   AdvOfficeStatusBarStylers, ACBrNFeDANFEClass, ACBrNFeDANFeESCPOS, ACBrBase,
-  ACBrPosPrinter;
+  ACBrPosPrinter, ExtCtrls;
 
 type
   TFormPrincipalRelatorios = class(TForm)
@@ -239,6 +239,7 @@ type
     ppDBText15: TppDBText;
     ppLabel20: TppLabel;
     ppLine1: TppLine;
+    shpStatusServidor: TShape;
     procedure FormCreate(Sender: TObject);
     procedure BtnVisualizarClick(Sender: TObject);
     procedure ReportTotaisPreviewFormCreate(Sender: TObject);
@@ -250,7 +251,12 @@ type
     procedure DetalheProdutosVendidosBeforePrint(Sender: TObject);
     procedure ReportTotaisPreviewFormClose(Sender: TObject);
     procedure SumarioVendaCartoesBeforePrint(Sender: TObject);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure FormShow(Sender: TObject);
   private
+    AliasName : String;
+    procedure ConectaOnLine;
+    procedure DisconectaOnline;
     { Private declarations }
   public
     { Public declarations }
@@ -262,12 +268,18 @@ var
 implementation
 
 uses
-  DataModulo, UnitLibrary;
+  DataModulo, UnitLibrary, Math;
 
 {$R *.dfm}
 
 procedure TFormPrincipalRelatorios.FormCreate(Sender: TObject);
 begin
+  if CrediarioOnline = 'S' then
+  begin
+    AliasName := DM.DB.AliasName;
+    ConectaOnLine;
+  end;
+
   SQLOperador.Open;
   SQLTerminal.Open;
   de.Date := Date;
@@ -645,6 +657,67 @@ begin
     TituloProdutosVendidos.Visible := True;
     DetalheCrediarioDetalhado.Visible := True;
     TotalCrediarioDetalhado.Visible := True;
+  end;
+end;
+
+procedure TFormPrincipalRelatorios.ConectaOnLine;
+begin
+  DM.DB.Connected := False;
+  DM.DB.AliasName := DM.DB.AliasName + 'ONLINE';
+  shpStatusServidor.Brush.Color := clLime;
+  try
+    DM.DB.Connected := True;
+    dm.SQLConfigGeral.Close;
+    dm.SQLConfigGeral.Open;
+    dm.SQLConfigVenda.Close;
+    dm.SQLConfigVenda.Open;
+    dm.SQLUsuario.Close;
+    dm.SQLUsuario.Open;
+  except
+    on e: Exception do
+    begin
+     Showmessage('Erro ao acessar o servidor: ' + e.Message);
+     DM.DB.Connected := False;
+     DM.DB.AliasName := AliasName;
+     DM.DB.Connected := True;
+    end;
+  end;
+end;
+
+procedure TFormPrincipalRelatorios.DisconectaOnline;
+begin
+  DM.DB.Connected := False;
+  DM.DB.AliasName := AliasName;
+  shpStatusServidor.Brush.Color := clRed;
+  try
+    DM.DB.Connected := True;
+    dm.SQLConfigGeral.Close;
+    dm.SQLConfigGeral.Open;
+    dm.SQLConfigVenda.Close;
+    dm.SQLConfigVenda.Open;
+    dm.SQLUsuario.Close;
+    dm.SQLUsuario.Open;
+  except
+    on e: Exception do
+    begin
+     Showmessage('Erro ao acessar a base local: ' + e.Message);
+    end;
+  end;
+end;
+
+procedure TFormPrincipalRelatorios.FormClose(Sender: TObject;
+  var Action: TCloseAction);
+begin
+  if CrediarioOnLine = 'S' then
+    DisconectaOnline;
+end;
+
+procedure TFormPrincipalRelatorios.FormShow(Sender: TObject);
+begin
+  if TerminalAtual > 0 then
+  begin
+    SQLTerminal.Locate('TERMICOD',TerminalAtual,[loCaseInsensitive]);
+    ComboTerminal.KeyValue := SQLTerminal.FieldByName('TERMICOD').Value;
   end;
 end;
 

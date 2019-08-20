@@ -1,6 +1,6 @@
 object FormPrincipalRelatorios: TFormPrincipalRelatorios
-  Left = 301
-  Top = 180
+  Left = 351
+  Top = 134
   Width = 604
   Height = 412
   Caption = 'Relat'#243'rio para Resumo de Caixa'
@@ -13,8 +13,10 @@ object FormPrincipalRelatorios: TFormPrincipalRelatorios
   KeyPreview = True
   OldCreateOrder = False
   Position = poDesktopCenter
+  OnClose = FormClose
   OnCreate = FormCreate
   OnKeyDown = FormKeyDown
+  OnShow = FormShow
   PixelsPerInch = 96
   TextHeight = 13
   object ptopo: TAdvOfficeStatusBar
@@ -177,6 +179,14 @@ object FormPrincipalRelatorios: TFormPrincipalRelatorios
       ShowHint = True
       Spacing = 3
       OnClick = BtnVisualizarClick
+    end
+    object shpStatusServidor: TShape
+      Left = 512
+      Top = 283
+      Width = 10
+      Height = 10
+      Brush.Color = clRed
+      Shape = stCircle
     end
     object GroupBox1: TGroupBox
       Left = 63
