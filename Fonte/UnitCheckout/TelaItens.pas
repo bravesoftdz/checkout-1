@@ -522,7 +522,7 @@ end;
 function TFormTelaItens.Gerar_NFCe(idCupom: string): string;
 var xCliente, xDocumento, xPlano, vTotaItem, Associado: string;
 var iCRT, vCont, vUltimo: integer;
-var VlrDescNoTotal, VlrTroca, VlrTotalItens, PercDesc, TotalDesconto: double;
+var VlrDescNoTotal, VlrTroca, VlrTotalItens, PercDescTroca, TotalDesconto: double;
   vaux, Total_vTotTrib, VlrTroco, AliquotaPis, AliquotaCofins, ValorPis, ValorCofins, ValorBasePis, ValorBaseCofins, vPercSTEfe : Currency;
 var vDescTodosItens : Boolean;
 begin
@@ -565,8 +565,8 @@ begin
   end;
 
   {Achar o Percentual de Desconto a ser aplicado em cada item, devido a alguma troca ou desconto no total}
-  if (VlrDescNoTotal > 0) or (VlrTroca > 0) then
-    PercDesc := ((VlrDescNoTotal + VlrTroca) / VlrTotalItens) * 100;
+  if (VlrTroca > 0) then
+    PercDescTroca := VlrTroca / VlrTotalItens * 100;
 
   LblInstrucoes.Caption := 'Aguarde... Montando NFCe.. ' + intToStr(NumNFe);
   LblInstrucoes.Update;
@@ -713,8 +713,8 @@ begin
         if SQLImpressaoCupom.fieldbyname('CPITN2DESC').AsFloat > 0 then
           Prod.vDesc := SQLImpressaoCupom.fieldbyname('CPITN2DESC').AsFloat;
 
-//        if (PercDesc > 0) then
-//          Prod.vDesc := ((Prod.vProd * PercDesc) / 100) + SQLImpressaoCupom.fieldbyname('CPITN2DESC').AsFloat;
+        if (PercDescTroca > 0) then
+          Prod.vDesc := ((Prod.vProd * PercDescTroca) / 100) + SQLImpressaoCupom.fieldbyname('CPITN2DESC').AsFloat;
 
         Prod.vDesc := RoundTo(Prod.vDesc, -2);
 
@@ -1089,10 +1089,10 @@ begin
                     tPag := fpOutro;
                  //Tirei pq quando era pago com dois tipos de pagamento a tag vpag ficava com o mesmo valor
                   vCont := RecordCount;
-                  VarValorRecebido := SQLImpressaoCupom.fieldbyname('CUPON2TOTITENS').AsFloat + SQLImpressaoCupom.fieldbyname('TROCO').AsFloat;
+                  VarValorRecebido := SQLImpressaoCupom.fieldbyname('CUPON2TOTITENS').AsFloat + SQLImpressaoCupom.fieldbyname('TROCO').AsFloat - SQLImpressaoCupom.fieldbyname('CUPON3BONUSTROCA').AsFloat;
 //                  if (VarValorRecebido > 0) and (vCont = 1) then
                   if (VarValorRecebido <> fieldbyname('CTRCN2VLR').AsFloat) and (vCont = 1) then
-                    vPag := SQLImpressaoCupom.fieldbyname('CUPON2TOTITENS').AsFloat + SQLImpressaoCupom.fieldbyname('TROCO').AsFloat - SQLImpressaoCupom.fieldbyname('CUPON2DESC').AsFloat
+                    vPag := SQLImpressaoCupom.fieldbyname('CUPON2TOTITENS').AsFloat + SQLImpressaoCupom.fieldbyname('TROCO').AsFloat - SQLImpressaoCupom.fieldbyname('CUPON2DESC').AsFloat - SQLImpressaoCupom.fieldbyname('CUPON3BONUSTROCA').AsFloat
                   else
                   vPag := fieldbyname('CTRCN2VLR').AsFloat;
                 if VlrTroco > 0 then
