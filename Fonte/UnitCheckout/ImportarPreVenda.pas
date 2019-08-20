@@ -239,7 +239,7 @@ implementation
 
 uses TelaFechamentoVenda, UnitLibrary, TelaItens, DataModulo,
      UnitCheckoutLibrary, TelaImpressaoPreVenda, DataModuloTemplate;
-Function BlockInput(fbLookIt:Boolean):Integer; stdcall; external 'user32.dll';
+Function BlockInput(fbLookIt:Boolean):Integer; stdcall; external 'user32.dll';   
 
 {$R *.DFM}
 
