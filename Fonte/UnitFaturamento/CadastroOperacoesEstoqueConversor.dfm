@@ -1,4 +1,6 @@
 inherited CadastroOperacoesEstoqueConverte: TCadastroOperacoesEstoqueConverte
+  Left = 311
+  Top = 143
   Caption = 'Conversor de CFOPs para Notas de Entrada'
   OldCreateOrder = True
   PixelsPerInch = 96
@@ -62,7 +64,7 @@ inherited CadastroOperacoesEstoqueConverte: TCadastroOperacoesEstoqueConverte
               end
               object Label5: TLabel
                 Left = 12
-                Top = 70
+                Top = 117
                 Width = 100
                 Height = 13
                 Caption = 'CFOP da Empresa '
@@ -107,7 +109,7 @@ inherited CadastroOperacoesEstoqueConverte: TCadastroOperacoesEstoqueConverte
               end
               object BtnCFOPF: TSpeedButton
                 Left = 468
-                Top = 82
+                Top = 129
                 Width = 21
                 Height = 21
                 Hint = 'Acessa Cadastro CFOP'
@@ -137,6 +139,19 @@ inherited CadastroOperacoesEstoqueConverte: TCadastroOperacoesEstoqueConverte
                   0000}
                 OnClick = BtnCFOPFClick
               end
+              object Label1: TLabel
+                Left = 11
+                Top = 54
+                Width = 265
+                Height = 13
+                Caption = 'Cst do Emitente (Impresso na nota de compra)'
+                Font.Charset = DEFAULT_CHARSET
+                Font.Color = 8404992
+                Font.Height = -11
+                Font.Name = 'Tahoma'
+                Font.Style = [fsBold]
+                ParentFont = False
+              end
               object ComboCFOPDentroUF: TRxDBLookupCombo
                 Tag = 1
                 Left = 8
@@ -156,7 +171,7 @@ inherited CadastroOperacoesEstoqueConverte: TCadastroOperacoesEstoqueConverte
               object ComboCFOPForaUF: TRxDBLookupCombo
                 Tag = 1
                 Left = 8
-                Top = 83
+                Top = 130
                 Width = 460
                 Height = 21
                 DropDownCount = 8
@@ -168,6 +183,46 @@ inherited CadastroOperacoesEstoqueConverte: TCadastroOperacoesEstoqueConverte
                 LookupDisplay = 'CFOPA5COD;CFOPA60DESCR'
                 LookupSource = DSSQLCFOP
                 TabOrder = 1
+              end
+              object ComboCST: TRxDBComboBox
+                Left = 8
+                Top = 70
+                Width = 321
+                Height = 21
+                Style = csDropDownList
+                DataField = 'CST'
+                DataSource = DSTemplate
+                EnableValues = True
+                ItemHeight = 13
+                Items.Strings = (
+                  '00 Tributada integralmente'
+                  '10 Tributada e com cobran'#231'a do ICMS por substitui'#231#227'o tribut'#225'ria'
+                  '20 Com redu'#231#227'o da BC'
+                  
+                    '30 Isenta / n'#227'o tributada e com cobran'#231'a do ICMS por substitui'#231#227 +
+                    'o tribut'#225'ria'
+                  '40 Isenta'
+                  '41 N'#227'o tributada'
+                  '50 Com suspens'#227'o'
+                  '51 Com diferimento'
+                  '60 ICMS cobrado anteriormente por substitui'#231#227'o tribut'#225'ria'
+                  
+                    '70 Com redu'#231#227'o da BC e cobran'#231'a do ICMS por substitui'#231#227'o tribut'#225 +
+                    'ria'
+                  '90 Outras')
+                TabOrder = 2
+                Values.Strings = (
+                  '0'
+                  '10'
+                  '20'
+                  '30'
+                  '40'
+                  '41'
+                  '50'
+                  '51'
+                  '60'
+                  '70'
+                  '90')
               end
             end
           end
@@ -202,6 +257,10 @@ inherited CadastroOperacoesEstoqueConverte: TCadastroOperacoesEstoqueConverte
       FieldName = 'CFOPCONVERTE'
       Origin = 'DB.OPERACAOESTOQUECONVERSOR.CFOPCONVERTE'
       Size = 5
+    end
+    object SQLTemplateCST: TIntegerField
+      FieldName = 'CST'
+      Origin = 'DB.OPERACAOESTOQUECONVERSOR.CST'
     end
   end
   object SQLCFOP: TRxQuery
@@ -245,5 +304,44 @@ inherited CadastroOperacoesEstoqueConverte: TCadastroOperacoesEstoqueConverte
     DataSet = SQLCFOP
     Left = 42
     Top = 198
+  end
+  object SQLCST: TRxQuery
+    DatabaseName = 'DB'
+    Macros = <>
+    Left = 14
+    Top = 230
+    object StringField1: TStringField
+      FieldName = 'CFOPA5COD'
+      Origin = 'DB.CFOP.CFOPA5COD'
+      FixedChar = True
+      Size = 5
+    end
+    object StringField2: TStringField
+      FieldName = 'CFOPA60DESCR'
+      Origin = 'DB.CFOP.CFOPA60DESCR'
+      FixedChar = True
+      Size = 60
+    end
+    object StringField3: TStringField
+      FieldName = 'CFOPCVENDA'
+      Origin = 'DB.CFOP.CFOPCVENDA'
+      FixedChar = True
+      Size = 1
+    end
+    object StringField4: TStringField
+      FieldName = 'PENDENTE'
+      Origin = 'DB.CFOP.PENDENTE'
+      FixedChar = True
+      Size = 1
+    end
+    object DateTimeField1: TDateTimeField
+      FieldName = 'REGISTRO'
+      Origin = 'DB.CFOP.REGISTRO'
+    end
+  end
+  object DSSQLCST: TDataSource
+    DataSet = SQLCST
+    Left = 42
+    Top = 230
   end
 end

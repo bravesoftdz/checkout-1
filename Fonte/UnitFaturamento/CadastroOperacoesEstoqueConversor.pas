@@ -7,7 +7,7 @@ uses
   Dialogs, CadastroTEMPLATE, DB, DBTables, DBActns, ActnList, RxQuery,
   Menus, StdCtrls, Mask, Grids, DBGrids, ComCtrls, RXCtrls, Buttons,
   ExtCtrls, RxLookup, VarSys, FormResources, AdvOfficeStatusBar,
-  AdvOfficeStatusBarStylers, AdvPanel;
+  AdvOfficeStatusBarStylers, AdvPanel, RxDBComb;
 
 type
   TCadastroOperacoesEstoqueConverte = class(TFormCadastroTEMPLATE)
@@ -27,6 +27,16 @@ type
     ComboCFOPForaUF: TRxDBLookupCombo;
     btnCfopd: TSpeedButton;
     BtnCFOPF: TSpeedButton;
+    Label1: TLabel;
+    SQLCST: TRxQuery;
+    StringField1: TStringField;
+    StringField2: TStringField;
+    StringField3: TStringField;
+    StringField4: TStringField;
+    DateTimeField1: TDateTimeField;
+    DSSQLCST: TDataSource;
+    SQLTemplateCST: TIntegerField;
+    ComboCST: TRxDBComboBox;
     procedure FormCreate(Sender: TObject);
     procedure btnCfopdClick(Sender: TObject);
     procedure BtnCFOPFClick(Sender: TObject);
