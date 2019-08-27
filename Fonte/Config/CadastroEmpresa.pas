@@ -306,7 +306,7 @@ var
 implementation
 
 uses UnitLibrary, CadastroCep, FormResources, VarSys, DataModulo,
-  WaitWindow, ACBrNFeConfiguracoes, ACBrDFeSSL;
+  WaitWindow, ACBrNFeConfiguracoes, ACBrDFeSSL, CadastroEmpresaCusto;
 
 {$R *.DFM}
 
@@ -498,8 +498,8 @@ end;
 procedure TFormCadastroEmpresa.Button3Click(Sender: TObject);
 begin
   inherited;
-{  DSMasterSys := DSTemplate;
-  CriaFormulario(TFormCadastroEmpresaCusto,'FormCadastroEmpresaCusto',True,False,True,SQLTemplateEMPRA60RAZAOSOC.AsString); }
+  DSMasterSys := DSTemplate;
+  CriaFormulario(TFormCadastroEmpresaCusto,'FormCadastroEmpresaCusto',True,False,True,SQLTemplateEMPRA60RAZAOSOC.AsString); 
 end;
 
 procedure TFormCadastroEmpresa.DSTemplateDataChange(Sender: TObject;
