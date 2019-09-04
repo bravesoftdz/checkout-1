@@ -1,4 +1,6 @@
 inherited CadastroOperacaoEstoqueCFOP: TCadastroOperacaoEstoqueCFOP
+  Left = 180
+  Top = 117
   Caption = ''
   OldCreateOrder = True
   PixelsPerInch = 96

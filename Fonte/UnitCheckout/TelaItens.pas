@@ -28,8 +28,14 @@ const
   InformandoItensTroca = 'InformandoItensTroca';
   InformandoDescricaoTecnica = 'InformandoDescricaoTecnica';
   InformandoTotalVenda = 'InformandoTotalVenda';
-type
 
+type
+  TNCMCampos = record
+    vPercRedBaseST : Real;
+    vPercICMSST : Real;
+  end;
+
+type
   TFormTelaItens = class(TForm)
     SQLProduto: TRxQuery;
     DSSQLIntensVenda: TDataSource;
@@ -293,6 +299,7 @@ type
     SQLItensDescTempVALOR: TFloatField;
     SQLItensDescTempCALCULAR_DESC: TStringField;
     SQLProdutoPRODVASILHAME: TStringField;
+    SQLProdutoPRODN2DESCMAX: TFloatField;
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure FormCreate(Sender: TObject);
     procedure EntradaDadosKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
@@ -348,7 +355,7 @@ type
     VerCaixa, TemProdutoSemSubsTrib, TemProdutoComSubsTrib, AplicarDescontoItem, TemProdutoVasilhame: boolean;
     Tecla: Word;
 
-    Peso: Double;
+    Peso, PercentualDesconto: Double;
     PesoP05A: array[0..5] of char;
     PesoP05B: array[0..7] of char;
     Toledo_Dir, PesoSTR: string;
@@ -361,6 +368,7 @@ type
     procedure CriardmSiTEF;
     procedure Exec_SP_ACERTO_TOTAL_CUPOM;
     function GetCPNMN2VLR(pCUPOA13ID:String; pnumeicod: Integer):Double;
+    function getST_NCM(aNCM: String): TNCMCampos;
     function GravaCupom: Boolean;
     function GravaCupomItem: Boolean;
     function GravarOrcamento: boolean;
@@ -525,6 +533,7 @@ var iCRT, vCont, vUltimo: integer;
 var VlrDescNoTotal, VlrTroca, VlrTotalItens, PercDescTroca, TotalDesconto: double;
   vaux, Total_vTotTrib, VlrTroco, AliquotaPis, AliquotaCofins, ValorPis, ValorCofins, ValorBasePis, ValorBaseCofins, vPercSTEfe : Currency;
 var vDescTodosItens : Boolean;
+var DadosNCm : TNCMCampos;
 begin
   dm.ACBrNFe.DANFE.vTribFed := 0;
   dm.ACBrNFe.DANFE.vTribEst := 0;
@@ -678,6 +687,10 @@ begin
 
         Prod.NCM := SQLLocate('NCM', 'NCMICOD', 'NCMA30CODIGO', SQLLocate('PRODUTO', 'PRODICOD', 'NCMICOD', SQLImpressaoCupom.fieldbyname('PRODICOD').AsString));
 
+        DadosNCm := getST_NCM(SQLLocate('PRODUTO', 'PRODICOD', 'NCMICOD', SQLImpressaoCupom.fieldbyname('PRODICOD').AsString));
+        if DadosNCm.vPercICMSST > 0 then
+          vPercSTEfe := DadosNCm.vPercICMSST
+        else
         if SQLLocate('NCM', 'NCMICOD', 'ALIQ_ICMS', SQLLocate('PRODUTO', 'PRODICOD', 'NCMICOD', SQLImpressaoCupom.fieldbyname('PRODICOD').AsString)) <> '' then
           vPercSTEfe := StrToFloat(SQLLocate('NCM', 'NCMICOD', 'ALIQ_ICMS', SQLLocate('PRODUTO', 'PRODICOD', 'NCMICOD', SQLImpressaoCupom.fieldbyname('PRODICOD').AsString)))
         else
@@ -826,7 +839,11 @@ begin
                     end;
                     if vPercSTEfe > 0 then
                     begin
-                      ICMS.vICMSEfet := (Prod.vProd - Prod.vDesc) * vPercSTEfe / 100;
+                      ICMS.pRedBCEfet := DadosNCm.vPercRedBaseST;
+                      if ICMS.pRedBCEfet > 0 then
+                        ICMS.vICMSEfet := ((Prod.vProd * (ICMS.pRedBCEfet / 100)) - Prod.vDesc) * vPercSTEfe / 100
+                      else
+                        ICMS.vICMSEfet := (Prod.vProd - Prod.vDesc) * vPercSTEfe / 100;
                       ICMS.pICMSEfet := vPercSTEfe;
                       ICMS.vBCEfet := Prod.vProd - Prod.vDesc;
                     end;
@@ -2270,7 +2287,15 @@ begin
           PreparaEstadoBalcao(InformandoItens);
           exit;
         end;
-      if (((DescItemVlr / ValorItem) * 100) > PercDesqMaxUsario) and not ImportandoPreVenda then
+      PercDescMaxProduto := SqlProdutoPRODN2DESCMAX.AsFloat;
+
+      PercentualDesconto := 0;
+      //Verifica qual desconto aplicar, se o do usuário ou do produto
+      PercentualDesconto := PercDesqMaxUsario;
+      if PercDescMaxProduto > 0 then
+        PercentualDesconto := PercDescMaxProduto;
+
+      if (((DescItemVlr / ValorItem) * 100) > PercentualDesconto) and not ImportandoPreVenda then
       begin
         if QuantItem > 0 then
           DescItemPerc := (DescItemVlr / (ValorItem * QuantItem)) * 100
@@ -2278,7 +2303,7 @@ begin
           DescItemPerc := (DescItemVlr / (ValorItem * 1)) * 100; // Coloquei o nro.1 pq quando o usuario nao tem poder de desconto a QuantItem estava Nulo e dava erro de calculo
 
             // Testa se o usuario tem poder de Desconto, senao faz pergunta
-        if PercDesqMaxUsario < DescItemPerc then
+        if PercentualDesconto < DescItemPerc then
         begin
           if Pergunta('SIM', 'Informe a Senha para Desconto?') then
           begin
@@ -7208,6 +7233,23 @@ begin
   DM.SQLTemplate.SQL.Add(QuotedStr(FormatDateTime('mm/dd/yyyy', Date)));
   DM.SQLTemplate.SQL.Add('Where CODIGO = ''' + CodigoBarra + '''');
   DM.SQLTemplate.ExecSQL;
+end;
+
+function TFormTelaItens.getST_NCM(aNCM: String): TNCMCampos;
+begin
+  Result.vPercRedBaseST := 0;
+  Result.vPercICMSST := 0;
+  dm.SQLTemplate.Close;
+  dm.SQLTemplate.sql.Clear;
+  dm.SQLTemplate.SQL.Add('select ALIQ_ICMSST, ALIQ_RED_BASE_ST');
+  dm.SQLTemplate.SQL.Add('from NCM where NCMICOD = ' + aNCM);
+  dm.SQLTemplate.Open;
+  if not(dm.SQLTemplate.Eof) then
+  begin
+    result.vPercRedBaseST := dm.SQLTemplate.FieldByName('ALIQ_RED_BASE_ST').AsFloat;
+    Result.vPercICMSST := dm.SQLTemplate.FieldByName('ALIQ_ICMSST').AsFloat;
+  end;
+  dm.SQLTemplate.Close;
 end;
 
 end.

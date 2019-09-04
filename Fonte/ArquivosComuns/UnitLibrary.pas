@@ -124,7 +124,7 @@ var
   TipoPlanoContas, TxtReciboECF, CodMotoboy, UsaTablet, ImpressoraCaixaPath, Enter_Vazio, TeleQuitado, TabInicial, F2_AUTOMATICO, DetalhesVenda, ParceiroNome, Obs_Venda, ParceiroPath, MostraCodigoBarras,
   NotaGaucha,GravarDisplaySequencial,GravarCupomCancelado,TipoHistoricoPadrao, ImprimeDadosClienteCupom, DataAniversario, Porta, TabelaMaisTerminal, IDReimprimir, ProdutoComplemento, SolicitaDataEntrega,
   OrdemGrupo, OrdemProduto, FiltraTerminal, Servidor_HostName, Servidor_Database, NroViasImpVenda, TabelaMaisTerminalDesc, CrediarioOnLine : String;
-  PercDesqMaxUsario, PercDesqMaxUsarioAutenticado, VlrDescPromoImportado,
+  PercDesqMaxUsario, PercDesqMaxUsarioAutenticado, VlrDescPromoImportado, PercDescMaxProduto,
   VlrBonusTroca,
   VlrLivreProd,
   ValorDiminuirAcresc,

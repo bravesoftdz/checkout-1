@@ -7,7 +7,7 @@ uses
   DBTables, RxQuery, MemTable, EWall, OleCtrls, UCrpe32, ppProd, ppClass, ppReport, ppComm, ppRelatv,
   ppDB, ppTxPipe, ppPrnabl, ppStrtch, ppMemo, ppCache, ppBands, CartaoCredito,
   Buttons, ConerBtn, UnSoundPlay, RXSwitch, WindowsLibrary, IniFiles,
-  DBClient, Provider, AdvGlowButton, AdvOfficeStatusBar,
+  DBClient, Provider, AdvGlowButton, AdvOfficeStatusBar,WaitWindow,
   AdvOfficeStatusBarStylers, AdvSmoothPanel, AdvReflectionLabel;
 
 const
@@ -301,7 +301,7 @@ type
   private
     { Private declarations }
     Tempo, TempoLimite, TempoIntervalo, MesParcelaTemp, AnoParcelaTemp : integer;
-    fUsandoSitef:Boolean;
+    fUsandoSitef, fBloqueioSitef : Boolean;
     HoraInicial, HoraAtual : TDateTime;
     HoraInicialStr, HoraAtualStr: String;
     MsgBloqueioVenda,
@@ -1330,7 +1330,6 @@ begin
               if DM.SQLTemplate.EOF then
                 begin
                   ValorDevido := ValorEntrada.Value - ValorRecebido.Value ;
-                  AtualizarSaldoEdit;
                   SQLParcelasVistaVendaTemp.Last ;
                   NroIt := SQLParcelasVistaVendaTempNROITEM.Value + 1 ;
 
@@ -1364,9 +1363,9 @@ begin
                   SQLParcelasVistaVendaTemp.Edit ;
                  // SQLParcelasVistaVendaTempVALORPARC.Value := StrToFloatDef(EntradaDados.Text,0) - ValorDevido ;
                  //SQLParcelasVistaVendaTempVALORPARC.Value := StrToFloatDef(EntradaDados.Text,0) + VarValorRecebido ;
-                 SQLParcelasVistaVendaTempVALORPARC.Value := StrToFloatDef(EntradaDados.Text,0) + SQLParcelasVistaVendaTempVALORPARC.Value;
-
-                  SQLParcelasVistaVendaTempTIPOPADR.Value  := TipoPadrao ;
+                 if not fBloqueioSitef then
+                   SQLParcelasVistaVendaTempVALORPARC.Value := StrToFloatDef(EntradaDados.Text,0) + SQLParcelasVistaVendaTempVALORPARC.Value;
+                    SQLParcelasVistaVendaTempTIPOPADR.Value  := TipoPadrao ;
                   SQLParcelasVistaVendaTemp.Post ;
                 end;
 
@@ -1380,16 +1379,21 @@ begin
 
               if (TipoPadrao = 'CRT') and (ProvedorCartao <> '') then
               begin
-                NumerarioAtual := 0;
-                if not dmSiTef.EfetuarPagamentoSiTef(NumerarioAtual, StrToFloatDef(EntradaDados.Text,0), '') then
-                begin
-                  EntradaDados.SelectAll ;
-                  exit;
-                end
-                else
-                if sitef = 'S' then
-                  fUsandoSitef := True
-                else fUsandoSitef := False;
+                fBloqueioSitef := True;
+                try
+                  NumerarioAtual := 0;
+                  if not dmSiTef.EfetuarPagamentoSiTef(NumerarioAtual, StrToFloatDef(EntradaDados.Text,0), '') then
+                  begin
+                    EntradaDados.SelectAll ;
+                    exit;
+                  end
+                  else
+                  if sitef = 'S' then
+                    fUsandoSitef := True
+                  else fUsandoSitef := False;
+                finally
+                  fBloqueioSitef := False;
+                end;
               end;
 
               if (ECFAtual = 'ECF') and (not FileExists('Confirma.txt')) then
