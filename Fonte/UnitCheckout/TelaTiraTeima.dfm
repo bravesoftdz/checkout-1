@@ -1,6 +1,6 @@
 object FormTelaTiraTeima: TFormTelaTiraTeima
-  Left = 153
-  Top = 0
+  Left = 269
+  Top = 6
   BorderIcons = []
   BorderStyle = bsSingle
   ClientHeight = 706
@@ -4389,6 +4389,21 @@ object FormTelaTiraTeima: TFormTelaTiraTeima
       ParentFont = False
       OnClick = btnBuscarEstoqueFiliaisClick
     end
+    object btnConsultarGrade: TFlatSpeedButton
+      Left = 227
+      Top = 179
+      Width = 176
+      Height = 35
+      Caption = 'Consultar Grade'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWhite
+      Font.Height = -11
+      Font.Name = 'MS Sans Serif'
+      Font.Style = [fsBold]
+      Layout = blGlyphLeft
+      ParentFont = False
+      OnClick = btnConsultarGradeClick
+    end
     object PrecoNormal: TCurrencyEdit
       Left = 10
       Top = 141
@@ -4635,6 +4650,284 @@ object FormTelaTiraTeima: TFormTelaTiraTeima
       end
     end
   end
+  object pnlGrade: TAdvSmoothPanel
+    Left = 285
+    Top = 228
+    Width = 153
+    Height = 276
+    Cursor = crDefault
+    Caption.HTMLFont.Charset = DEFAULT_CHARSET
+    Caption.HTMLFont.Color = clWindowText
+    Caption.HTMLFont.Height = -11
+    Caption.HTMLFont.Name = 'Tahoma'
+    Caption.HTMLFont.Style = []
+    Caption.Font.Charset = DEFAULT_CHARSET
+    Caption.Font.Color = clWindowText
+    Caption.Font.Height = -16
+    Caption.Font.Name = 'Tahoma'
+    Caption.Font.Style = []
+    Caption.ColorStart = 11563548
+    Caption.ColorEnd = 10446362
+    Caption.Line = False
+    Fill.Color = 15001572
+    Fill.ColorTo = 13225421
+    Fill.ColorMirror = 13225421
+    Fill.ColorMirrorTo = 15001572
+    Fill.GradientMirrorType = gtVertical
+    Fill.BorderColor = clGray
+    Fill.Rounding = 10
+    Fill.ShadowColor = 3355443
+    Fill.ShadowOffset = 10
+    Version = '1.0.9.0'
+    Visible = False
+    TabOrder = 5
+    object btnFecharGrade: TFlatSpeedButton
+      Left = 754
+      Top = 6
+      Width = 53
+      Height = 22
+      Caption = 'Fechar'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWhite
+      Font.Height = -11
+      Font.Name = 'MS Sans Serif'
+      Font.Style = [fsBold]
+      Layout = blGlyphLeft
+      ParentFont = False
+      OnClick = btnFecharGradeClick
+    end
+    object RxLabel5: TRxLabel
+      Left = 6
+      Top = 3
+      Width = 58
+      Height = 25
+      Caption = 'Grade'
+      Font.Charset = ANSI_CHARSET
+      Font.Color = clRed
+      Font.Height = -21
+      Font.Name = 'Tahoma'
+      Font.Style = []
+      Layout = tlBottom
+      ParentFont = False
+      ShadowColor = clBlack
+      ShadowSize = 2
+      ShadowPos = spRightBottom
+      Transparent = True
+    end
+    object gridGradeEstoque: TDBGrid
+      Left = 0
+      Top = 29
+      Width = 800
+      Height = 234
+      DataSource = DSTblSaldoEmpresa
+      FixedColor = 5278518
+      Options = [dgTitles, dgColumnResize, dgColLines, dgTabs, dgCancelOnExit]
+      TabOrder = 0
+      TitleFont.Charset = DEFAULT_CHARSET
+      TitleFont.Color = clWindowText
+      TitleFont.Height = -11
+      TitleFont.Name = 'MS Sans Serif'
+      TitleFont.Style = []
+      OnDrawColumnCell = gridGradeEstoqueDrawColumnCell
+      Columns = <
+        item
+          Expanded = False
+          FieldName = 'Empresa'
+          Title.Alignment = taCenter
+          Width = 90
+          Visible = True
+        end
+        item
+          Expanded = False
+          FieldName = 'Cor'
+          Title.Alignment = taCenter
+          Width = 70
+          Visible = True
+        end
+        item
+          Expanded = False
+          FieldName = 'Qtd1'
+          Title.Alignment = taCenter
+          Width = 40
+          Visible = True
+        end
+        item
+          Expanded = False
+          FieldName = 'Qtd2'
+          Title.Alignment = taCenter
+          Width = 40
+          Visible = True
+        end
+        item
+          Expanded = False
+          FieldName = 'Qtd3'
+          Title.Alignment = taCenter
+          Width = 40
+          Visible = True
+        end
+        item
+          Expanded = False
+          FieldName = 'Qtd4'
+          Title.Alignment = taCenter
+          Width = 40
+          Visible = True
+        end
+        item
+          Expanded = False
+          FieldName = 'Qtd5'
+          Title.Alignment = taCenter
+          Width = 40
+          Visible = True
+        end
+        item
+          Expanded = False
+          FieldName = 'Qtd6'
+          Title.Alignment = taCenter
+          Width = 40
+          Visible = True
+        end
+        item
+          Expanded = False
+          FieldName = 'Qtd7'
+          Title.Alignment = taCenter
+          Width = 40
+          Visible = True
+        end
+        item
+          Expanded = False
+          FieldName = 'Qtd8'
+          Title.Alignment = taCenter
+          Width = 40
+          Visible = True
+        end
+        item
+          Expanded = False
+          FieldName = 'Qtd9'
+          Title.Alignment = taCenter
+          Width = 40
+          Visible = True
+        end
+        item
+          Expanded = False
+          FieldName = 'Qtd10'
+          Title.Alignment = taCenter
+          Width = 40
+          Visible = True
+        end
+        item
+          Expanded = False
+          FieldName = 'Qtd11'
+          Title.Alignment = taCenter
+          Width = 40
+          Visible = True
+        end
+        item
+          Expanded = False
+          FieldName = 'Qtd12'
+          Title.Alignment = taCenter
+          Width = 40
+          Visible = True
+        end
+        item
+          Expanded = False
+          FieldName = 'Qtd13'
+          Title.Alignment = taCenter
+          Width = 40
+          Visible = True
+        end
+        item
+          Expanded = False
+          FieldName = 'Qtd14'
+          Title.Alignment = taCenter
+          Width = 40
+          Visible = True
+        end
+        item
+          Expanded = False
+          FieldName = 'Qtd15'
+          Title.Alignment = taCenter
+          Width = 40
+          Visible = True
+        end
+        item
+          Expanded = False
+          FieldName = 'Qtd16'
+          Title.Alignment = taCenter
+          Width = 40
+          Visible = True
+        end
+        item
+          Expanded = False
+          FieldName = 'Qtd17'
+          Title.Alignment = taCenter
+          Width = 40
+          Visible = True
+        end
+        item
+          Expanded = False
+          FieldName = 'Qtd18'
+          Title.Alignment = taCenter
+          Width = 40
+          Visible = True
+        end
+        item
+          Expanded = False
+          FieldName = 'Qtd19'
+          Title.Alignment = taCenter
+          Width = 40
+          Visible = True
+        end
+        item
+          Expanded = False
+          FieldName = 'Qtd20'
+          Title.Alignment = taCenter
+          Width = 40
+          Visible = True
+        end
+        item
+          Expanded = False
+          FieldName = 'Qtd21'
+          Title.Alignment = taCenter
+          Width = 40
+          Visible = True
+        end
+        item
+          Expanded = False
+          FieldName = 'Qtd22'
+          Title.Alignment = taCenter
+          Width = 40
+          Visible = True
+        end
+        item
+          Expanded = False
+          FieldName = 'Qtd23'
+          Title.Alignment = taCenter
+          Width = 40
+          Visible = True
+        end
+        item
+          Expanded = False
+          FieldName = 'Qtd24'
+          Title.Alignment = taCenter
+          Width = 40
+          Visible = True
+        end
+        item
+          Expanded = False
+          FieldName = 'Qtd25'
+          Title.Alignment = taCenter
+          Width = 40
+          Visible = True
+        end
+        item
+          Expanded = False
+          FieldName = 'Total'
+          Title.Alignment = taCenter
+          Width = 40
+          Visible = True
+        end>
+    end
+  end
   object TimerTiraTela: TTimer
     Enabled = False
     Interval = 3000
@@ -4644,6 +4937,7 @@ object FormTelaTiraTeima: TFormTelaTiraTeima
   end
   object cdsEstoqueEmpresas: TClientDataSet
     Aggregates = <>
+    IndexFieldNames = 'Nome'
     Params = <>
     Left = 568
     Top = 204
@@ -4660,8 +4954,8 @@ object FormTelaTiraTeima: TFormTelaTiraTeima
   end
   object dsEstoqueEmpresas: TDataSource
     DataSet = cdsEstoqueEmpresas
-    Left = 400
-    Top = 216
+    Left = 536
+    Top = 208
   end
   object cxStyleRepository1: TcxStyleRepository
     PixelsPerInch = 96
@@ -4672,6 +4966,297 @@ object FormTelaTiraTeima: TFormTelaTiraTeima
       Font.Height = -16
       Font.Name = 'MS Sans Serif'
       Font.Style = [fsBold]
+    end
+  end
+  object TblSaldoEmpresa: TMemoryTable
+    DatabaseName = 'Easy_Temp'
+    TableName = 'TblSaldoEmpresa'
+    Left = 368
+    Top = 340
+    object TblSaldoEmpresaEmpresa: TStringField
+      DisplayWidth = 20
+      FieldName = 'Empresa'
+    end
+    object TblSaldoEmpresaCor: TStringField
+      FieldName = 'Cor'
+      Size = 60
+    end
+    object TblSaldoEmpresaQtd1: TFloatField
+      FieldName = 'Qtd1'
+    end
+    object TblSaldoEmpresaQtd2: TFloatField
+      FieldName = 'Qtd2'
+    end
+    object TblSaldoEmpresaQtd3: TFloatField
+      FieldName = 'Qtd3'
+    end
+    object TblSaldoEmpresaQtd4: TFloatField
+      FieldName = 'Qtd4'
+    end
+    object TblSaldoEmpresaQtd5: TFloatField
+      FieldName = 'Qtd5'
+    end
+    object TblSaldoEmpresaQtd6: TFloatField
+      FieldName = 'Qtd6'
+    end
+    object TblSaldoEmpresaQtd7: TFloatField
+      FieldName = 'Qtd7'
+    end
+    object TblSaldoEmpresaQtd8: TFloatField
+      FieldName = 'Qtd8'
+    end
+    object TblSaldoEmpresaQtd9: TFloatField
+      FieldName = 'Qtd9'
+    end
+    object TblSaldoEmpresaQtd10: TFloatField
+      FieldName = 'Qtd10'
+    end
+    object TblSaldoEmpresaQtd11: TFloatField
+      FieldName = 'Qtd11'
+    end
+    object TblSaldoEmpresaQtd12: TFloatField
+      FieldName = 'Qtd12'
+    end
+    object TblSaldoEmpresaQtd13: TFloatField
+      FieldName = 'Qtd13'
+    end
+    object TblSaldoEmpresaQtd14: TFloatField
+      FieldName = 'Qtd14'
+    end
+    object TblSaldoEmpresaQtd15: TFloatField
+      FieldName = 'Qtd15'
+    end
+    object TblSaldoEmpresaQtd16: TFloatField
+      FieldName = 'Qtd16'
+    end
+    object TblSaldoEmpresaQtd17: TFloatField
+      FieldName = 'Qtd17'
+    end
+    object TblSaldoEmpresaQtd18: TFloatField
+      FieldName = 'Qtd18'
+    end
+    object TblSaldoEmpresaQtd19: TFloatField
+      FieldName = 'Qtd19'
+    end
+    object TblSaldoEmpresaQtd20: TFloatField
+      FieldName = 'Qtd20'
+    end
+    object TblSaldoEmpresaQtd21: TFloatField
+      FieldName = 'Qtd21'
+    end
+    object TblSaldoEmpresaQtd22: TFloatField
+      FieldName = 'Qtd22'
+    end
+    object TblSaldoEmpresaQtd23: TFloatField
+      FieldName = 'Qtd23'
+    end
+    object TblSaldoEmpresaQtd24: TFloatField
+      FieldName = 'Qtd24'
+    end
+    object TblSaldoEmpresaQtd25: TFloatField
+      FieldName = 'Qtd25'
+    end
+    object TblSaldoEmpresaTotal: TFloatField
+      FieldName = 'Total'
+      DisplayFormat = '#'
+    end
+  end
+  object DSTblSaldoEmpresa: TDataSource
+    DataSet = TblSaldoEmpresa
+    Left = 336
+    Top = 343
+  end
+  object SQLGradeTamanho: TRxQuery
+    DatabaseName = 'DB'
+    SQL.Strings = (
+      'Select * From GRADETAMANHO'
+      'Where GRADICOD=:GRADICOD'
+      'ORDER BY GRTMICOD')
+    Macros = <>
+    Left = 328
+    Top = 293
+    ParamData = <
+      item
+        DataType = ftInteger
+        Name = 'GRADICOD'
+        ParamType = ptUnknown
+      end>
+    object SQLGradeTamanhoGRADICOD: TIntegerField
+      FieldName = 'GRADICOD'
+      Origin = 'DB.GRADETAMANHO.GRADICOD'
+    end
+    object SQLGradeTamanhoGRTMICOD: TIntegerField
+      FieldName = 'GRTMICOD'
+      Origin = 'DB.GRADETAMANHO.GRTMICOD'
+    end
+    object SQLGradeTamanhoGRTMA5DESCR: TStringField
+      FieldName = 'GRTMA5DESCR'
+      Origin = 'DB.GRADETAMANHO.GRTMA5DESCR'
+      FixedChar = True
+      Size = 5
+    end
+    object SQLGradeTamanhoPENDENTE: TStringField
+      FieldName = 'PENDENTE'
+      Origin = 'DB.GRADETAMANHO.PENDENTE'
+      FixedChar = True
+      Size = 1
+    end
+    object SQLGradeTamanhoREGISTRO: TDateTimeField
+      FieldName = 'REGISTRO'
+      Origin = 'DB.GRADETAMANHO.REGISTRO'
+    end
+  end
+  object SQLProdutoGrade: TRxQuery
+    DatabaseName = 'DB'
+    RequestLive = True
+    SQL.Strings = (
+      'Select * From PRODUTO')
+    Macros = <>
+    Left = 360
+    Top = 290
+    object SQLProdutoGradePRODICOD: TIntegerField
+      FieldName = 'PRODICOD'
+      Origin = 'DB.PRODUTO.PRODICOD'
+    end
+    object SQLProdutoGradePRODIAGRUPGRADE: TIntegerField
+      FieldName = 'PRODIAGRUPGRADE'
+      Origin = 'DB.PRODUTO.PRODIAGRUPGRADE'
+    end
+    object SQLProdutoGradePRODA60DESCR: TStringField
+      FieldName = 'PRODA60DESCR'
+      Origin = 'DB.PRODUTO.PRODA60DESCR'
+      FixedChar = True
+      Size = 60
+    end
+    object SQLProdutoGradePRODN3VLRVENDA: TFloatField
+      FieldName = 'PRODN3VLRVENDA'
+      Origin = 'DB.PRODUTO.PRODN3VLRVENDA'
+    end
+    object SQLProdutoGradePRODN3VLRCOMPRA: TFloatField
+      FieldName = 'PRODN3VLRCOMPRA'
+      Origin = 'DB.PRODUTO.PRODN3VLRCOMPRA'
+    end
+    object SQLProdutoGradePRODN3VLRCUSTO: TFloatField
+      FieldName = 'PRODN3VLRCUSTO'
+      Origin = 'DB.PRODUTO.PRODN3VLRCUSTO'
+    end
+    object SQLProdutoGradeGRADICOD: TIntegerField
+      FieldName = 'GRADICOD'
+      Origin = 'DB.PRODUTO.GRADICOD'
+    end
+  end
+  object RxQuery1: TRxQuery
+    DatabaseName = 'DB'
+    SQL.Strings = (
+      'Select * From GRADETAMANHO'
+      'Where GRADICOD=:GRADICOD'
+      'ORDER BY GRTMICOD')
+    Macros = <>
+    Left = 392
+    Top = 293
+    ParamData = <
+      item
+        DataType = ftInteger
+        Name = 'GRADICOD'
+        ParamType = ptUnknown
+      end>
+    object IntegerField1: TIntegerField
+      FieldName = 'GRADICOD'
+      Origin = 'DB.GRADETAMANHO.GRADICOD'
+    end
+    object IntegerField2: TIntegerField
+      FieldName = 'GRTMICOD'
+      Origin = 'DB.GRADETAMANHO.GRTMICOD'
+    end
+    object StringField1: TStringField
+      FieldName = 'GRTMA5DESCR'
+      Origin = 'DB.GRADETAMANHO.GRTMA5DESCR'
+      FixedChar = True
+      Size = 5
+    end
+    object StringField2: TStringField
+      FieldName = 'PENDENTE'
+      Origin = 'DB.GRADETAMANHO.PENDENTE'
+      FixedChar = True
+      Size = 1
+    end
+    object DateTimeField1: TDateTimeField
+      FieldName = 'REGISTRO'
+      Origin = 'DB.GRADETAMANHO.REGISTRO'
+    end
+  end
+  object SQLProduto: TRxQuery
+    DatabaseName = 'DB'
+    SQL.Strings = (
+      'Select'
+      '  PRODUTO.PRODICOD,'
+      '  PRODUTO.PRODIAGRUPGRADE,'
+      '  PRODUTO.PRODA60DESCR,'
+      '  PRODUTO.PRODN3VLRCUSTO,'
+      '  PRODUTO.PRODN3VLRVENDA,'
+      '  PRODUTO.CORICOD,'
+      '  PRODUTO.GRADICOD,'
+      '  PRODUTO.GRTMICOD,'
+      '  COR.CORA30DESCR,'
+      '  PRODUTOSALDO.PSLDN3QTDE,'
+      '  PRODUTOSALDO.EMPRICOD'
+      'From'
+      
+        '  PRODUTO inner join PRODUTOSALDO on PRODUTO.PRODICOD=PRODUTOSAL' +
+        'DO.PRODICOD'
+      
+        '          left outer join COR     on PRODUTO.CORICOD  = COR.CORI' +
+        'COD'
+      'Where PRODUTO.PRODIAGRUPGRADE = :PRODIAGRUPGRADE'
+      
+        'Order by PRODUTOSALDO.EMPRICOD,COR.CORA30DESCR, PRODUTO.GRADICOD' +
+        ', PRODUTO.GRTMICOD'
+      'Asc')
+    Macros = <>
+    Left = 296
+    Top = 293
+    ParamData = <
+      item
+        DataType = ftInteger
+        Name = 'PRODIAGRUPGRADE'
+        ParamType = ptUnknown
+      end>
+    object SQLProdutoPRODICOD2: TIntegerField
+      FieldName = 'PRODICOD'
+    end
+    object SQLProdutoPRODIAGRUPGRADE2: TIntegerField
+      FieldName = 'PRODIAGRUPGRADE'
+    end
+    object SQLProdutoPRODA60DESCR2: TStringField
+      FieldName = 'PRODA60DESCR'
+      FixedChar = True
+      Size = 60
+    end
+    object SQLProdutoPRODN3VLRCUSTO: TFloatField
+      FieldName = 'PRODN3VLRCUSTO'
+    end
+    object SQLProdutoPRODN3VLRVENDA: TFloatField
+      FieldName = 'PRODN3VLRVENDA'
+    end
+    object SQLProdutoCORICOD: TIntegerField
+      FieldName = 'CORICOD'
+    end
+    object SQLProdutoGRADICOD: TIntegerField
+      FieldName = 'GRADICOD'
+    end
+    object SQLProdutoGRTMICOD: TIntegerField
+      FieldName = 'GRTMICOD'
+    end
+    object SQLProdutoCORA30DESCR: TStringField
+      FieldName = 'CORA30DESCR'
+      FixedChar = True
+      Size = 30
+    end
+    object SQLProdutoPSLDN3QTDE: TFloatField
+      FieldName = 'PSLDN3QTDE'
+    end
+    object SQLProdutoEMPRICOD: TIntegerField
+      FieldName = 'EMPRICOD'
     end
   end
 end

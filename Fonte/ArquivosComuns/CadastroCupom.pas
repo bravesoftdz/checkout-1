@@ -10,7 +10,7 @@ uses
   RxDBComb, RxLookup, ppDB, ppDBPipe, ppDBBDE, ppCtrls, ppStrtch, ppMemo,
   ppBands, ppVar, ppPrnabl, ppClass, ppCache, ppComm, ppRelatv, ppProd, ppReport,
   ppSubRpt, Serial, AdvOfficeStatusBar, AdvPanel, AdvOfficeStatusBarStylers,
-  pcnConversao, pcnConversaoNFe;
+  pcnConversao, pcnConversaoNFe, ACBrDFeUtil;
 
 type
   TFormCadastroCupom = class(TFormCadastroTEMPLATE)
@@ -946,7 +946,7 @@ begin
   dm.ACBrNFe.NotasFiscais.Clear;
   with dm.ACBrNFe.NotasFiscais.Add.NFe do
   begin
-    Ide.cNF := SQLTemplateCUPOINRO.Value;
+    Ide.cNF := GerarCodigoDFe(SQLTemplateCUPOINRO.Value);
     Ide.natOp := 'VENDA CONSUMIDOR';
     Ide.modelo := 65;
     Ide.serie := SQLTemplateTERMICOD.Value;

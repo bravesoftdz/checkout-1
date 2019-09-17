@@ -2897,10 +2897,13 @@ begin
                       if FileExists('Coonsumo.txt') Then
                         if Vardia > VarDiaOficial then
                           Dec(VarMes);
+                      if (VarMes = 2) and (VarDia > 29)  then
+                        VarDia :=  UltiDiaMes(IntToStr(VarMes),IntToStr(VarAno));
 
                       SQLParcelasPrazo.FieldByName('DATAVENCTO').asString := Format('%.2d',[VarDia]) + '/' +
                                                                              Format('%.2d',[VarMes]) + '/' +
                                                                              Format('%.4d',[VarAno]);
+
                     end;
                   Erro := False ;
                 except

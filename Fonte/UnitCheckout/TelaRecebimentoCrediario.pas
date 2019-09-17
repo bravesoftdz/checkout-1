@@ -350,14 +350,6 @@ type
     UdpateRenegociacao: TUpdateSQL;
     SQLRenegociacaoID_CTRCA13ID: TStringField;
     shpStatusServidor: TShape;
-    SQLParcelasVistaRecebTemp: TRxQuery;
-    SQLParcelasVistaRecebTempTERMICOD: TIntegerField;
-    SQLParcelasVistaRecebTempNROITEM: TIntegerField;
-    SQLParcelasVistaRecebTempNUMEICOD: TIntegerField;
-    SQLParcelasVistaRecebTempVALORPARC: TFloatField;
-    SQLParcelasVistaRecebTempTIPOPADR: TStringField;
-    LblRecebido: TRxLabel;
-    ValorRecebido: TCurrencyEdit;
     procedure EntradaDadosKeyDown(Sender: TObject; var Key: Word;
       Shift: TShiftState);
     procedure FormCreate(Sender: TObject);
@@ -465,18 +457,19 @@ begin
           if Pos('.', EntradaDados.text) > 0 then
             EntradaDados.text := ConverteCodigo(EntradaDados.Text);
 
-          //Zera a tabela temporaria do recebimento
-          DM.SQLTemplate.Close;
-          DM.SQLTemplate.SQL.Clear;
-          DM.SQLTemplate.SQL.Add('delete from PARCELASVISTARECEBTEMP') ;
-          DM.SQLTemplate.SQL.Add('where TERMICOD = ' + IntToStr(TerminalAtual));
-          DM.SQLTemplate.ExecSQL;
-          SQLParcelasVistaRecebTemp.Close;
-          SQLParcelasVistaRecebTemp.SQL.Clear ;
-          SQLParcelasVistaRecebTemp.SQL.Add('select * from PARCELASVISTAVENDATEMP') ;
-          SQLParcelasVistaRecebTemp.SQL.Add('where TERMICOD = ' + IntToStr(TerminalAtual)) ;
-          SQLParcelasVistaRecebTemp.SQL.Add('order by NROITEM') ;
-          SQLParcelasVistaRecebTemp.Open ;
+//          implementacao de duas formas de recebimentos
+//          Zera a tabela temporaria do recebimento
+//          DM.SQLTemplate.Close;
+//          DM.SQLTemplate.SQL.Clear;
+//          DM.SQLTemplate.SQL.Add('delete from PARCELASVISTARECEBTEMP') ;
+//          DM.SQLTemplate.SQL.Add('where TERMICOD = ' + IntToStr(TerminalAtual));
+//          DM.SQLTemplate.ExecSQL;
+//          SQLParcelasVistaRecebTemp.Close;
+//          SQLParcelasVistaRecebTemp.SQL.Clear ;
+//          SQLParcelasVistaRecebTemp.SQL.Add('select * from PARCELASVISTAVENDATEMP') ;
+//          SQLParcelasVistaRecebTemp.SQL.Add('where TERMICOD = ' + IntToStr(TerminalAtual)) ;
+//          SQLParcelasVistaRecebTemp.SQL.Add('order by NROITEM') ;
+//          SQLParcelasVistaRecebTemp.Open ;
 
           Entra := false;
           if not ParcelaAvulsa then
@@ -1252,109 +1245,109 @@ begin
             exit ;
           end ;
 
-//          if StrToFloat(EntradaDados.Text) < TotalPagar.Value then
-//            begin
-//              Informa('O valor recebido deve ser maior ou igual ao total à pagar') ;
-//              exit ;
-//            end ;
+          if StrToFloat(EntradaDados.Text) < TotalPagar.Value then
+            begin
+              Informa('O valor recebido deve ser maior ou igual ao total à pagar') ;
+              exit ;
+            end ;
 
 
 
 //-----------------------
-          if (TipoPadrao = 'DIN')  or
-             (TipoPadrao = 'CHQV') or
-             (TipoPadrao = 'CRTF') or
-             (TipoPadrao = 'CRT') or
-             (TipoPadrao = 'CRD') then
-            begin
-              DM.SQLTemplate.Close ;
-              DM.SQLTemplate.SQL.Clear ;
-              DM.SQLTemplate.SQL.Add('select * from PARCELASVISTARECEBTEMP') ;
-              DM.SQLTemplate.SQL.Add('where TERMICOD = ' + IntToStr(TerminalAtual)) ;
-              DM.SQLTemplate.SQL.Add('and   NUMEICOD = ' + IntToStr(NumerarioVista)) ;
-              DM.SQLTemplate.Open ;
-              if DM.SQLTemplate.EOF then
-                begin
-                  ValorDevido := TotalPagar.Value - ValorRecebido.Value ;
+//          if (TipoPadrao = 'DIN')  or
+//             (TipoPadrao = 'CHQV') or
+//             (TipoPadrao = 'CRTF') or
+//             (TipoPadrao = 'CRT') or
+//             (TipoPadrao = 'CRD') then
+//            begin
+//              DM.SQLTemplate.Close ;
+//              DM.SQLTemplate.SQL.Clear ;
+//              DM.SQLTemplate.SQL.Add('select * from PARCELASVISTARECEBTEMP') ;
+//              DM.SQLTemplate.SQL.Add('where TERMICOD = ' + IntToStr(TerminalAtual)) ;
+//              DM.SQLTemplate.SQL.Add('and   NUMEICOD = ' + IntToStr(NumerarioVista)) ;
+//              DM.SQLTemplate.Open ;
+//              if DM.SQLTemplate.EOF then
+//                begin
+//                  ValorDevido := TotalPagar.Value - ValorRecebido.Value ;
 //                  AtualizarSaldoEdit;
-                  SQLParcelasVistaRecebTemp.Last ;
-                  NroIt := SQLParcelasVistaRecebTempNROITEM.Value + 1 ;
-
-                  SQLParcelasVistaRecebTemp.Append ;
-                  SQLParcelasVistaRecebTempTERMICOD.Value := TerminalAtual ;
-                  SQLParcelasVistaRecebTempNROITEM.Value  := NroIt ;
-                  SQLParcelasVistaRecebTempNUMEICOD.Value := NumerarioVista ;
-                  ValorControle := StrToFloatDef(EntradaDados.Text,0);
-                  if (ValorControle > ValorDevido) and (ValorDevido > 0) then
-                    begin
-                      //SQLParcelasVistaVendaTempVALORPARC.Value := StrToFloat(EntradaDados.Text) - (StrToFloat(EntradaDados.Text) - ValorDevido) ;
-                      SQLParcelasVistaRecebTempVALORPARC.Value := StrToFloatDef(EntradaDados.Text,0);
-                    end
-                  else
-                    SQLParcelasVistaRecebTempVALORPARC.Value := StrToFloatDef(EntradaDados.Text,0) ;
-                  SQLParcelasVistaRecebTempTIPOPADR.Value    := TipoPadrao ;
-                  SQLParcelasVistaRecebTemp.Post ;
-                end
-              else
-                begin
-                  SQLParcelasVistaRecebTemp.Close ;
-                  SQLParcelasVistaRecebTemp.SQL.Clear ;
-                  SQLParcelasVistaRecebTemp.SQL.Add('select * from PARCELASVISTARECEBTEMP') ;
-                  SQLParcelasVistaRecebTemp.SQL.Add('where TERMICOD = ' + IntToStr(TerminalAtual)) ;
-                  SQLParcelasVistaRecebTemp.SQL.Add('and   NUMEICOD = ' + IntToStr(NumerarioVista)) ;
-                  SQLParcelasVistaRecebTemp.Open ;
-
-                  ValorDevido := TotalPagar.Value - ValorRecebido.Value ;
+//                  SQLParcelasVistaRecebTemp.Last ;
+//                  NroIt := SQLParcelasVistaRecebTempNROITEM.Value + 1 ;
+//
+//                  SQLParcelasVistaRecebTemp.Append ;
+//                  SQLParcelasVistaRecebTempTERMICOD.Value := TerminalAtual ;
+//                  SQLParcelasVistaRecebTempNROITEM.Value  := NroIt ;
+//                  SQLParcelasVistaRecebTempNUMEICOD.Value := NumerarioVista ;
+//                  ValorControle := StrToFloatDef(EntradaDados.Text,0);
+//                  if (ValorControle > ValorDevido) and (ValorDevido > 0) then
+//                    begin
+//                      SQLParcelasVistaVendaTempVALORPARC.Value := StrToFloat(EntradaDados.Text) - (StrToFloat(EntradaDados.Text) - ValorDevido) ;
+//                      SQLParcelasVistaRecebTempVALORPARC.Value := StrToFloatDef(EntradaDados.Text,0);
+//                    end
+//                  else
+//                    SQLParcelasVistaRecebTempVALORPARC.Value := StrToFloatDef(EntradaDados.Text,0) ;
+//                  SQLParcelasVistaRecebTempTIPOPADR.Value    := TipoPadrao ;
+//                  SQLParcelasVistaRecebTemp.Post ;
+//                end
+//              else
+//                begin
+//                  SQLParcelasVistaRecebTemp.Close ;
+//                  SQLParcelasVistaRecebTemp.SQL.Clear ;
+//                  SQLParcelasVistaRecebTemp.SQL.Add('select * from PARCELASVISTARECEBTEMP') ;
+//                  SQLParcelasVistaRecebTemp.SQL.Add('where TERMICOD = ' + IntToStr(TerminalAtual)) ;
+//                  SQLParcelasVistaRecebTemp.SQL.Add('and   NUMEICOD = ' + IntToStr(NumerarioVista)) ;
+//                  SQLParcelasVistaRecebTemp.Open ;
+//
+//                  ValorDevido := TotalPagar.Value - ValorRecebido.Value ;
 //                  AtualizarSaldoEdit;
-
-                  SQLParcelasVistaRecebTemp.Edit ;
-                  SQLParcelasVistaRecebTempVALORPARC.Value := StrToFloatDef(EntradaDados.Text,0) + SQLParcelasVistaVendaTempVALORPARC.Value;
-                  SQLParcelasVistaRecebTempTIPOPADR.Value  := TipoPadrao ;
-                  SQLParcelasVistaRecebTemp.Post ;
-                end;
-            end;
-
-              SQLParcelasVistaVendaTemp.Close ;
-              SQLParcelasVistaVendaTemp.SQL.Clear ;
-              SQLParcelasVistaVendaTemp.SQL.Add('select * from PARCELASVISTAVENDATEMP') ;
-              SQLParcelasVistaVendaTemp.SQL.Add('where TERMICOD = ' + IntToStr(TerminalAtual)) ;
-              SQLParcelasVistaVendaTemp.Open ;
-
-              ValorRecebido.Value := ValorRecebido.Value + StrToFloatDef(EntradaDados.Text,0) ;
-              VarValorRecebido    := ValorRecebido.Value;
+//
+//                  SQLParcelasVistaRecebTemp.Edit ;
+//                  SQLParcelasVistaRecebTempVALORPARC.Value := StrToFloatDef(EntradaDados.Text,0) + SQLParcelasVistaVendaTempVALORPARC.Value;
+//                  SQLParcelasVistaRecebTempTIPOPADR.Value  := TipoPadrao ;
+//                  SQLParcelasVistaRecebTemp.Post ;
+//                end;
+//            end;
+//
+//              SQLParcelasVistaVendaTemp.Close ;
+//              SQLParcelasVistaVendaTemp.SQL.Clear ;
+//              SQLParcelasVistaVendaTemp.SQL.Add('select * from PARCELASVISTAVENDATEMP') ;
+//              SQLParcelasVistaVendaTemp.SQL.Add('where TERMICOD = ' + IntToStr(TerminalAtual)) ;
+//              SQLParcelasVistaVendaTemp.Open ;
+//
+//              ValorRecebido.Value := ValorRecebido.Value + StrToFloatDef(EntradaDados.Text,0) ;
+//              VarValorRecebido    := ValorRecebido.Value;
 //              AtualizarSaldoEdit;
-              EntradaDados.Clear ;
-
-              if ValorRecebido.Value >= TotalPagar.Value then
-                begin
-                  if EstadoRecCredAnt = '' then
-                    begin
+//              EntradaDados.Clear ;
+//
+//              if ValorRecebido.Value >= TotalPagar.Value then
+//                begin
+//                  if EstadoRecCredAnt = '' then
+//                    begin
 //                      if SQLParcelasPrazoRecebTemp.RecordCount = 0 then
 //                        EstadoRecCred := FinalizandoRecto
 //                      else
-                        EstadoRecCred := InformandoNumerario;
-                    end
-                  else
-                    EstadoRecCred := EstadoRecCredAnt;
-
-                  EstadoRecCredAnt := '' ;
-                  PreparaEstadoRec(EstadoRecCred) ;
-                  if (ValorRecebido.Value > TotalPagar.Value) and (ValorDevido > 0) then
-                    begin
+//                        EstadoRecCred := InformandoNumerario;
+//                    end
+//                  else
+//                    EstadoRecCred := EstadoRecCredAnt;
+//
+//                  EstadoRecCredAnt := '' ;
+//                  PreparaEstadoRec(EstadoRecCred) ;
+//                  if (ValorRecebido.Value > TotalPagar.Value) and (ValorDevido > 0) then
+//                    begin
 //                      ValorTroco.Value := ValorRecebido.Value - ValorEntrada.Value ;
 //                      VarValorTroco    := ValorTroco.Value;
-                    end;
-                end
-              else
-                begin
-                  EntradaDados.Clear ;
-                  if EstadoRecCredAnt = '' then
-                    EstadoRecCred := InformandoNumerario
-                  else
-                    EstadoRecCred := EstadoRecCredAnt;
-                  EstadoRecCredAnt := '';
-                  PreparaEstadoRec(EstadoRecCred);
-                end;
+//                    end;
+//                end
+//              else
+//                begin
+//                  EntradaDados.Clear ;
+//                  if EstadoRecCredAnt = '' then
+//                    EstadoRecCred := InformandoNumerario
+//                  else
+//                    EstadoRecCred := EstadoRecCredAnt;
+//                  EstadoRecCredAnt := '';
+//                  PreparaEstadoRec(EstadoRecCred);
+//                end;
 
 //-----------------------
 
@@ -1367,7 +1360,7 @@ begin
           EntradaDados.Clear ;
           EstadoRecCred := FinalizandoRecebimento ;
           PreparaEstadoRec(EstadoRecCred) ;
-//          exit ;
+          exit ;
         end ;
       //FINALIZANDO RECEBIMENTO
       if EstadoRecCred = FinalizandoRecebimento then

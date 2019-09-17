@@ -8,9 +8,11 @@ uses
   TFlatSpeedButtonUnit, AdvSmoothPanel, DB, DBClient, cxStyles,
   cxCustomData, cxGraphics, cxFilter, cxData, cxDataStorage, cxEdit,
   cxDBData, cxGridLevel, cxClasses, cxControls, cxGridCustomView,
-  cxGridCustomTableView, cxGridTableView, cxGridDBTableView, cxGrid;
+  cxGridCustomTableView, cxGridTableView, cxGridDBTableView, cxGrid,
+  DBTables, MemTable, RxQuery, Grids, DBGrids;
 
 type
+  TProtectDBGrid = Class(TDBGrid);
   TFormTelaTiraTeima = class(TForm)
     LblNomeSistema: TRxLabel;
     TimerTiraTela: TTimer;
@@ -52,6 +54,73 @@ type
     RxLabel4: TRxLabel;
     cxStyleRepository1: TcxStyleRepository;
     cxStyle1: TcxStyle;
+    pnlGrade: TAdvSmoothPanel;
+    btnFecharGrade: TFlatSpeedButton;
+    RxLabel5: TRxLabel;
+    btnConsultarGrade: TFlatSpeedButton;
+    TblSaldoEmpresa: TMemoryTable;
+    TblSaldoEmpresaEmpresa: TStringField;
+    TblSaldoEmpresaCor: TStringField;
+    TblSaldoEmpresaTotal: TFloatField;
+    TblSaldoEmpresaQtd1: TFloatField;
+    TblSaldoEmpresaQtd2: TFloatField;
+    TblSaldoEmpresaQtd3: TFloatField;
+    TblSaldoEmpresaQtd4: TFloatField;
+    TblSaldoEmpresaQtd5: TFloatField;
+    TblSaldoEmpresaQtd6: TFloatField;
+    TblSaldoEmpresaQtd7: TFloatField;
+    TblSaldoEmpresaQtd8: TFloatField;
+    TblSaldoEmpresaQtd9: TFloatField;
+    TblSaldoEmpresaQtd10: TFloatField;
+    TblSaldoEmpresaQtd11: TFloatField;
+    TblSaldoEmpresaQtd12: TFloatField;
+    TblSaldoEmpresaQtd13: TFloatField;
+    TblSaldoEmpresaQtd14: TFloatField;
+    TblSaldoEmpresaQtd15: TFloatField;
+    TblSaldoEmpresaQtd16: TFloatField;
+    TblSaldoEmpresaQtd17: TFloatField;
+    TblSaldoEmpresaQtd18: TFloatField;
+    TblSaldoEmpresaQtd19: TFloatField;
+    TblSaldoEmpresaQtd20: TFloatField;
+    TblSaldoEmpresaQtd21: TFloatField;
+    TblSaldoEmpresaQtd22: TFloatField;
+    TblSaldoEmpresaQtd23: TFloatField;
+    TblSaldoEmpresaQtd24: TFloatField;
+    TblSaldoEmpresaQtd25: TFloatField;
+    DSTblSaldoEmpresa: TDataSource;
+    SQLGradeTamanho: TRxQuery;
+    SQLGradeTamanhoGRADICOD: TIntegerField;
+    SQLGradeTamanhoGRTMICOD: TIntegerField;
+    SQLGradeTamanhoGRTMA5DESCR: TStringField;
+    SQLGradeTamanhoPENDENTE: TStringField;
+    SQLGradeTamanhoREGISTRO: TDateTimeField;
+    SQLProdutoGrade: TRxQuery;
+    SQLProdutoGradePRODICOD: TIntegerField;
+    SQLProdutoGradePRODIAGRUPGRADE: TIntegerField;
+    SQLProdutoGradePRODA60DESCR: TStringField;
+    SQLProdutoGradePRODN3VLRVENDA: TFloatField;
+    SQLProdutoGradePRODN3VLRCOMPRA: TFloatField;
+    SQLProdutoGradePRODN3VLRCUSTO: TFloatField;
+    SQLProdutoGradeGRADICOD: TIntegerField;
+    RxQuery1: TRxQuery;
+    IntegerField1: TIntegerField;
+    IntegerField2: TIntegerField;
+    StringField1: TStringField;
+    StringField2: TStringField;
+    DateTimeField1: TDateTimeField;
+    SQLProduto: TRxQuery;
+    SQLProdutoPRODICOD2: TIntegerField;
+    SQLProdutoPRODIAGRUPGRADE2: TIntegerField;
+    SQLProdutoPRODA60DESCR2: TStringField;
+    SQLProdutoPRODN3VLRCUSTO: TFloatField;
+    SQLProdutoPRODN3VLRVENDA: TFloatField;
+    SQLProdutoCORICOD: TIntegerField;
+    SQLProdutoGRADICOD: TIntegerField;
+    SQLProdutoGRTMICOD: TIntegerField;
+    SQLProdutoCORA30DESCR: TStringField;
+    SQLProdutoPSLDN3QTDE: TFloatField;
+    SQLProdutoEMPRICOD: TIntegerField;
+    gridGradeEstoque: TDBGrid;
     procedure FormCreate(Sender: TObject);
     procedure FormKeyDown(Sender: TObject; var Key: Word;
       Shift: TShiftState);
@@ -60,6 +129,11 @@ type
     procedure btFaltaClick(Sender: TObject);
     procedure btnFecharEstoqueEmpresasClick(Sender: TObject);
     procedure btnBuscarEstoqueFiliaisClick(Sender: TObject);
+    procedure btnConsultarGradeClick(Sender: TObject);
+    procedure btnFecharGradeClick(Sender: TObject);
+    procedure gridGradeEstoqueDrawColumnCell(Sender: TObject;
+      const Rect: TRect; DataCol: Integer; Column: TColumn;
+      State: TGridDrawState);
   private
     { Private declarations }
   public
@@ -73,7 +147,7 @@ var
 
 implementation
 
-uses TelaItens, UnitLibrary, DataModulo, UnitCheckoutLibrary, DBTables, VarSYS;
+uses TelaItens, UnitLibrary, DataModulo, UnitCheckoutLibrary, VarSYS;
 
 
 
@@ -210,7 +284,7 @@ end;
 procedure TFormTelaTiraTeima.btnFecharEstoqueEmpresasClick(
   Sender: TObject);
 begin
-  pnlEstoqueEmpresas.Visible := False; 
+  pnlEstoqueEmpresas.Visible := False;
 end;
 
 procedure TFormTelaTiraTeima.btnBuscarEstoqueFiliaisClick(Sender: TObject);
@@ -267,6 +341,167 @@ begin
     dm.zServidor_Consulta.Close;
     dm.zdbServidor.Connected := False;
   end;
+end;
+
+procedure TFormTelaTiraTeima.btnConsultarGradeClick(Sender: TObject);
+var
+  Empresa, Cor: string;
+  Posicao, I: Integer;
+  Soma, SomaE: Double;
+  Qtd: array[1..25] of Double;
+  QtdE: array[1..25] of Double;
+begin
+  if FormTelaItens.SQLProdutoPRODICOD.AsString = '' then exit;
+
+  if EncontrouProduto(FormTelaItens.SQLProdutoPRODICOD.AsString, SQLProdutoGrade) then
+  begin
+    if not TblSaldoEmpresa.Active then
+      TblSaldoEmpresa.Open;
+    while TblSaldoEmpresa.RecordCount > 0 do
+      TblSaldoEmpresa.Delete;
+    SQLGradeTamanho.Close;
+    SQLGradeTamanho.ParamByName('GRADICOD').asInteger := SQLProdutoGradeGRADICOD.asInteger;
+    SQLGradeTamanho.Open;
+    SQLGradeTamanho.First;
+    I := 0;
+    if not SQLGradeTamanho.IsEmpty then
+    begin
+      if SQLGradeTamanho.RecordCount > 25 then
+      begin
+        Informa('Problemas no cadastro da grade... ' + #13 + 'Número de tamanhos excedeu o limite de 25, verifique seu cadastro!' + #13 + 'A operação será cancelada!');
+        Exit;
+      end;
+      while not SQLGradeTamanho.Eof do
+      begin
+        Inc(I);
+        TblSaldoEmpresa.FindField('Qtd' + IntToStr(I)).DisplayLabel := SQLGradeTamanhoGRTMA5DESCR.asString;
+        SQLGradeTamanho.Next;
+      end;
+    end
+    else
+    begin
+      for I := 0 to TblSaldoEmpresa.FieldCount - 1 do
+      begin
+        if Pos('Qtd', TblSaldoEmpresa.Fields[I].FieldName) > 0 then
+          TblSaldoEmpresa.Fields[I].DisplayLabel := ' ';
+      end;
+      I := 0;
+    end;
+    inc(I);
+    if (I < 25) and (I > 0) then
+      for I := I to 25 do
+        TblSaldoEmpresa.FindField('Qtd' + IntToStr(I)).DisplayLabel := ' ';
+    SQLGradeTamanho.Close;
+    SQLProduto.Close;
+    SQLProduto.ParamByName('PRODIAGRUPGRADE').asInteger := SQLProdutoGradePRODIAGRUPGRADE.asInteger;
+    SQLProduto.Open;
+    SQLProduto.First;
+    Empresa := '';
+    Cor := '';
+    Soma := 0;
+    for I := 1 to 25 do
+      Qtd[I] := 0;
+    if SQLProduto.IsEmpty then
+    begin
+      Informa('A grade para este produto Não foi gerada!');
+      Exit;
+    end;
+    while not SQLProduto.Eof do
+    begin
+      if (Empresa <> SQLProdutoEMPRICOD.AsString) or (Cor <> SQLProdutoCORICOD.AsString) then
+      begin
+        TblSaldoEmpresa.Append;
+        if (Empresa <> SQLProdutoEMPRICOD.AsString) then
+        begin
+          TblSaldoEmpresaEmpresa.asString := SQLLocate('EMPRESA', 'EMPRICOD', 'EMPRA60RAZAOSOC', SQLProdutoEMPRICOD.AsString);
+          SomaE := 0;
+          for I := 1 to 25 do
+            QtdE[I] := 0;
+        end;
+        TblSaldoEmpresaCor.asString := SQLProdutoCORA30DESCR.AsString;
+        Empresa := SQLProdutoEMPRICOD.AsString;
+        Cor := SQLProdutoCORICOD.AsString;
+      end
+      else
+        TblSaldoEmpresa.Edit;
+      TblSaldoEmpresaTotal.asFloat := TblSaldoEmpresaTotal.asFloat + SQLProdutoPSLDN3QTDE.asFloat;
+      Posicao := PosicaoGrade(SQLProdutoGRADICOD.asInteger, SQLProdutoGRTMICOD.asInteger);
+      TblSaldoEmpresa.FindField('Qtd' + IntToStr(Posicao)).asFloat := SQLProdutoPSLDN3QTDE.asFloat;
+      TblSaldoEmpresa.Post;
+
+      Soma := Soma + SQLProdutoPSLDN3QTDE.asFloat;
+      SomaE := SomaE + SQLProdutoPSLDN3QTDE.asFloat;
+
+      Qtd[Posicao] := Qtd[Posicao] + SQLProdutoPSLDN3QTDE.asFloat;
+      QtdE[Posicao] := QtdE[Posicao] + SQLProdutoPSLDN3QTDE.asFloat;
+
+      SQLProduto.Next;
+
+      if (Empresa <> SQLProdutoEMPRICOD.AsString) or SQLProduto.Eof then
+      begin
+//        TblSaldoEmpresa.Append;
+//        TblSaldoEmpresaEmpresa.asString := '------------------------------------------------------------';
+//        TblSaldoEmpresaCor.asString := 'SubTotal';
+//        TblSaldoEmpresaTotal.asFloat := SomaE;
+//        for I := 1 to 25 do
+//          TblSaldoEmpresa.FindField('Qtd' + IntToStr(I)).asFloat := QtdE[I];
+//        TblSaldoEmpresa.Post;
+              // LINHA EM BRANCO
+        TblSaldoEmpresa.Append;
+        TblSaldoEmpresaEmpresa.asString := '============================================================';
+        TblSaldoEmpresaCor.asString := '============================================================';
+        TblSaldoEmpresa.Post;
+      end;
+    end;
+    SQLProduto.Close;
+    if TblSaldoEmpresa.RecordCount > 0 then
+    begin
+      TblSaldoEmpresa.Append;
+      TblSaldoEmpresaEmpresa.asString := '____________________________________________________________';
+      TblSaldoEmpresaCor.asString := 'Total Geral';
+      TblSaldoEmpresaTotal.asFloat := Soma;
+      for I := 1 to 25 do
+        TblSaldoEmpresa.FindField('Qtd' + IntToStr(I)).asFloat := Qtd[I];
+      TblSaldoEmpresa.Post;
+    end;
+  end;
+  TblSaldoEmpresa.First;
+  try
+    if TblSaldoEmpresa.RecordCount > 0 then
+    begin
+      pnlGrade.Width := 825;
+      pnlGrade.Left := 8;
+      pnlGrade.Visible := True;
+    end;
+  finally
+  end;
+
+end;
+
+procedure TFormTelaTiraTeima.btnFecharGradeClick(Sender: TObject);
+begin
+  pnlGrade.Visible := False
+end;
+
+procedure TFormTelaTiraTeima.gridGradeEstoqueDrawColumnCell(
+  Sender: TObject; const Rect: TRect; DataCol: Integer; Column: TColumn;
+  State: TGridDrawState);
+begin
+   if gdSelected in State then
+     begin
+       TDBGrid(Sender).Canvas.Brush.Color := clBlack;
+       TDBGrid(Sender).Canvas.Font.Color := clWhite;
+     end
+   else
+      begin
+         if Odd((TProtectDBGrid(Sender).DataLink).ActiveRecord) then
+            TDBGrid(Sender).Canvas.Brush.Color := $00EBEBEB  {cor linha diferente}
+         else
+            TDBGrid(Sender).Canvas.Brush.Color := TDBGrid(Sender).Color;
+
+         TDBGrid(Sender).Canvas.Font.Color := clBlack;
+      end;
+   TDBGrid(Sender).DefaultDrawColumnCell(Rect, DataCol, Column, State);
 end;
 
 end.

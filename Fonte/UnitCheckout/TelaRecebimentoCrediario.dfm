@@ -1,11 +1,11 @@
 object FormTelaRecebimentoCrediario: TFormTelaRecebimentoCrediario
-  Left = -8
-  Top = -8
+  Left = 319
+  Top = 27
   BorderIcons = []
   BorderStyle = bsSingle
   Caption = ' '
-  ClientHeight = 705
-  ClientWidth = 1366
+  ClientHeight = 606
+  ClientWidth = 838
   Color = 5278518
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -25,7 +25,7 @@ object FormTelaRecebimentoCrediario: TFormTelaRecebimentoCrediario
   object LblNomeSistema: TRxLabel
     Left = 0
     Top = 0
-    Width = 1366
+    Width = 838
     Height = 33
     Align = alTop
     Alignment = taCenter
@@ -67,7 +67,7 @@ object FormTelaRecebimentoCrediario: TFormTelaRecebimentoCrediario
   object RxLabel1: TRxLabel
     Left = 0
     Top = 33
-    Width = 1366
+    Width = 838
     Height = 23
     Align = alTop
     Alignment = taCenter
@@ -106,25 +106,6 @@ object FormTelaRecebimentoCrediario: TFormTelaRecebimentoCrediario
     Height = 10
     Brush.Color = clRed
     Shape = stCircle
-  end
-  object LblRecebido: TRxLabel
-    Left = 373
-    Top = 553
-    Width = 130
-    Height = 29
-    Caption = 'RECEBIDO'
-    Color = 32767
-    Font.Charset = ANSI_CHARSET
-    Font.Color = clBlack
-    Font.Height = -24
-    Font.Name = 'Verdana'
-    Font.Style = []
-    ParentColor = False
-    ParentFont = False
-    ShadowColor = clBlack
-    ShadowSize = 2
-    ShadowPos = spRightBottom
-    Transparent = True
   end
   object Panel7: TPanel
     Left = 5
@@ -964,26 +945,6 @@ object FormTelaRecebimentoCrediario: TFormTelaRecebimentoCrediario
     SymbolColorClose = 14731440
     Transparent = True
   end
-  object ValorRecebido: TCurrencyEdit
-    Left = 519
-    Top = 547
-    Width = 161
-    Height = 35
-    TabStop = False
-    Alignment = taCenter
-    AutoSize = False
-    Color = clMoneyGreen
-    Ctl3D = True
-    Font.Charset = ANSI_CHARSET
-    Font.Color = clBlack
-    Font.Height = -24
-    Font.Name = 'Verdana'
-    Font.Style = []
-    ParentCtl3D = False
-    ParentFont = False
-    ReadOnly = True
-    TabOrder = 4
-  end
   object SQLParcelasReceberTemp: TRxQuery
     BeforeDelete = SQLParcelasReceberTempBeforeDelete
     OnCalcFields = SQLParcelasReceberTempCalcFields
@@ -992,6 +953,7 @@ object FormTelaRecebimentoCrediario: TFormTelaRecebimentoCrediario
     RequestLive = True
     SQL.Strings = (
       'select * from PARCELASRECEBERTEMP')
+    UpdateObject = UpdateSQLParcelasReceberTemp
     Macros = <>
     Left = 8
     Top = 7
@@ -3394,40 +3356,5 @@ object FormTelaRecebimentoCrediario: TFormTelaRecebimentoCrediario
   object UdpateRenegociacao: TUpdateSQL
     Left = 232
     Top = 36
-  end
-  object SQLParcelasVistaRecebTemp: TRxQuery
-    BeforeDelete = SQLParcelasReceberTempBeforeDelete
-    OnCalcFields = SQLParcelasReceberTempCalcFields
-    OnNewRecord = SQLParcelasReceberTempNewRecord
-    DatabaseName = 'DB'
-    RequestLive = True
-    SQL.Strings = (
-      'select * from PARCELASVISTARECEBTEMP')
-    UpdateObject = UpdateSQLParcelasReceberTemp
-    Macros = <>
-    Left = 232
-    Top = 7
-    object SQLParcelasVistaRecebTempTERMICOD: TIntegerField
-      FieldName = 'TERMICOD'
-      Origin = 'DB.PARCELASVISTARECEBTEMP.TERMICOD'
-    end
-    object SQLParcelasVistaRecebTempNROITEM: TIntegerField
-      FieldName = 'NROITEM'
-      Origin = 'DB.PARCELASVISTARECEBTEMP.NROITEM'
-    end
-    object SQLParcelasVistaRecebTempNUMEICOD: TIntegerField
-      FieldName = 'NUMEICOD'
-      Origin = 'DB.PARCELASVISTARECEBTEMP.NUMEICOD'
-    end
-    object SQLParcelasVistaRecebTempVALORPARC: TFloatField
-      FieldName = 'VALORPARC'
-      Origin = 'DB.PARCELASVISTARECEBTEMP.VALORPARC'
-    end
-    object SQLParcelasVistaRecebTempTIPOPADR: TStringField
-      FieldName = 'TIPOPADR'
-      Origin = 'DB.PARCELASVISTARECEBTEMP.TIPOPADR'
-      FixedChar = True
-      Size = 5
-    end
   end
 end
