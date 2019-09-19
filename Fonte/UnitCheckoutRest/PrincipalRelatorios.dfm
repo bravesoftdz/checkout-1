@@ -1543,7 +1543,7 @@ object FormPrincipalRelatorios: TFormPrincipalRelatorios
     PrinterSetup.mmMarginTop = 6350
     PrinterSetup.mmPaperHeight = 0
     PrinterSetup.mmPaperWidth = 0
-    PrinterSetup.PaperSize = 177
+    PrinterSetup.PaperSize = 256
     DeviceType = 'Screen'
     EmailSettings.ReportFormat = 'PDF'
     OnPreviewFormCreate = ReportTelePreviewFormCreate
@@ -2280,18 +2280,18 @@ object FormPrincipalRelatorios: TFormPrincipalRelatorios
     Top = 128
   end
   object AdvOfficeStatusBarOfficeStyler1: TAdvOfficeStatusBarOfficeStyler
-    BorderColor = 14986888
-    PanelAppearanceLight.BorderColor = 14922381
+    BorderColor = clGreen
+    PanelAppearanceLight.BorderColor = 5278518
     PanelAppearanceLight.BorderColorHot = clGray
     PanelAppearanceLight.BorderColorDown = 10240783
-    PanelAppearanceLight.Color = 16440774
-    PanelAppearanceLight.ColorTo = 14854530
+    PanelAppearanceLight.Color = 5278518
+    PanelAppearanceLight.ColorTo = 5278518
     PanelAppearanceLight.ColorHot = 13958143
     PanelAppearanceLight.ColorHotTo = 6538487
     PanelAppearanceLight.ColorDown = 9232890
     PanelAppearanceLight.ColorDownTo = 1940207
-    PanelAppearanceLight.ColorMirror = 14854530
-    PanelAppearanceLight.ColorMirrorTo = 14854530
+    PanelAppearanceLight.ColorMirror = 5278518
+    PanelAppearanceLight.ColorMirrorTo = 5278518
     PanelAppearanceLight.ColorMirrorHot = 6538487
     PanelAppearanceLight.ColorMirrorHotTo = 6538487
     PanelAppearanceLight.ColorMirrorDown = 1940207

@@ -392,7 +392,7 @@ type
     QuantItemProv,
     RetornoCampoUsuario,
     ValorTotItem, ProvedorCartao, NomeNumerarioCartao,
-    NroSerieProduto, LbInstrucoesOld, Chave  : string ;
+    NroSerieProduto, LbInstrucoesOld, Chave, Danfe, PathPastaMensal : string ;
     TrocandoItens, SolicitarPreco, SolicitarPrecoQDeveriaSerVendido, GPAtivo, TrancouVenda : boolean ;
     ValorItem, ValorItemQDeveriaSerVendido, ValorCustoTotal, ValorLucroTotal, ValorTele, ValorSubTotal : Currency;
     DescItemPerc,
@@ -400,7 +400,7 @@ type
     TotalDescItens,
     ReducaoICMS,
     QuantItem,QuantProx, SaldoEstoqueAtual : Double;
-    VendPreVenda, NumNFe, QuitarComandaNumero : integer;
+    VendPreVenda, NumNFe, QuitarComandaNumero, nfce_tentativa : integer;
     BlobStream : TStream;
     JPEGImage  : TJPEGImage;
     Arquivo : TextFile;
@@ -1942,6 +1942,7 @@ var
   DadosImpressora : TInfoImpressao;
   RetornoUser : TInfoRetornoUser;
   Sequencial, LinhasCartao : Integer;
+  ConsultarDenovo : Boolean;
 begin
   case Key of
      VK_F1:begin//CHAMAR TECLA DE ATALHO
@@ -3233,6 +3234,171 @@ begin
             'T':begin
                   // Livre
                 end ;
+            'X':begin {Alt X - ReTransmitir NFCe Cupom Eletronico}
+                  if dm.sqlEmpresa.FieldByName('idTOKEN').AsString = '' then exit;
+
+                      // StatusServicoNFE;
+
+                  IDReimprimir := '';
+                  Application.CreateForm(TFormTelaConsultaRapidaCupom, FormTelaConsultaRapidaCupom);
+                  FormTelaConsultaRapidaCupom.SQLCupom.Close;
+                  FormTelaConsultaRapidaCupom.SQLCupom.MacroByName('DataEmissao').Value := 'Cupom.CUPODEMIS = ''' + FormatDateTime('mm/dd/yyyy', Now) + '''';
+                  FormTelaConsultaRapidaCupom.SQLCupom.MacroByName('Empresa').Value := 'Cupom.EMPRICOD  = ' + EmpresaPadrao;
+                  if FiltraTerminal = 'S' then
+                    FormTelaConsultaRapidaCupom.SQLCupom.MacroByName('Terminal').Value := 'Cupom.TERMICOD  = ' + dm.SQLTerminalAtivoTermicod.AsString
+                  else
+                    FormTelaConsultaRapidaCupom.SQLCupom.MacroByName('Terminal').Value := '0=0';
+                  FormTelaConsultaRapidaCupom.SQLCupom.MacroByName('MostraVendas').Value := '(Cupom.CUPOINRO>0) and ((Cupom.STNFE is null) or (Cupom.STNFE=''''))';
+                  FormTelaConsultaRapidaCupom.SQLCupom.Open;
+                  FormTelaConsultaRapidaCupom.ShowModal;
+                  if FormTelaConsultaRapidaCupom.ModalResult = MrOk then
+                  begin
+                    IDReimprimir := FormTelaConsultaRapidaCupom.SQLCupomCUPOA13ID.AsString;
+                    DocumentoClienteVenda := FormTelaConsultaRapidaCupom.SQLCupomCLIENTECNPJ.AsString;
+                    chave := FormTelaConsultaRapidaCupom.SQLCupomCHAVEACESSO.AsString;
+                    PathPastaMensal := FormatDateTime('yyyymm', FormTelaConsultaRapidaCupom.SQLCupomCUPODEMIS.Value);
+                  end;
+                  FormTelaConsultaRapidaCupom.Close;
+
+                  if (IDReimprimir <> '') then
+                  begin
+                    Inicia_NFe;
+                          {Tenta pegar retorno da nfce da chave pra ver se ja esta autorizada no sefaz, mas por falha nao gravamos o retorno}
+                    nfce_tentativa := 0;
+                    while (nfce_tentativa <= 5) do
+                    begin
+                      ConsultarDenovo := False;
+                      nfce_tentativa := nfce_tentativa + 1;
+                      LblInstrucoes.Caption := 'Consultando Retorno Sefaz RS NFCe: ' + IntToStr(NumNFe) + ' - Tentativa N.' + intToStr(nfce_tentativa);
+                      LblInstrucoes.Update;
+                      if not FileExists('COMUNICACAO_OFFLINE.TXT') then
+                        dm.ACBrNFe.Consultar(chave);
+
+                      if (dm.ACBrNFe.WebServices.Consulta.cStat = 613) or (dm.ACBrNFe.WebServices.Consulta.cStat = 539) then
+                      begin
+                        if dm.ACBrNFe.WebServices.Consulta.XMotivo <> '' then
+                        begin
+                          if pos('NF-e [', dm.ACBrNFe.WebServices.Consulta.XMotivo) > 0 then
+                          begin
+                            Chave := Copy(dm.ACBrNFe.WebServices.Consulta.XMotivo, pos('NF-e [', dm.ACBrNFe.WebServices.Consulta.XMotivo), 200);
+                            Chave := StringReplace(Chave, 'NF-e [', '', [rfReplaceAll, rfIgnoreCase]);
+                            Chave := StringReplace(Chave, ']', '', [rfReplaceAll]);
+
+                            if Chave <> '' then
+                            begin
+                              if dm.SQLCupom.IsEmpty then
+                              begin
+                                dm.SQLCupom.close;
+                                dm.SQLCupom.macrobyname('MFiltro').Value := 'CUPOA13ID = ''' + IDReimprimir + '''';
+                                dm.SQLCupom.Open;
+                              end;
+
+                              dm.SQLCupom.RequestLive := True;
+                              dm.SQLCupom.edit;
+                              dm.SQLCupomCHAVEACESSO.AsString := Chave;
+                              dm.SQLCupom.Post;
+                            end;
+
+                            FormTelaConsultaRapidaCupom.SQLCupom.Close;
+                            FormTelaConsultaRapidaCupom.SQLCupom.Open;
+
+                            ConsultarDenovo := True;
+                          end;
+                        end
+                        else if dm.ACBrNFe.WebServices.Consulta.protNFe.xMotivo <> '' then
+                        begin
+                          Chave := Copy(dm.ACBrNFe.WebServices.Consulta.XMotivo, pos('[chNFe:', dm.ACBrNFe.WebServices.Consulta.XMotivo), 200);
+                          Chave := StringReplace(Chave, '[chNFe:', '', [rfReplaceAll, rfIgnoreCase]);
+                          Chave := StringReplace(Chave, ']', '', [rfReplaceAll]);
+
+                          if Chave <> '' then
+                          begin
+                            if dm.SQLCupom.IsEmpty then
+                            begin
+                              dm.SQLCupom.close;
+                              dm.SQLCupom.macrobyname('MFiltro').Value := 'CUPOA13ID = ''' + IDReimprimir + '''';
+                              dm.SQLCupom.Open;
+                            end;
+
+                            dm.SQLCupom.RequestLive := True;
+                            dm.SQLCupom.edit;
+                            dm.SQLCupomCHAVEACESSO.AsString := Chave;
+                            dm.SQLCupom.Post;
+                          end;
+
+                        end;
+                      end;
+
+                      if ((FileExists('COMUNICACAO_OFFLINE.TXT')) or (dm.ACBrNFe.WebServices.Consulta.cStat <> 100)) and not ConsultarDenovo then
+                          //or (dm.ACBrNFe.WebServices.Consulta.cStat = 217)or (dm.ACBrNFe.WebServices.Consulta.cStat = 613) then
+                      begin
+                                  { Cria o arquivo XML }
+                        sXML := Gerar_NFCe(IDReimprimir);
+                        if (dm.ACBrNFe.WebServices.Consulta.cStat <> 613) and (dm.ACBrNFe.WebServices.Consulta.cStat <> 217) then
+                          chave := copy(dm.ACBrNFe.NotasFiscais.Items[0].NFe.infNFe.ID, (length(dm.ACBrNFe.NotasFiscais.Items[0].NFe.infNFe.ID) - 44) + 1, 44);
+
+                        LblInstrucoes.Caption := 'Assinando NFCe...' + intToStr(NumNFe);
+                        LblInstrucoes.Update;
+                        dm.ACBrNFe.NotasFiscais.Assinar;
+                        LblInstrucoes.Caption := 'Validando NFCe...' + intToStr(NumNFe);
+                        LblInstrucoes.Update;
+                        dm.ACBrNFe.NotasFiscais.Validar;
+                        LblInstrucoes.Caption := 'Enviando ao Sefaz RS NFCe: ' + intToStr(NumNFe);
+                        LblInstrucoes.Update;
+                        LblInstrucoes.Caption := 'Evento de retorno: ' + IntToStr(dm.ACBrNFe.WebServices.Consulta.cStat);
+
+                        if not FileExists('COMUNICACAO_OFFLINE.TXT') then
+                          dm.ACBrNFe.Enviar('1', False, False);
+                                  {refaz a consulta}
+                        LblInstrucoes.Caption := 'Consultando Retorno Sefaz do NFCe: ' + intToStr(NumNFe);
+                        LblInstrucoes.Update;
+
+                        if not FileExists('COMUNICACAO_OFFLINE.TXT') then
+                          dm.ACBrNFe.Consultar(chave);
+                      end;
+
+                      if (dm.ACBrNFe.WebServices.Consulta.cStat = 100) then
+                      begin
+                        LblInstrucoes.Caption := 'Gravando Retorno Sefaz do NFCe: ' + intToStr(NumNFe);
+                        LblInstrucoes.Update;
+                        SQLImpressaoCupom.Close;
+                        SQLImpressaoCupom.RequestLive := False;
+                        SQLImpressaoCupom.SQL.Text := 'Update CUPOM Set STNFE=' + IntToStr(dm.ACBrNFe.WebServices.consulta.cStat) +
+                          ', PROTOCOLO=''' + dm.ACBrNFe.WebServices.consulta.Protocolo + '''' +
+                          ', PENDENTE=' + QuotedStr('S') +
+                          ' Where CUPOA13ID =''' + IDReimprimir + '''';
+                        SQLImpressaoCupom.ExecSQL;
+
+                        LblInstrucoes.Caption := 'Imprimindo NFCe: ' + intToStr(NumNFe);
+                        LblInstrucoes.Update;
+                        if (ECFAtual = 'NFCE A4') then
+                        begin
+                          Danfe := 'http://www.sefaz.rs.gov.br/ASP/AAE_ROOT/NFE/SAT-WEB-NFE-NFC_2.asp?chaveNFe=' + chave + '&HML=false&NF=07BA65B13';
+                          ShellExecute(Handle, 'open', pchar(Danfe), '', '', 1);
+                        end
+                        else
+                        begin
+                          dm.ACBrNFe.NotasFiscais.Clear;
+                          dm.ACBrNFe.NotasFiscais.LoadFromFile('c:\easy2solutions\nfce\' + PathPastaMensal + '\' + chave + '-NFe.xml');
+                          dm.ACBrNFe.NotasFiscais.Imprimir;
+                          if NroViasImpVenda = '2' then
+                          begin
+                            if Application.MessageBox(PChar('Imprimir Segunda Via NFCe?'), PChar(Application.Title), MB_SYSTEMMODAL + MB_YesNo + MB_IconQuestion + MB_DEFBUTTON2) = IdYes then
+                              dm.ACBrNFe.NotasFiscais.Imprimir;
+                          end;
+                        end;
+                        nfce_tentativa := 9;
+                      end;
+                    end;
+                          { Limpa a nota do componente ACBr }
+                    dm.ACBrNFe.NotasFiscais.Clear;
+
+                    LblInstrucoes.Caption := 'CAIXA LIVRE - Próximo Cliente';
+                    LblInstrucoes.Update;
+                    ImpCupomAutomatico := false;
+                  end;
+                end;
+
           end;
       end;
   end ;
@@ -4102,7 +4268,6 @@ begin
             begin
               IDReimprimir := '';
               Application.CreateForm(TFormTelaConsultaRapidaCupom,FormTelaConsultaRapidaCupom);
-              FormTelaConsultaRapidaCupom.de.Date := Now;
               FormTelaConsultaRapidaCupom.SQLCupom.Close;
               FormTelaConsultaRapidaCupom.SQLCupom.MacroByName('Terminal').Value    := '0=0';
               FormTelaConsultaRapidaCupom.SQLCupom.MacroByName('Filtro').Value      := 'Cupom.CUPOINRO < 1';
@@ -4799,7 +4964,7 @@ begin
   LblInstrucoes.Caption := 'Validando NFCe.: '+inttostr(NumNFe) ;
   LblInstrucoes.Update;
   dm.ACBrNFe.NotasFiscais.Validar;
-  if (ECFAtual <> 'NFCE A4') then
+  if (ECFAtual <> 'NFCE A4') and (Imprimir_Nfce) then
     begin
       LblInstrucoes.Caption := 'Imprimindo NFCe.: '+inttostr(NumNFe) ;
       LblInstrucoes.Update;

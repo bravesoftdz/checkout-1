@@ -549,6 +549,7 @@ type
     procedure BtRecalculaSaldoPelosMovimentosClick(Sender: TObject);
     procedure btEmpresaCupomItemClick(Sender: TObject);
     procedure btApagaMovtosDuplicadosInventarioClick(Sender: TObject);
+    procedure FormShow(Sender: TObject);
   private
     { Private declarations }
     procedure GravaArqTexto(Str, NomeArq : String) ;
@@ -1570,6 +1571,12 @@ begin
     end
   else
    ShowMessage('Nenhum Registro Encontrado!');
+end;
+
+procedure TFormTelaPrincipal.FormShow(Sender: TObject);
+begin
+//  Sleep(5000);
+//  BtnAtualizarClick(Sender);
 end;
 
 end.

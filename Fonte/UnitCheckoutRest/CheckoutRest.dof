@@ -145,6 +145,9 @@ C:\Program Files (x86)\Developer Express Inc\Library\Delphi7\dcldxPScxScheduler3
 [HistoryLists\hlUnitAliases]
 Count=1
 Item0=WinTypes=Windows;WinProcs=Windows;DbiTypes=BDE;DbiProcs=BDE;DbiErrs=BDE;
+[HistoryLists\hlUnitOutputDirectory]
+Count=1
+Item0=D:\Easy2Solutions\Gestao\DCU\Rest
 [HistoryLists\hlOutputDirectorry]
 Count=5
 Item0=D:\Easy2Solutions\Gestao

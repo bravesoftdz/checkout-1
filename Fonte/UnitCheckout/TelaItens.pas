@@ -300,6 +300,10 @@ type
     SQLItensDescTempCALCULAR_DESC: TStringField;
     SQLProdutoPRODVASILHAME: TStringField;
     SQLProdutoPRODN2DESCMAX: TFloatField;
+    SQLVasilhame: TTable;
+    SQLVasilhameCODIGO: TIntegerField;
+    SQLVasilhameQTDE: TFloatField;
+    SQLVasilhameVALOR: TFloatField;
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure FormCreate(Sender: TObject);
     procedure EntradaDadosKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
@@ -1169,6 +1173,7 @@ begin
     Action := caNone;
     SQLItensVendaTemp.Open;
     SQLItensDescTemp.Open;
+    SQLVasilhame.Open;
     Exit;
   end;
 
@@ -1205,6 +1210,7 @@ begin
 
   SQLItensVendaTemp.Close;
   SQLItensDescTemp.Close;
+  SQLVasilhame.Close;
 
   Application.ProcessMessages;
 
@@ -1331,6 +1337,8 @@ var
 
   TabelaMaisTerminalDesc := 'ItensDescTemp_' + FormatFloat('###000', TerminalAtual);
   SQLItensDescTemp.TableName := TabelaMaisTerminalDesc;
+  TabelaMaisTerminalVasilhame := 'Vasilhame_' + FormatFloat('###000', TerminalAtual);
+  SQLVasilhame.TableName := TabelaMaisTerminalVasilhame;
 
   // VERIFICA TECLADO REDUZIDO PRESENTE
   if TecladoReduzidoModelo = 'TEC44DIS' then
@@ -1372,6 +1380,20 @@ var
     ShowMessage('Erro ao abrir tabela Temporaria de desconto dos Itens, Tente Novamente!');
     Application.Terminate;
   end;
+
+  if not FileExists('Temp\' + TabelaMaisTerminalVasilhame + '.db') then
+    SQLVasilhame.CreateTable;
+  try
+    SQLVasilhame.Close;
+    SQLVasilhame.Open;
+    Application.ProcessMessages;
+  except
+    SQLVasilhame.Close;
+    SQLVasilhame.DeleteTable;
+    ShowMessage('Erro ao abrir tabela Temporaria de vasilhame dos Itens, Tente Novamente!');
+    Application.Terminate;
+  end;
+
 
 
   if FileExists('Bmp\Logo PDV.Bmp') then
@@ -5671,6 +5693,15 @@ begin
   end;
   SQLItensDescTemp.Open;
 
+  SQLVasilhame.Close;
+  try
+    SQLVasilhame.DeleteTable;
+    SQLVasilhame.CreateTable;
+  except
+    SQLVasilhame.CreateTable;
+  end;
+  SQLVasilhame.Open;
+
 end;
 
 procedure TFormTelaItens.EditQtdeExit(Sender: TObject);
@@ -7170,10 +7201,19 @@ end;
 
 procedure TFormTelaItens.CalcularVasilhame(CodigoBarra : string);
 var
-  vQtde, vQtdeRestante,vCodigoProduto : Integer;
+  vQtde, vQtdeRestante,vCodigoProduto, vCodigoProdutoFilho : Integer;
   vValorVasilhame, vValorAcrescimo : Real;
 begin
   //buscar valores do ticket do produtovasilhame
+  SQLVasilhame.Close;
+  try
+    SQLVasilhame.DeleteTable;
+    SQLVasilhame.CreateTable;
+  except
+    SQLVasilhame.CreateTable;
+  end;
+  SQLVasilhame.Open;
+
   vValorVasilhame := 0;
   DM.sqlConsulta.Close;
   DM.sqlConsulta.SQL.Clear;
@@ -7207,6 +7247,7 @@ begin
     Exit;
   end;
   vValorVasilhame := dm.sqlConsulta.FieldByName('PRODN3VLRTOTAL').AsFloat;
+  vCodigoProdutoFilho := dm.sqlConsulta.FieldByName('PRODICODFILHO').AsInteger;
 
   //Lança desconto no item do produto
   SQLItensVendaTemp.First;
@@ -7219,14 +7260,38 @@ begin
       begin
         vQtde := vQtdeRestante * -1;
         vQtdeRestante := 0;
-        SQLItensVendaTemp.Edit;
-        SQLItensVendaTempVLRUNITBRUT.AsFloat := SQLItensVendaTempVLRUNITBRUT.AsFloat + (vQtde * vValorVasilhame);
-        SQLItensVendaTempVLRTOTAL.AsFloat := (SQLItensVendaTempVLRUNITBRUT.AsFloat - SQLItensVendaTempVLRDESC.AsFloat) * SQLItensVendaTempQUANTIDADE.AsFloat;
-        SQLItensVendaTemp.Post;
+        SQLVasilhame.Insert;
+        SQLVasilhameCODIGO.Value := vCodigoProdutoFilho;
+        SQLVasilhameQTDE.AsFloat := vQtde;
+        SQLVasilhameVALOR.AsFloat := vValorVasilhame;
+        SQLVasilhame.Post;
       end;
     end;
     SQLItensVendaTemp.Next;
   end;
+  SQLVasilhame.First;
+  if not SQLVasilhame.IsEmpty then
+  begin
+    while not SQLVasilhame.Eof do
+    begin
+      SQLItensVendaTemp.Append;
+      SQLItensVendaTempTERMICOD.Value := TerminalAtual;
+      SQLItensVendaTempCODIGO.Value := SQLVasilhameCODIGO.AsInteger;
+      NroUltItem := NroUltItem + 1;
+      SQLItensVendaTempNUMITEM.Value := NroUltItem;
+      SQLItensVendaTempDESCRICAO.AsString := SQLLocate('PRODUTO','PRODICOD','PRODA30ADESCRREDUZ',IntToStr(vCodigoProdutoFilho));
+      SQLItensVendaTempQUANTIDADE.AsFloat := SQLVasilhameQTDE.AsFloat;
+      SQLItensVendaTempVLRDESC.AsFloat := 0;
+      SQLItensVendaTempTROCA.AsString := 'N';
+      SQLItensVendaTempCANCELADO.AsString := 'N';
+      SQLItensVendaTempVLRUNITBRUT.AsFloat := SQLVasilhameVALOR.AsFloat;
+      SQLItensVendaTempVLRTOTAL.AsFloat := SQLVasilhameQTDE.AsFloat * SQLVasilhameVALOR.AsFloat;
+      SQLItensVendaTemp.Post;
+      CalculaTotal;
+      SQLVasilhame.Next;
+    end;
+  end;
+
   DM.SQLTemplate.Close;
   DM.SQLTemplate.SQL.Clear;
   DM.SQLTemplate.SQL.Add('UPDATE PRODUTOVASILHAME SET DATA_UTILIZACAO = ');

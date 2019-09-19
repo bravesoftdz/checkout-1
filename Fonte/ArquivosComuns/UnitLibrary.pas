@@ -123,7 +123,7 @@ var
   MensagemVenda,
   TipoPlanoContas, TxtReciboECF, CodMotoboy, UsaTablet, ImpressoraCaixaPath, Enter_Vazio, TeleQuitado, TabInicial, F2_AUTOMATICO, DetalhesVenda, ParceiroNome, Obs_Venda, ParceiroPath, MostraCodigoBarras,
   NotaGaucha,GravarDisplaySequencial,GravarCupomCancelado,TipoHistoricoPadrao, ImprimeDadosClienteCupom, DataAniversario, Porta, TabelaMaisTerminal, IDReimprimir, ProdutoComplemento, SolicitaDataEntrega,
-  OrdemGrupo, OrdemProduto, FiltraTerminal, Servidor_HostName, Servidor_Database, NroViasImpVenda, TabelaMaisTerminalDesc, CrediarioOnLine : String;
+  OrdemGrupo, OrdemProduto, FiltraTerminal, Servidor_HostName, Servidor_Database, NroViasImpVenda, TabelaMaisTerminalDesc, TabelaMaisTerminalVasilhame, CrediarioOnLine : String;
   PercDesqMaxUsario, PercDesqMaxUsarioAutenticado, VlrDescPromoImportado, PercDescMaxProduto,
   VlrBonusTroca,
   VlrLivreProd,
@@ -2221,7 +2221,7 @@ begin
         begin
           SQLProdFilho.Close;
           SQLProdFilho.SQL.Clear;
-          SQLProdFilho.SQL.Add('SELECT * FROM PRODUTOCOMPOSICAO WHERE PRODICODFILHO = ' + IntToStr(ProdCod));
+          SQLProdFilho.SQL.Add('SELECT * FROM PRODUTOCOMPOSICAO WHERE PRODICOD = ' + IntToStr(ProdCod));
           SQLProdFilho.Open;
           SQLProdFilho.First;
           if (not SQLProdFilho.IsEmpty) then
@@ -2247,7 +2247,7 @@ begin
                       while not Sair do
                       begin
                         try
-                          GravaMovimento(SQLProdFilho.FieldByName('PRODICODFILHO').AsInteger,0,0);
+                          GravaMovimento(SQLProdFilho.FieldByName('PRODICODFILHO').AsInteger,0,SQLProdFilho.FieldByName('PRODN3QTDE').AsFloat);
                           Sair := True ;
                           Application.ProcessMessages ;
                         except
