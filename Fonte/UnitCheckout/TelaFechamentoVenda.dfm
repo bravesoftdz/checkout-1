@@ -2137,7 +2137,7 @@ object FormTelaFechamentoVenda: TFormTelaFechamentoVenda
         OnEnter = ValorAcrescimoEnter
       end
       object ValorDescontoAcrescimo: TCurrencyEdit
-        Left = 152
+        Left = 156
         Top = 112
         Width = 160
         Height = 35

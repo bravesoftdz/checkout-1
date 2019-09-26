@@ -275,7 +275,7 @@ begin
     end;
 
   {Se Desc for maior q zero, é porque teve desconto direto nos produtos, entao tem q somar os dois campos}
-  if SQLCup.FieldByName('CUPON2DESCITENS').Value > 0 then
+  if (SQLCup.FieldByName('CUPON2DESCITENS').Value > 0) and (SQLCup.FieldByName('CUPON2DESC').Value = 0) then
     DM.TblTicketPreVendaCabTotalNominal.Value := SQLCup.FieldByName('CUPON2TOTITENS').Value + SQLCup.FieldByName('CUPON2DESCITENS').Value
   else
     DM.TblTicketPreVendaCabTotalNominal.Value := SQLCup.FieldByName('CUPON2TOTITENS').Value;

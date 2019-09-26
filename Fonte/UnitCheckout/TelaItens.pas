@@ -11,7 +11,8 @@ uses
   Menus, ESkinPlus, AdvGlowButton, AdvOfficeStatusBar, AdvOfficeStatusBarStylers,
   AdvSmoothPanel, AdvReflectionLabel, AdvSmoothSlideShow, ComCtrls, TFlatPanelUnit,
   OleCtrls, SHDocVw, ACBrBAL, XMLIntf, XMLDoc, zlib, ACBrNFe, ACBrMail, ACBrBase, ACBrPosPrinter,
-  pcnConversao, ACBrUtil, ACBrDevice, RXClock, cxStyles, dxSkinsCore, pcnConversaoNFe, ACBrDFeUtil;
+  pcnConversao, ACBrUtil, ACBrDevice, RXClock, cxStyles, dxSkinsCore, pcnConversaoNFe, ACBrDFeUtil,
+  WiniNet;
 
 const
   //AS VARIAVEIS ABAIXO FORAM CRIADAS PARA NÃO CORRER O RISCO DE DIGITAR ERRADO
@@ -304,6 +305,7 @@ type
     SQLVasilhameCODIGO: TIntegerField;
     SQLVasilhameQTDE: TFloatField;
     SQLVasilhameVALOR: TFloatField;
+    curSubTotalDesc: TCurrencyEdit;
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure FormCreate(Sender: TObject);
     procedure EntradaDadosKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
@@ -377,6 +379,7 @@ type
     function GravaCupomItem: Boolean;
     function GravarOrcamento: boolean;
     function GravarItensOrcamento: boolean;
+    function ConectadoInternet : Boolean;
     procedure CalculaTotal;
     procedure CapturaCodigosIniciais;
     procedure CalcularDescontoProduto(ValidaQtde : Boolean);
@@ -402,7 +405,7 @@ type
       RetornoCampoUsuario,
       ValorTotItem,
       NroSerieProduto, TipoDesc, ProvedorCartao, NomeNumerarioCartao, Msg, LbinstrucoesOld, Chave, Danfe, PathPastaMensal: string;
-    TrocandoItens, SolicitarPreco, SolicitarPrecoQDeveriaSerVendido, GPAtivo, MostraPublicidade: boolean;
+    TrocandoItens, SolicitarPreco, SolicitarPrecoQDeveriaSerVendido, GPAtivo, MostraPublicidade, DescontoNoItem: boolean;
     ValorItem, ValorItemQDeveriaSerVendido, ValorCustoTotal, ValorLucroTotal: Currency;
     DescItemPerc,
       DescItemVlr, DescItemVlrUnitario,
@@ -491,6 +494,7 @@ begin
   dm.ACBrNFe.Configuracoes.Geral.IdCSC := dm.sqlEmpresa.FieldByName('idTOKEN').AsString;
   dm.ACBrNFe.Configuracoes.Geral.CSC := dm.sqlEmpresa.FieldByName('TOKEN').AsString;
   DM.ACBrNFe.Configuracoes.Geral.VersaoQRCode := veqr200;
+//  dm.ACBrNFe.Configuracoes.Geral.ExibirErroSchema := False;
 
   dm.ACBrNFeDANFeESCPOS.ViaConsumidor := True;
   dm.ACBrNFeDANFeESCPOS.ImprimeItens := True;
@@ -1150,7 +1154,11 @@ begin
 
       // Gerar XML
     SQLImpressaoCupom.Close;
-    dm.ACBrNFe.NotasFiscais.GerarNFe;
+    try
+      dm.ACBrNFe.NotasFiscais.GerarNFe;
+    except
+
+    end;
 
     if DirectoryExists('c:\temp') then
       if dm.ACBrNFe.NotasFiscais.Count > 0 then
@@ -1656,9 +1664,18 @@ var
   if (copy(EcfAtual, 1, 4) = 'NFCE') then
   begin
     Inicia_NFe;
-    shpStatusECF.Brush.Color := clLime;
-    lbStatusECF.Caption := 'NFCe Online';
-    lbStatusECF.Update;
+    if ConectadoInternet then
+    begin
+      shpStatusECF.Brush.Color := clLime;
+      lbStatusECF.Caption := 'NFCe Online';
+      lbStatusECF.Update;
+    end
+    else
+    begin
+      shpStatusECF.Brush.Color := clRed;
+      lbStatusECF.Caption := 'NFCe Offline';
+      lbStatusECF.Update;
+    end;
   end;
 end;
 
@@ -1684,6 +1701,7 @@ begin
       LblBonusTroca.Update;
       ValorBonusTroca.Value := 0;
       ValorBonusTroca.Visible := False;
+      DescontoNoItem := False;
       ValorBonusTroca.Update;
       rxVendedor.Visible := False;
       rxVendedor.Caption := '';
@@ -1705,6 +1723,7 @@ begin
 
       CancelarVenda;
       EstadoPDVChk := AguardandoNovaVenda;
+      DescontoNoItem := False;
       PreparaEstadoBalcao(EstadoPDVChk);
       EntradaDados.Clear;
 
@@ -5146,23 +5165,34 @@ end;
 
 procedure TFormTelaItens.CalculaTotal;
 var
-  ValorTemp: Double;
+  ValorTemp, ValorTempDesc: Double;
 begin
   CurSubTotal.Value := 0;
+  curSubTotalDesc.Value := 0;
   ValorTemp := 0;
+  ValorTempDesc := 0;
   VlrBonusTroca := 0;
 
   SQLSubTotal.Close;
   SQLSubTotal.SQL.Clear;
-  SQLSubTotal.SQL.Add('Select Sum(VLRTOTAL) as SubTotal from ' + UpperCase(TabelaMaisTerminal) + ' where TERMICOD = ' + dm.SQLTerminalAtivoTERMICOD.AsString + ' and (TROCA <> ''S'' or TROCA is null) and CANCELADO <> ''S''');
+  SQLSubTotal.SQL.Add('Select Sum(VLRTOTAL) as SubTotal, Sum(VLRDESC) SubTotalDesc from ' + UpperCase(TabelaMaisTerminal) + ' where TERMICOD = ' + dm.SQLTerminalAtivoTERMICOD.AsString + ' and (TROCA <> ''S'' or TROCA is null) and CANCELADO <> ''S''');
   SQLSubTotal.Open;
   if SQLSubTotal.FieldByName('SubTotal').Value > 0 then
     ValorTemp := SQLSubTotal.FieldByName('SubTotal').Value;
 
+  if SQLSubTotal.FieldByName('SubTotalDesc').Value > 0 then
+  begin
+    ValorTempDesc := SQLSubTotal.FieldByName('SubTotalDesc').Value;
+    DescontoNoItem := True;
+  end;
+
+  ValorTempDesc := RoundTo(ValorTempDesc, -2);
   ValorTemp := RoundTo(ValorTemp, -2);
 
   CurSubTotal.Value := ValorTemp;
   CurSubTotal.Update;
+  curSubTotalDesc.Value := ValorTempDesc;
+  curSubTotalDesc.Update;
 
   // Calcula Total Bonus Troca
   SQLSubTotal.Close;
@@ -6431,51 +6461,59 @@ begin
 
   LblInstrucoes.Caption := 'Enviando ao Sefaz RS NFCe: ' + inttostr(NumNFe);
   LblInstrucoes.Update;
-  dm.ACBrNFe.Enviar('1', False, False);
+  try
+    dm.ACBrNFe.Enviar('1', False, False);
 
-  Tentativa := 0;
-  while Tentativa < 5 do
-  begin
-    Tentativa := Tentativa + 1;
-    Application.ProcessMessages;
-    LblInstrucoes.Caption := 'Consulta Retorno do Sefaz RS NFCe: ' + inttostr(NumNFe) + ' -> Tentativa N.' + intToStr(Tentativa);
-    LblInstrucoes.Update;
-    dm.ACBrNFe.Consultar(Chave); //Consultar
-
-    if (dm.ACBrNFe.WebServices.Consulta.cStat = 100) then //Tenta pegar retorno da nfce
+    Tentativa := 0;
+    while Tentativa < 5 do
     begin
-      Tentativa := 9;
-      LblInstrucoes.Caption := 'Gravando Retorno NFCe.: ' + inttostr(NumNFe);
+      Tentativa := Tentativa + 1;
+      Application.ProcessMessages;
+      LblInstrucoes.Caption := 'Consulta Retorno do Sefaz RS NFCe: ' + inttostr(NumNFe) + ' -> Tentativa N.' + intToStr(Tentativa);
       LblInstrucoes.Update;
-      SQLImpressaoCupom.Close;
-      SQLImpressaoCupom.RequestLive := False;
-      SQLImpressaoCupom.SQL.Text := 'Update CUPOM Set STNFE=' + IntToStr(dm.ACBrNFe.WebServices.consulta.cStat) +
-        ', PROTOCOLO=''' + dm.ACBrNFe.WebServices.consulta.Protocolo + '''' +
-        ', PENDENTE=' + QuotedStr('S') +        
-        ' Where CUPOA13ID =''' + idCupom + '''';
-      SQLImpressaoCupom.ExecSQL;
+      dm.ACBrNFe.Consultar(Chave); //Consultar
 
-      if (ECFAtual = 'NFCE A4') then
+      if (dm.ACBrNFe.WebServices.Consulta.cStat = 100) then //Tenta pegar retorno da nfce
       begin
-        LblInstrucoes.Caption := 'Imprimindo A4 NFCe.: ' + inttostr(NumNFe);
+        Tentativa := 9;
+        LblInstrucoes.Caption := 'Gravando Retorno NFCe.: ' + inttostr(NumNFe);
         LblInstrucoes.Update;
-        Danfe := 'http://www.sefaz.rs.gov.br/ASP/AAE_ROOT/NFE/SAT-WEB-NFE-NFC_2.asp?chaveNFe=' + chave + '&HML=false&NF=07BA65B13';
-        ShellExecute(Handle, 'open', pchar(Danfe), '', '', 1);
+        SQLImpressaoCupom.Close;
+        SQLImpressaoCupom.RequestLive := False;
+        SQLImpressaoCupom.SQL.Text := 'Update CUPOM Set STNFE=' + IntToStr(dm.ACBrNFe.WebServices.consulta.cStat) +
+          ', PROTOCOLO=''' + dm.ACBrNFe.WebServices.consulta.Protocolo + '''' +
+          ', PENDENTE=' + QuotedStr('S') +
+          ' Where CUPOA13ID =''' + idCupom + '''';
+        SQLImpressaoCupom.ExecSQL;
+
+        if (ECFAtual = 'NFCE A4') then
+        begin
+          LblInstrucoes.Caption := 'Imprimindo A4 NFCe.: ' + inttostr(NumNFe);
+          LblInstrucoes.Update;
+          Danfe := 'http://www.sefaz.rs.gov.br/ASP/AAE_ROOT/NFE/SAT-WEB-NFE-NFC_2.asp?chaveNFe=' + chave + '&HML=false&NF=07BA65B13';
+          ShellExecute(Handle, 'open', pchar(Danfe), '', '', 1);
+        end;
       end;
     end;
+
+    SQLImpressaoCupom.Close;
+
+    { Limpa a nota do componente ACBr }
+    LblInstrucoes.Caption := 'CAIXA LIVRE - Próximo Cliente';
+    LblInstrucoes.Update;
+    DescricaoProduto.Caption := '';
+    DescricaoProduto.Update;
+    NumNFe := 0;
+    dm.ACBrNFe.NotasFiscais.Clear;
+
+    ImpCupomAutomatico := false;
+
+  except
+    begin
+      LblInstrucoes.Caption := 'CAIXA LIVRE - Próximo Cliente';
+      LblInstrucoes.Update;
+    end;
   end;
-
-  SQLImpressaoCupom.Close;
-
-  { Limpa a nota do componente ACBr }
-  LblInstrucoes.Caption := 'CAIXA LIVRE - Próximo Cliente';
-  LblInstrucoes.Update;
-  DescricaoProduto.Caption := '';
-  DescricaoProduto.Update;
-  NumNFe := 0;
-  dm.ACBrNFe.NotasFiscais.Clear;
-
-  ImpCupomAutomatico := false;
 end;
 
 procedure TFormTelaItens.btnF9Click(Sender: TObject);
@@ -6750,6 +6788,7 @@ begin
   TemProdutoSemSubsTrib := False;
   TemProdutoComSubsTrib := False;
   TemProdutoVasilhame := False;
+  DescontoNoItem := False;
   CodigoAntigoCupom := '';
   SaldoEstoqueAtual := 0;
   ItemCancelado := 0;
@@ -7315,6 +7354,19 @@ begin
     Result.vPercICMSST := dm.SQLTemplate.FieldByName('ALIQ_ICMSST').AsFloat;
   end;
   dm.SQLTemplate.Close;
+end;
+
+function TFormTelaItens.ConectadoInternet: Boolean;
+var
+  Estado : DWORD;
+begin
+  if not InternetGetConnectedState(@estado,0) then
+    Result := False
+  else
+  begin
+    if (Estado and  INTERNET_CONNECTION_LAN <> 0) or (Estado and INTERNET_CONNECTION_MODEM <> 0) or (Estado and INTERNET_CONNECTION_PROXY <> 0)  then
+      Result := True;
+  end;
 end;
 
 end.

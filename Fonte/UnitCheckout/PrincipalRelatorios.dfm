@@ -384,7 +384,7 @@ object FormPrincipalRelatorios: TFormPrincipalRelatorios
     object CKImpVendaCartoes: TCheckBox
       Left = 62
       Top = 199
-      Width = 134
+      Width = 151
       Height = 17
       Caption = 'Imprimir Venda Cartoes'
       TabOrder = 4
@@ -400,7 +400,7 @@ object FormPrincipalRelatorios: TFormPrincipalRelatorios
     object ckBobina: TCheckBox
       Left = 62
       Top = 235
-      Width = 103
+      Width = 151
       Height = 17
       Caption = 'Layout Bobina'
       Font.Charset = DEFAULT_CHARSET
@@ -414,7 +414,7 @@ object FormPrincipalRelatorios: TFormPrincipalRelatorios
     object ckImpNumerario: TCheckBox
       Left = 62
       Top = 253
-      Width = 134
+      Width = 151
       Height = 17
       Caption = 'Imprimir Total Numer'#225'rio'
       Checked = True
@@ -424,7 +424,7 @@ object FormPrincipalRelatorios: TFormPrincipalRelatorios
     object chkCrediario: TCheckBox
       Left = 62
       Top = 271
-      Width = 134
+      Width = 151
       Height = 17
       Caption = 'Credi'#225'rio Detalhado'
       Checked = True

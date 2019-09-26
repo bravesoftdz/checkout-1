@@ -9,7 +9,7 @@ uses
   ppProd, ppDB, ppComm, ppRelatv, ppDBPipe, ppDBBDE, RxQuery, ppViewr, ExtCtrls,
   dxGDIPlusClasses, Placemnt, jpeg, ppModule, raCodMod, RDprint, ppParameter,
   RXCtrls, AdvOfficeStatusBar, AdvOfficeStatusBarStylers, ACBrNFeDANFEClass,
-  ACBrNFeDANFeESCPOS, ACBrBase, ACBrPosPrinter;
+  ACBrNFeDANFeESCPOS, ACBrBase, ACBrPosPrinter, AdvSmoothPanel;
 
 type
   TFormPrincipalRelatorios = class(TForm)
@@ -18,16 +18,6 @@ type
     DSTblTemporaria: TDataSource;
     TblTemporaria: TTable;
     BatchMove: TBatchMove;
-    GroupBox1: TGroupBox;
-    Label3: TLabel;
-    Label4: TLabel;
-    De: TDateEdit;
-    Ate: TDateEdit;
-    GroupBox3: TGroupBox;
-    ComboTerminal: TRxDBLookupCombo;
-    GroupBox2: TGroupBox;
-    ComboTerminal2: TRxDBLookupCombo;
-    BtnVisualizar: TSpeedButton;
     DSSQLTotalOperacao: TDataSource;
     SQLTotalOperacao: TRxQuery;
     SQLTotalOperacaoOPCXICOD: TIntegerField;
@@ -98,21 +88,16 @@ type
     ppLabel24: TppLabel;
     ppLine6: TppLine;
     ppDBCalc4: TppDBCalc;
-    HoraInicial: TEdit;
-    HoraFinal: TEdit;
     FormStorage: TFormStorage;
     SQLTotaNumerarioNUMEA5TIPO: TStringField;
-    ckBobina: TCheckBox;
     rdp: TRDprint;
     AdvOfficeStatusBarOfficeStyler1: TAdvOfficeStatusBarOfficeStyler;
     ptopo: TAdvOfficeStatusBar;
     LblNomeSistema: TRxLabel;
     ImgDesligar: TImage;
-    Memo: TMemo;
     SQLVendasPorVendedor: TRxQuery;
     SQLVendasPorVendedorTOTALVENDEDOR: TFloatField;
     SQLVendasPorVendedorVENDICOD: TIntegerField;
-    ckItensVendidos: TCheckBox;
     dsSQLItensVendidos: TDataSource;
     SQLItensVendidos: TRxQuery;
     SQLItensVendidosPRODICOD: TIntegerField;
@@ -136,8 +121,6 @@ type
     SQLVendasCanceladasVENDICOD: TIntegerField;
     SQLVendasCanceladasPRODUTO: TStringField;
     SQLVendasCanceladasTOTALITEM: TFloatField;
-    GroupBox5: TGroupBox;
-    ComboOperador: TRxDBLookupCombo;
     SQLOperador: TRxQuery;
     DSSQLOperador: TDataSource;
     ReportTotais: TppReport;
@@ -161,6 +144,40 @@ type
     ppFooterBand1: TppFooterBand;
     ppSystemVariable1: TppSystemVariable;
     ppSummaryBand1: TppSummaryBand;
+    ppParameterList1: TppParameterList;
+    PipeItensVendidos: TppBDEPipeline;
+    AdvSmoothPanel1: TAdvSmoothPanel;
+    Memo: TMemo;
+    BtnVisualizar: TSpeedButton;
+    GroupBox1: TGroupBox;
+    Label3: TLabel;
+    Label4: TLabel;
+    De: TDateEdit;
+    Ate: TDateEdit;
+    HoraInicial: TEdit;
+    HoraFinal: TEdit;
+    GroupBox3: TGroupBox;
+    ComboTerminal: TRxDBLookupCombo;
+    GroupBox2: TGroupBox;
+    ComboTerminal2: TRxDBLookupCombo;
+    ckBobina: TCheckBox;
+    ckItensVendidos: TCheckBox;
+    GroupBox5: TGroupBox;
+    ComboOperador: TRxDBLookupCombo;
+    SQLTotalCupom: TRxQuery;
+    SQLTotalCupomVALOR_TOTAL: TFloatField;
+    SQLTotalCupomQTDE_CUPOM: TIntegerField;
+    DSSQLTotalCupom: TDataSource;
+    SQLCancelados: TRxQuery;
+    SQLCanceladosVALOR_CANCELADO: TFloatField;
+    SQLCanceladosQTDE_CANCELADO: TIntegerField;
+    DSSQLCancelados: TDataSource;
+    PipeCancelados: TppBDEPipeline;
+    PipeCanceladosppField1: TppField;
+    PipeCanceladosppField2: TppField;
+    PipeTotalCupom: TppBDEPipeline;
+    PipeTotalCupomppField1: TppField;
+    PipeTotalCupomppField2: TppField;
     ppSubReport1: TppSubReport;
     ppChildReport1: TppChildReport;
     ppTitleBand1: TppTitleBand;
@@ -196,22 +213,39 @@ type
     ppLabel34: TppLabel;
     lbTotalDin: TppLabel;
     lbTotalCrt: TppLabel;
+    ppLine4: TppLine;
+    ppLine2: TppLine;
+    ppLabel35: TppLabel;
     raCodeModule1: TraCodeModule;
-    TotalCredito: TppDBCalc;
-    TotalDebito: TppDBCalc;
+    ppSubReport3: TppSubReport;
+    ppChildReport3: TppChildReport;
+    ppTitleBand2: TppTitleBand;
+    ppLabel36: TppLabel;
+    ppLabel37: TppLabel;
+    ppDetailBand4: TppDetailBand;
+    ppDBText10: TppDBText;
+    ppDBText14: TppDBText;
+    ppLabel38: TppLabel;
+    ppSummaryBand2: TppSummaryBand;
+    ppSubReport4: TppSubReport;
+    ppChildReport4: TppChildReport;
+    ppTitleBand3: TppTitleBand;
+    ppDetailBand5: TppDetailBand;
+    ppLabel39: TppLabel;
+    ppDBText15: TppDBText;
+    ppDBText16: TppDBText;
+    ppSummaryBand5: TppSummaryBand;
     ppLine5: TppLine;
-    ppDBCalc1: TppDBCalc;
-    ppParameterList1: TppParameterList;
-    PipeItensVendidos: TppBDEPipeline;
     ppSubReport2: TppSubReport;
     ppChildReport2: TppChildReport;
     TituloProdutosVendidos: TppTitleBand;
-    DetalheProdutosVendidos: TppDetailBand;
-    ppSummaryBand4: TppSummaryBand;
     ppLabel43: TppLabel;
     ppLabel11: TppLabel;
     ppLabel42: TppLabel;
     ppLabel41: TppLabel;
+    DetalheProdutosVendidos: TppDetailBand;
+    ppSummaryBand4: TppSummaryBand;
+    ppLine1: TppLine;
     ppGroup1: TppGroup;
     ppGroupHeaderBand1: TppGroupHeaderBand;
     TotalProdutosVendidos: TppGroupFooterBand;
@@ -220,13 +254,43 @@ type
     ppDBText20: TppDBText;
     ppDBCalc5: TppDBCalc;
     ppDBCalc6: TppDBCalc;
-    ppDBText27: TppDBText;
-    ppDBText28: TppDBText;
-    ppLine1: TppLine;
-    ppLine4: TppLine;
+    raCodeModule5: TraCodeModule;
+    raCodeModule3: TraCodeModule;
+    raCodeModule4: TraCodeModule;
+    SQLItensVendidosVLRDESCONTO: TFloatField;
     ppLabel12: TppLabel;
-    ppLine2: TppLine;
-    ppLabel35: TppLabel;
+    ppDBText17: TppDBText;
+    CKImpVendaCartoes: TCheckBox;
+    dsSQLVendaCartoesCheques: TDataSource;
+    SQLVendaCartoesCheques: TRxQuery;
+    SQLVendaCartoesChequesCTRCN2VLR: TFloatField;
+    SQLVendaCartoesChequesCTRCDVENC: TDateTimeField;
+    SQLVendaCartoesChequesNUMEICOD: TIntegerField;
+    SQLVendaCartoesChequesNUMEA30DESCR: TStringField;
+    SQLVendaCartoesChequesTEF: TStringField;
+    SQLVendaCartoesChequesBANCA5CODCHQ: TStringField;
+    SQLVendaCartoesChequesCTRCA10AGENCIACHQ: TStringField;
+    SQLVendaCartoesChequesCTRCA15NROCHQ: TStringField;
+    ppSubReport5: TppSubReport;
+    ppChildReport5: TppChildReport;
+    TituloVendaCartoes: TppTitleBand;
+    DetalheVendaCartoes: TppDetailBand;
+    ppSummaryBand6: TppSummaryBand;
+    PipeVendasCartoesCheques: TppBDEPipeline;
+    ppLabel48: TppLabel;
+    ppLabel40: TppLabel;
+    ppLabel44: TppLabel;
+    ppLabel46: TppLabel;
+    ppLabel47: TppLabel;
+    ppLabel49: TppLabel;
+    ppLabel50: TppLabel;
+    ppDBText29: TppDBText;
+    TEF: TppLabel;
+    ppDBText30: TppDBText;
+    ppDBText31: TppDBText;
+    ppDBText32: TppDBText;
+    ppDBText33: TppDBText;
+    ppDBText34: TppDBText;
     procedure FormCreate(Sender: TObject);
     procedure BtnVisualizarClick(Sender: TObject);
     procedure ReportTotaisPreviewFormCreate(Sender: TObject);
@@ -239,6 +303,8 @@ type
     procedure ImgDesligarClick(Sender: TObject);
     procedure DetalheProdutosVendidosBeforePrint(Sender: TObject);
     procedure SumarioNumerariosBeforePrint(Sender: TObject);
+    procedure ppSummaryBand4BeforePrint(Sender: TObject);
+    procedure ppSummaryBand5BeforePrint(Sender: TObject);
   private
     { Private declarations }
     ValorTotalVendaGeral, ValorTotalBalcao, ValorTotalServicosBalcao, ValorTotalMesas, ValorTotalTele, ValorTotalServicosTele, ValorTotalServicosMesas: double;
@@ -264,6 +330,7 @@ begin
   SQLOperador.Open;
   de.Date := Date;
   Ate.Date := Date;
+  ComboTerminal.keyValue := TerminalAtual;
 
   if dm.SQLUsuarioUSUACPERMVMOVCX.Value <> 'S' then
   begin
@@ -421,22 +488,74 @@ begin
     end;
   end;
 
-  if ckItensVendidos.Checked then
-  begin
-    SQLItensVendidos.Close;
-    SQLItensVendidos.MacrobyName('MEmpresa').Value := 'EMPRICOD  = ' + EmpresaPadrao;
-    if (HoraInicial.Text = '') and (HoraInicial.Text = '') then
-      SQLItensVendidos.MacroByName('MData').Value := 'CUPOM.CUPODEMIS >= "' + FormatDateTime('mm/dd/yyyy', De.Date) + '" and ' + 'CUPOM.CUPODEMIS <= "' + FormatDateTime('mm/dd/yyyy', Ate.Date) + '"'
-    else
-      SQLItensVendidos.MacroByName('MData').Value := 'CUPOM.REGISTRO >= "' + FormatDateTime('mm/dd/yyyy ', De.Date) + HoraInicial.Text + '" and ' + 'CUPOM.REGISTRO <= "' + FormatDateTime('mm/dd/yyyy ', Ate.Date) + HoraFinal.Text + '"';
-    SQLItensVendidos.MacroByName('MTerminal').Value := '0=0';
-    if ComboTerminal.Value <> '' then
-      SQLItensVendidos.MacroByName('MTerminal').Value := 'CUPOM.TERMICOD = ' + ComboTerminal.Value;
-    if ComboTerminal2.Value <> '' then
-      SQLItensVendidos.MacroByName('MTerminal').Value := SQLItensVendidos.MacroByName('MTerminal').Value + ' or ' + 'CUPOM.TERMICOD = ' + ComboTerminal2.Value;
-    SQLItensVendidos.MacroByName('MOperador').Value := '0=0';
-    SQLItensVendidos.Open;
-  end;
+  SQLItensVendidos.Close;
+  SQLItensVendidos.MacrobyName('MEmpresa').Value := 'EMPRICOD  = ' + EmpresaPadrao;
+  if (HoraInicial.Text = '') and (HoraInicial.Text = '') then
+    SQLItensVendidos.MacroByName('MData').Value := 'CUPOM.CUPODEMIS >= "' + FormatDateTime('mm/dd/yyyy', De.Date) + '" and ' + 'CUPOM.CUPODEMIS <= "' + FormatDateTime('mm/dd/yyyy', Ate.Date) + '"'
+  else
+    SQLItensVendidos.MacroByName('MData').Value := 'CUPOM.REGISTRO >= "' + FormatDateTime('mm/dd/yyyy ', De.Date) + HoraInicial.Text + '" and ' + 'CUPOM.REGISTRO <= "' + FormatDateTime('mm/dd/yyyy ', Ate.Date) + HoraFinal.Text + '"';
+  SQLItensVendidos.MacroByName('MTerminal').Value := '0=0';
+  if ComboTerminal.Value <> '' then
+    SQLItensVendidos.MacroByName('MTerminal').Value := 'CUPOM.TERMICOD = ' + ComboTerminal.Value;
+  if ComboTerminal2.Value <> '' then
+    SQLItensVendidos.MacroByName('MTerminal').Value := SQLItensVendidos.MacroByName('MTerminal').Value + ' or ' + 'CUPOM.TERMICOD = ' + ComboTerminal2.Value;
+  SQLItensVendidos.MacroByName('MOperador').Value := '0=0';
+  SQLItensVendidos.Open;
+
+
+ // Venda Cartoes , Cheques e Crediario
+  SQLVendaCartoesCheques.Close;
+  SQLVendaCartoesCheques.MacrobyName('MEmpresa').Value := 'EMPRICOD  = ' + EmpresaPadrao;
+  if (HoraInicial.Text = '') and (HoraInicial.Text = '') then
+    SQLVendaCartoesCheques.MacroByName('MData').Value := 'CUPOM.CUPODEMIS >= "' + FormatDateTime('mm/dd/yyyy', De.Date) + '" and ' + 'CUPOM.CUPODEMIS <= "' + FormatDateTime('mm/dd/yyyy', Ate.Date) + '"'
+  else
+    SQLVendaCartoesCheques.MacroByName('MData').Value := 'CUPOM.CUPODEMIS >= "' + FormatDateTime('mm/dd/yyyy ', De.Date) + HoraInicial.Text + '" and ' + 'CUPOM.CUPODEMIS <= "' + FormatDateTime('mm/dd/yyyy ', Ate.Date) + HoraFinal.Text + '"';
+  SQLVendaCartoesCheques.MacroByName('MTerminal').Value := '0=0';
+  if ComboTerminal.Value <> '' then
+    SQLVendaCartoesCheques.MacroByName('MTerminal').Value := 'CUPOM.TERMICOD = ' + ComboTerminal.Value;
+  if ComboTerminal2.Value <> '' then
+    SQLVendaCartoesCheques.MacroByName('MTerminal').Value := SQLItensVendidos.MacroByName('MTerminal').Value + ' or ' + 'CUPOM.TERMICOD = ' + ComboTerminal2.Value;
+  if ComboOperador.Value <> '' then
+    SQLVendaCartoesCheques.MacroByName('MOperador').Value := 'CUPOM.USUAICODVENDA = ' + ComboOperador.Value
+  else
+    SQLVendaCartoesCheques.MacroByName('MOperador').Value := '0=0';
+  SQLVendaCartoesCheques.Open;
+
+  //Total de cupom
+  SQLTotalCupom.Close;
+  SQLTotalCupom.MacrobyName('MEmpresa').Value := 'EMPRICOD  = ' + EmpresaPadrao;
+  if ComboTerminal.Value <> '' then
+    SQLTotalCupom.MacroByName('MTerminal').Value := 'C.TERMICOD = ' + ComboTerminal.Value;
+  if ComboTerminal2.Value <> '' then
+    SQLTotalCupom.MacroByName('MTerminal').Value := SQLItensVendidos.MacroByName('MTerminal').Value + ' or ' + 'C.TERMICOD = ' + ComboTerminal2.Value;
+  if ComboOperador.Value <> '' then
+    SQLTotalCupom.MacroByName('MOperador').Value := 'C.USUAICODVENDA = ' + ComboOperador.Value
+  else
+    SQLTotalCupom.MacroByName('MOperador').Value := '0=0';
+  if (HoraInicial.Text = '') and (HoraInicial.Text = '') then
+    SQLTotalCupom.MacroByName('MData').Value := 'CUPODEMIS >= "' + FormatDateTime('mm/dd/yyyy', De.Date) + '" and ' + 'CUPODEMIS <= "' + FormatDateTime('mm/dd/yyyy', Ate.Date) + '"'
+  else
+    SQLTotalCupom.MacroByName('MDat').Value := 'REGISTRO >= "' + FormatDateTime('mm/dd/yyyy ', De.Date) + HoraInicial.Text + '" and ' + 'REGISTRO <= "' + FormatDateTime('mm/dd/yyyy ', Ate.Date) + HoraFinal.Text + '"';
+  SQLTotalCupom.Open;
+
+  //Cancelados
+  SQLCancelados.Close;
+  SQLCancelados.MacrobyName('MEmpresa').Value := 'EMPRICOD  = ' + EmpresaPadrao;
+  if ComboTerminal.Value <> '' then
+    SQLCancelados.MacroByName('MTerminal').Value := 'C.TERMICOD = ' + ComboTerminal.Value;
+  if ComboTerminal2.Value <> '' then
+    SQLCancelados.MacroByName('MTerminal').Value := SQLItensVendidos.MacroByName('MTerminal').Value + ' or ' + 'C.TERMICOD = ' + ComboTerminal2.Value;
+  if ComboOperador.Value <> '' then
+    SQLCancelados.MacroByName('MOperador').Value := 'C.USUAICODVENDA = ' + ComboOperador.Value
+  else
+    SQLCancelados.MacroByName('MOperador').Value := '0=0';
+  if (HoraInicial.Text = '') and (HoraInicial.Text = '') then
+    SQLCancelados.MacroByName('MData').Value := 'C.CUPODEMIS >= "' + FormatDateTime('mm/dd/yyyy', De.Date) + '" and ' + 'C.CUPODEMIS <= "' + FormatDateTime('mm/dd/yyyy', Ate.Date) + '"'
+  else
+    SQLCancelados.MacroByName('MData').Value := 'REGISTRO >= "' + FormatDateTime('mm/dd/yyyy ', De.Date) + HoraInicial.Text + '" and ' + 'REGISTRO <= "' + FormatDateTime('mm/dd/yyyy ', Ate.Date) + HoraFinal.Text + '"';
+  SQLCancelados.Open;
+
+
 
   if not ckBobina.checked then
     ReportTotais.Print
@@ -484,6 +603,11 @@ begin
     memo.Lines.Add('</ad><n>TOTAL => ' + FormatFloat('R$ ##0.00', vSaldoTotal) + '</n>');
     memo.Lines.Add('</fn>------------------------------------------------');
     memo.Lines.Add(' ');
+
+    memo.Lines.Add('------------------------------------------------');
+    memo.Lines.Add('<ad><n>TOTAL Cupons  => ' + SQLTotalCupomQTDE_CUPOM.AsString + '  ' + FormatFloat('R$ ##0.00', SQLTotalCupomVALOR_TOTAL.AsFloat) + '</n></ad>');
+    memo.Lines.Add('<ad><n>Cancelados  => ' + SQLCanceladosQTDE_CANCELADO.AsString + '  ' + FormatFloat('R$ ##0.00', SQLCanceladosVALOR_CANCELADO.AsFloat) + '</n></ad>');
+    memo.Lines.Add('------------------------------------------------');
 
     SQLVendasPorVendedor.close;
     if (HoraInicial.Text = '') and (HoraFinal.Text = '') then
@@ -717,6 +841,36 @@ begin
       TotalProdutosVendidos.Visible   := True;
     end;
 
+end;
+
+procedure TFormPrincipalRelatorios.ppSummaryBand4BeforePrint(
+  Sender: TObject);
+begin
+  if not CKImpVendaCartoes.Checked then
+  begin
+    TituloVendaCartoes.Visible := False;
+    DetalheVendaCartoes.Visible := False;
+  end
+  else
+  begin
+    TituloVendaCartoes.Visible := True;
+    DetalheVendaCartoes.Visible := True;
+  end;
+end;
+
+procedure TFormPrincipalRelatorios.ppSummaryBand5BeforePrint(
+  Sender: TObject);
+begin
+  if not ckItensVendidos.Checked then
+  begin
+    TituloProdutosVendidos.Visible := False;
+    TotalProdutosVendidos.Visible := False;
+  end
+  else
+  begin
+    TituloProdutosVendidos.Visible := True;
+    TotalProdutosVendidos.Visible := True;
+  end;
 end;
 
 end.

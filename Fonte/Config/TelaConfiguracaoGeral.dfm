@@ -10,10 +10,10 @@ inherited FormTelaConfiguracaoGeral: TFormTelaConfiguracaoGeral
   TextHeight = 13
   inherited ScrollBoxFundo: TScrollBox
     Width = 1366
-    Height = 706
+    Height = 705
     inherited PanelCentral: TPanel
       Width = 1362
-      Height = 622
+      Height = 621
       ParentFont = False
       object Label1: TLabel [0]
         Left = 134
@@ -30,7 +30,7 @@ inherited FormTelaConfiguracaoGeral: TFormTelaConfiguracaoGeral
         ParentFont = False
       end
       inherited PanelBarra: TPanel
-        Height = 622
+        Height = 621
       end
       object ComboEmpresa: TRxDBLookupCombo
         Left = 134
@@ -48,7 +48,7 @@ inherited FormTelaConfiguracaoGeral: TFormTelaConfiguracaoGeral
       end
       object GroupBox4: TGroupBox
         Left = 135
-        Top = 252
+        Top = 266
         Width = 460
         Height = 44
         Caption = ' Localiza'#231#227'o dos arquivos de relat'#243'rios '
@@ -58,7 +58,7 @@ inherited FormTelaConfiguracaoGeral: TFormTelaConfiguracaoGeral
         Font.Name = 'Tahoma'
         Font.Style = [fsBold]
         ParentFont = False
-        TabOrder = 11
+        TabOrder = 12
         object DBEdit11: TDBEdit
           Left = 3
           Top = 16
@@ -124,7 +124,7 @@ inherited FormTelaConfiguracaoGeral: TFormTelaConfiguracaoGeral
       end
       object GroupBox1: TGroupBox
         Left = 135
-        Top = 297
+        Top = 311
         Width = 460
         Height = 44
         Caption = 'Localiza'#231#227'o do aplicativo para impress'#227'o de duplicatas'
@@ -134,7 +134,7 @@ inherited FormTelaConfiguracaoGeral: TFormTelaConfiguracaoGeral
         Font.Name = 'Tahoma'
         Font.Style = [fsBold]
         ParentFont = False
-        TabOrder = 12
+        TabOrder = 13
         object ButtonDialog: TSpeedButton
           Left = 435
           Top = 16
@@ -217,7 +217,7 @@ inherited FormTelaConfiguracaoGeral: TFormTelaConfiguracaoGeral
       end
       object DBRadioGroup1: TDBRadioGroup
         Left = 135
-        Top = 195
+        Top = 209
         Width = 460
         Height = 57
         Caption = 'Margem de lucro X pre'#231'o de venda'
@@ -232,14 +232,14 @@ inherited FormTelaConfiguracaoGeral: TFormTelaConfiguracaoGeral
           'Usar margem l'#237'quida para o c'#225'lculo do pre'#231'o de venda'
           'Usar margem bruta para o c'#225'lculo do pre'#231'o de venda')
         ParentFont = False
-        TabOrder = 10
+        TabOrder = 11
         Values.Strings = (
           'L'
           'B')
       end
       object GroupBox2: TGroupBox
         Left = 136
-        Top = 342
+        Top = 356
         Width = 457
         Height = 105
         Caption = 'Opera'#231#227'o de Estoque para Transfer'#234'ncia de Produtos'
@@ -249,7 +249,7 @@ inherited FormTelaConfiguracaoGeral: TFormTelaConfiguracaoGeral
         Font.Name = 'Tahoma'
         Font.Style = [fsBold]
         ParentFont = False
-        TabOrder = 13
+        TabOrder = 14
         object Label11: TLabel
           Left = 9
           Top = 20
@@ -325,7 +325,7 @@ inherited FormTelaConfiguracaoGeral: TFormTelaConfiguracaoGeral
       end
       object GroupBox3: TGroupBox
         Left = 136
-        Top = 452
+        Top = 466
         Width = 193
         Height = 45
         Caption = ' Ultimo Bonus p/Cliente'
@@ -335,7 +335,7 @@ inherited FormTelaConfiguracaoGeral: TFormTelaConfiguracaoGeral
         Font.Name = 'Tahoma'
         Font.Style = [fsBold]
         ParentFont = False
-        TabOrder = 14
+        TabOrder = 15
         object DBEdit7: TDBEdit
           Left = 11
           Top = 17
@@ -372,7 +372,7 @@ inherited FormTelaConfiguracaoGeral: TFormTelaConfiguracaoGeral
       end
       object GroupBox6: TGroupBox
         Left = 400
-        Top = 452
+        Top = 466
         Width = 193
         Height = 45
         Caption = 'Dias Aviso Bloqueio'
@@ -382,7 +382,7 @@ inherited FormTelaConfiguracaoGeral: TFormTelaConfiguracaoGeral
         Font.Name = 'Tahoma'
         Font.Style = [fsBold]
         ParentFont = False
-        TabOrder = 15
+        TabOrder = 16
         object DBEdit2: TDBEdit
           Left = 11
           Top = 17
@@ -432,6 +432,24 @@ inherited FormTelaConfiguracaoGeral: TFormTelaConfiguracaoGeral
         Font.Style = [fsBold]
         ParentFont = False
         TabOrder = 9
+        ValueChecked = 'S'
+        ValueUnchecked = 'N'
+      end
+      object DBCheckBox9: TDBCheckBox
+        Left = 134
+        Top = 191
+        Width = 251
+        Height = 18
+        Caption = 'N'#227'o Obriga Fechamento de Caixa'
+        DataField = 'NAO_OBRIGA_FECHAR_CAIXA'
+        DataSource = DSSQLConfigGeral
+        Font.Charset = ANSI_CHARSET
+        Font.Color = 8404992
+        Font.Height = -11
+        Font.Name = 'Tahoma'
+        Font.Style = [fsBold]
+        ParentFont = False
+        TabOrder = 10
         ValueChecked = 'S'
         ValueUnchecked = 'N'
       end

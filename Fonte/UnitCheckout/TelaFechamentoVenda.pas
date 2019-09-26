@@ -437,6 +437,13 @@ begin
       LblValorDescontoAcrescimo.Refresh ;
       ValorDescontoAcrescimo.Value := VlrDescPromoImportado;
     end;
+  if FormTelaItens.curSubTotalDesc.Value > 0 then
+    begin
+      LblValorDescontoAcrescimo.Caption := 'DESCONTO' ;
+      LblValorDescontoAcrescimo.Refresh ;
+      ValorDescontoAcrescimo.Value := FormTelaItens.curSubTotalDesc.Value;
+    end;
+
 
   ValorTotalVenda.Value := FormTelaItens.CurSubTotal.Value - VlrDescPromoImportado -
                            (VlrBonusTroca + VlrRetConfig_SldCad) ;
@@ -5265,7 +5272,7 @@ begin
     vRateioDesconto := 0;
     vTotalItem      := 0;
     //TESTAR SE HOUVE DESCONTO NO TOTAL DA VENDA PARA RATEAR NOS ITENS
-    if (LblValorDescontoAcrescimo.Caption = 'DESCONTO') and (ValorDescontoAcrescimo.Value > 0) then
+    if (LblValorDescontoAcrescimo.Caption = 'DESCONTO') and (ValorDescontoAcrescimo.Value > 0) and (not FormTelaItens.DescontoNoItem) then
       begin
         vTotalItem  := (FormTelaItens.SQLItensVendaTempVLRUNITBRUT.Value * FormTelaItens.SQLItensVendaTempQUANTIDADE.Value);
         VlrDesc := RoundTo((vTotalItem * ValorDescontoAcrescimo.Value) / (ValorTotalVenda.Value + ValorDescontoAcrescimo.Value),-2);
@@ -5470,7 +5477,7 @@ begin
     FormTelaItens.SQLItensVendaTemp.Next;
   end;
   //Verifica se tem diferença no valor total dos itens e no desconto total
-  if (GravouItem) and (ValorDescontoAcrescimo.Value <> vEstimativa) then
+  if (GravouItem) and (ValorDescontoAcrescimo.Value <> vEstimativa) and (not FormTelaItens.DescontoNoItem) then
   begin
     DM.SQLCupomItem.Close;
     DM.SQLCupomItem.MacroByName('MFiltro').Value := 'CUPOA13ID = ' + QuotedStr(DM.CodNextCupom);

@@ -300,7 +300,7 @@ end;
 
 procedure TFormPrincipalRelatorios.BtnVisualizarClick(Sender: TObject);
 var
-  vSaldoTotal, vValorSangria, vValorCrediarioCred: double;
+  vSaldoTotal, vValorSangria, vValorCrediarioCred, vValorCartoesCheques: double;
   x, y: string;
   espaco: Integer;
 begin
@@ -443,6 +443,7 @@ begin
     vSaldoTotal := 0;
     vValorSangria := 0;
     vValorCrediarioCred := 0;
+    vValorCartoesCheques := 0;
     memo.Lines.Clear;
     memo.Lines.Add(' ');
     memo.Lines.Add('<ce><e>Resumo de Caixa</e></ce>');
@@ -555,6 +556,33 @@ begin
       end;
     end;
 
+      // Cartões, Cheques e Crediários
+    if CKImpVendaCartoes.Checked then
+    begin
+      if not SQLVendaCartoesCheques.IsEmpty then
+      begin
+        memo.Lines.Add('</fn>------------------------------------------------');
+        memo.Lines.Add('</ae><n>Demonstrativo  Cartões/Cheques/Crediarios</n>');
+        memo.Lines.Add('</fn>------------------------------------------------');
+        memo.Lines.Add('</ae><n>Numerario             Vencimento    Vlr Operacao</n>');
+        memo.Lines.Add('</fn>------------------------------------------------');
+        SQLVendaCartoesCheques.First;
+        while not SQLVendaCartoesCheques.eof do
+        begin
+          x := MontaString(SQLVendaCartoesChequesNUMEA30DESCR.AsString, 18, 1, ' ');
+          x := x + MontaString(SQLVendaCartoesChequesCTRCDVENC.AsString, 14, 1, ' ');
+          y := MontaString(FormatFloat('R$ ##0.00', SQLVendaCartoesChequesCTRCN2VLR.Value), espaco - 10, 0, ' ');
+          x := x + y;
+          memo.Lines.Add('<ad></fn>' + x + '</ad>');
+          vValorCartoesCheques := vValorCartoesCheques + SQLVendaCartoesChequesCTRCN2VLR.AsFloat;
+          SQLVendaCartoesCheques.Next;
+        end;
+        memo.Lines.Add('</fn>------------------------------------------------');
+        memo.Lines.Add('</ad><e><n>TOTAL => ' + FormatFloat('R$ ##0.00', vValorCartoesCheques) + '</n></e>');
+
+        SQLCrediarioDetalhado.close;
+      end;
+    end;
 
     memo.Lines.Add(' ');
     memo.Lines.Add(' ');

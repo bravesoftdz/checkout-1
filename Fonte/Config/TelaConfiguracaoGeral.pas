@@ -90,6 +90,7 @@ type
     DBCheckBox8: TDBCheckBox;
     SQLConfigGeralNAO_OBRIGA_FECHAR_CAIXA: TStringField;
     SQLConfigGeralUTILIZA_CREDIARIO_ONLINE: TStringField;
+    DBCheckBox9: TDBCheckBox;
     procedure FormCreate(Sender: TObject);
     procedure BotaoGravarClick(Sender: TObject);
     procedure DSSQLConfigGeralDataChange(Sender: TObject; Field: TField);

@@ -305,8 +305,8 @@ end;
 
 procedure TFormTelaConsultaRapidaCupom.FormShow(Sender: TObject);
 begin
-  if not DelphiAberto then
-   btnEnviarTodosClick(Sender);
+//  if not DelphiAberto then
+//   btnEnviarTodosClick(Sender);
   btnEnviarTodos.Enabled := not Cancelamento;
   btTransmite.Enabled    := not Cancelamento;
   BtInutilizarNFCE.Enabled := not Cancelamento;

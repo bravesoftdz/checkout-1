@@ -285,6 +285,10 @@ type
     btnF10: TSpeedButton;
     btnCrtlX: TSpeedButton;
     ACBrBAL1: TACBrBAL;
+    SQLGrupoProdutoPRECO_VENDA: TFloatField;
+    SQLGrupoProdutoPRODDINIPROMO: TDateTimeField;
+    SQLGrupoProdutoPRODDFIMPROMO: TDateTimeField;
+    SQLGrupoProdutoPRODN3VLRVENDAPROM: TFloatField;
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure FormCreate(Sender: TObject);
     procedure EntradaDadosKeyDown(Sender: TObject; var Key: Word;Shift: TShiftState);
@@ -354,13 +358,14 @@ type
     procedure BtnF7Click(Sender: TObject);
     procedure btnF10Click(Sender: TObject);
     procedure btnCrtlXClick(Sender: TObject);
+    procedure SQLGrupoProdutoCalcFields(DataSet: TDataSet);
   private
     { Private declarations }
     WNumItem, ItemCancelado : integer ;
     FormatStrQuant, FormatStrVlrVenda,
     InfDesc,
     Tributo, sXML : string ;
-    VerCaixa, TemProdutoSemSubsTrib, TemProdutoComSubsTrib : boolean ;
+    VerCaixa, TemProdutoSemSubsTrib, TemProdutoComSubsTrib, vNaoPedeMaisParaFechar : boolean ;
     Tecla : Word;
     RetornoCartao : TInfoRetorno;
     DadosImpressora : TInfoImpressao;
@@ -880,7 +885,7 @@ begin
   if not FileExists('Temp\ItensVendaTemp.db') then
     SQLItensVendaTemp.CreateTable ;
 
-  SQLItensVendaTemp.Close ;
+  SQLItensVendaTemp.Close ;                  
   try
     SQLItensVendaTemp.DeleteTable ;
     SQLItensVendaTemp.CreateTable ;
@@ -1405,6 +1410,10 @@ begin
 
       if ValorItem = 0 then
         ValorItem := StrToFloat(FormatFloat(FormatStrVlrVenda,RetornaPreco(SQLProduto, DM.SQLConfigVendaTPRCICOD.AsString, UsaPrecoVenda)));
+
+      if ((SQLProdutoPRODDINIPROMO.AsDateTime <= Now) and (SQLProdutoPRODDFIMPROMO.AsDateTime >= Now) and (SQLProdutoPRODN3VLRVENDAPROM.AsFloat > 0)) or
+        ((SQLProdutoPRODDINIPROMO.AsDateTime <= Now) and (SQLProdutoPRODDFIMPROMO.AsString = '') and (SQLProdutoPRODN3VLRVENDAPROM.AsFloat > 0)) then
+        ValorItem := SQLProdutoPRODN3VLRVENDAPROM.AsFloat;
 
       CodICMS                  := '';
       CodICMS                  := SQLProdutoICMSICOD.AsString;
@@ -3453,6 +3462,8 @@ end ;
 
 procedure TFormTelaItens.TestaStatusCaixa ;
 begin
+  VerCaixa := false;
+
   DM.SQLTemplate.Close ;
   DM.SQLTemplate.SQL.Clear ;
   DM.SQLTemplate.SQL.Add('select * from TERMINAL') ;
@@ -3479,13 +3490,22 @@ begin
     end ;
   end
   else
-    if DM.SQLTemplate.FieldByName('TERMDSTATUSCAIXA').Value <> StrToDate(TerminalAtualData) then
+  if (DM.SQLTemplate.FieldByName('TERMDSTATUSCAIXA').Value <> StrToDate(TerminalAtualData)) and (not vNaoPedeMaisParaFechar) then
+  begin
+    if dm.SQLConfigGeralNAO_OBRIGA_FECHAR_CAIXA.asstring = 'S' then
     begin
+      if Pergunta('SIM', 'O Caixa não foi fechado em ' + DM.SQLTemplate.FieldByName('TERMDSTATUSCAIXA').AsString
+        + #13 + 'Deseja fechar agora?') then
+        VerCaixa := True
+      else vNaoPedeMaisParaFechar := True;
+    end
+    else begin
       InformaG('O Caixa não foi fechado em ' + DM.SQLTemplate.FieldByName('TERMDSTATUSCAIXA').AsString);
-      EntradaDados.SelectAll ;
-      TerminalAtualData := DM.SQLTemplate.FieldByName('TERMDSTATUSCAIXA').AsString ;
-      VerCaixa  := True;
-    end ;
+      VerCaixa := True;
+    end;
+    EntradaDados.SelectAll;
+    TerminalAtualData := DM.SQLTemplate.FieldByName('TERMDSTATUSCAIXA').AsString;
+  end;
 
   if VerCaixa then
   begin
@@ -4878,6 +4898,7 @@ begin
       if FormTelaContaCodigo.ModalResult = MrOK then
         begin
            CodConta := FormTelaContaCodigo.EditCodComanda.AsInteger;
+           CodMesa := DM.SQLMesaStatusMESAICOD.Value;
 
            {Abre tela de quitacao de mesas}
            if (CodConta > 0) then
@@ -5184,6 +5205,18 @@ begin
       EntradaDados.SetFocus;
 
   except
+  end;
+end;
+
+procedure TFormTelaItens.SQLGrupoProdutoCalcFields(DataSet: TDataSet);
+begin
+  if SQLGrupoProdutoPRODICOD.AsInteger > 0 then
+  begin
+    if ((SQLGrupoProdutoPRODDINIPROMO.AsDateTime <= Now) and (SQLGrupoProdutoPRODDFIMPROMO.AsDateTime >= Now) and (SQLGrupoProdutoPRODN3VLRVENDAPROM.AsFloat > 0)) or
+      ((SQLGrupoProdutoPRODDINIPROMO.AsDateTime <= Now) and (SQLGrupoProdutoPRODDFIMPROMO.AsString = '') and (SQLGrupoProdutoPRODN3VLRVENDAPROM.AsFloat > 0)) then
+      SQLGrupoProdutoPRECO_VENDA.AsFloat := SQLGrupoProdutoPRODN3VLRVENDAPROM.AsFloat
+    else
+      SQLGrupoProdutoPRECO_VENDA.AsFloat := SQLGrupoProdutoPRODN3VLRVENDA.AsFloat;
   end;
 end;
 
