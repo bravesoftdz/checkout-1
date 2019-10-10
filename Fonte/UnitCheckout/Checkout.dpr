@@ -116,7 +116,7 @@ uses
   TelaGeracaoPedidoParcial in '..\UnitFaturamento\TelaGeracaoPedidoParcial.pas' {FormTelaPedidoParcial},
   UnSoundPlay in '..\..\Template\UnSoundPlay.pas',
   TelaAssistenteLancamentoPlanoVariavelCheckout in 'TelaAssistenteLancamentoPlanoVariavelCheckout.pas' {FormTelaAssistenteLancamentoPlanoVariavelCheckout},
-  TelaTroco in 'TelaTroco.pas' {FormTelaTroco},
+  TelaCodigo in 'TelaCodigo.pas' {FormTelaTroco},
   TelaLucro in 'TelaLucro.pas' {FormTelaLucro},
   TelaFotoExpandida in 'TelaFotoExpandida.pas' {FormTelaFotoExpandida},
   BemaFi32 in 'BemaFi32.pas',
@@ -240,7 +240,15 @@ begin
   //  if not DelphiAberto then
 //    dm.ExecAndWait('C:\Easy2Solutions\Updater.exe', '-Quiet', SW_SHOW);
 
-  if (DM.OBSAutorizacao <> '') or (dm.SQLConfigGeralCFGECBLOQ.AsString = 'S') and (not DelphiAberto) then
+  FormTelaLogin := TFormTelaLogin.Create(Application);
+  FormTelaLogin.Caption := 'Bem Vindo ao Módulo Emissão de Cupom Fiscal ';
+
+  if FormTelaLogin.ShowModal <> idOk then
+  begin
+    application.terminate;
+  end;
+
+  if ((DM.OBSAutorizacao <> '') and (DM.SQLEmpresaCFGECBLOQ.AsString = '')) or (dm.SQLEmpresaCFGECBLOQ.AsString = 'S') and (not DelphiAberto) then
   begin
     FormTelaAtivacao := TFormTelaAtivacao.Create(Application);
     FormTelaAtivacao.ShowModal;
@@ -248,19 +256,11 @@ begin
     if (DM.vSEM_INTERNET) and ((DM.DataSistema - DM.SQLConfigGeralDATA_INI_SEM_NET.AsDateTime) <= 7) then
     begin
     end
-    else if (dm.SQLConfigGeralCFGECBLOQ.AsString = 'S') then
+    else if (dm.SQLEmpresaCFGECBLOQ.AsString = 'S') then
     begin
       Application.terminate;
       Exit;
     end;
-  end;
-
-  FormTelaLogin := TFormTelaLogin.Create(Application);
-  FormTelaLogin.Caption := 'Bem Vindo ao Módulo Emissão de Cupom Fiscal ';
-
-  if FormTelaLogin.ShowModal <> idOk then
-  begin
-    application.terminate;
   end;
 
   Application.CreateForm(TFormTelaItens, FormTelaItens);

@@ -533,6 +533,9 @@ begin
   DM.TblTicketPreVendaCabTotalGeral.AsString    := SQLPreVD.FieldByName('PRVDN2TOTITENS').Value ;
   DM.TblTicketPreVendaCabPRVDICOD.AsString      := SQLPreVD.FieldByName('PRVDICOD').Value ;
   DM.TblTicketPreVendaCabTERMICOD.AsString      := SQLPreVD.FieldByName('TERMICOD').Value ;
+  DM.TblTicketPreVendaCabSequencial.AsString    := SQLPreVD.FieldByName('SEQUENCIAL').AsString ;
+  DM.TblTicketPreVendaCabSeq_Dia.AsString       := SQLPreVD.FieldByName('SEQ_DIA').AsString;
+
   DM.TblTicketPreVendaCabClienteDependente.AsString  := SQLPreVD.FieldByName('CLDPICOD').AssTring ;
 
   if NomeClienteVenda <> '' then

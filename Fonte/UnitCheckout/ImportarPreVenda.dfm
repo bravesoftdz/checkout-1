@@ -429,7 +429,15 @@ object FormTelaImportarPreVenda: TFormTelaImportarPreVenda
         Expanded = False
         FieldName = 'ClienteNome'
         Title.Color = 13225421
-        Width = 355
+        Width = 323
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'Seq_Dia'
+        Title.Caption = 'C'#243'digo'
+        Title.Color = 13225421
+        Width = 69
         Visible = True
       end
       item
@@ -446,7 +454,7 @@ object FormTelaImportarPreVenda: TFormTelaImportarPreVenda
         FieldName = 'PRVDCMARCADO'
         Title.Alignment = taCenter
         Title.Color = 13225421
-        Width = 66
+        Width = 49
         Visible = True
       end>
   end
@@ -1489,6 +1497,9 @@ object FormTelaImportarPreVenda: TFormTelaImportarPreVenda
     end
     object TblMemPreVendaCLDPICOD: TIntegerField
       FieldName = 'CLDPICOD'
+    end
+    object TblMemPreVendaSeq_Dia: TIntegerField
+      FieldName = 'Seq_Dia'
     end
   end
   object SQLImportarPrevendaSel: TRxQuery

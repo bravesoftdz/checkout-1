@@ -535,7 +535,7 @@ begin
   if (HoraInicial.Text = '') and (HoraInicial.Text = '') then
     SQLTotalCupom.MacroByName('MData').Value := 'CUPODEMIS >= "' + FormatDateTime('mm/dd/yyyy', De.Date) + '" and ' + 'CUPODEMIS <= "' + FormatDateTime('mm/dd/yyyy', Ate.Date) + '"'
   else
-    SQLTotalCupom.MacroByName('MDat').Value := 'REGISTRO >= "' + FormatDateTime('mm/dd/yyyy ', De.Date) + HoraInicial.Text + '" and ' + 'REGISTRO <= "' + FormatDateTime('mm/dd/yyyy ', Ate.Date) + HoraFinal.Text + '"';
+    SQLTotalCupom.MacroByName('MData').Value := 'REGISTRO >= "' + FormatDateTime('mm/dd/yyyy ', De.Date) + HoraInicial.Text + '" and ' + 'REGISTRO <= "' + FormatDateTime('mm/dd/yyyy ', Ate.Date) + HoraFinal.Text + '"';
   SQLTotalCupom.Open;
 
   //Cancelados

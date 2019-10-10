@@ -204,6 +204,7 @@ type
     Label25: TLabel;
     btAdd10: TcxButton;
     btDiminuir10: TcxButton;
+    TblMemPreVendaSeq_Dia: TIntegerField;
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure FormCreate(Sender: TObject);
     procedure FormKeyDown(Sender: TObject; var Key: Word;
@@ -326,6 +327,7 @@ begin
           TblMemPreVendaCLIETOBS.Value     := DM.SQLPreVendaCLIETOBS1.Value;
         if DM.SQLPreVendaCLIENTECNPJ.Value <> '' then
           TblMemPreVendaClienteDocumento.Value   := DM.SQLPreVendaCLIENTECNPJ.Value;
+        TblMemPreVendaSeq_Dia.AsInteger := DM.SQLPreVendaSEQ_DIA.AsInteger;
 
         if (DM.SQLPreVendaCLIEA13ID.Value <> dm.SQLTerminalAtivoCLIEA13ID.Value)  then
           begin
@@ -348,6 +350,8 @@ begin
 
             TblMemPreVendaValorLimiteCred.Value        := DM.SQLPreVendaCLIEN2LIMITECRED.Value;
             TblMemPreVendaValorRendaTitular.Value := 0;
+
+            
             if DM.SQLPreVendaCLIEN2RENDA.Value        > 0 then
               TblMemPreVendaValorRendaTitular.Value := DM.SQLPreVendaCLIEN2RENDA.Value;
             if DM.SQLPreVendaCLIEN2CONJUGERENDA.Value > 0 then

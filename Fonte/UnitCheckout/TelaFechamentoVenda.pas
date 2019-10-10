@@ -387,7 +387,7 @@ uses TelaItens, TelaConsultaRapidaCliente, DataModulo,
      TelaImpressaoPreVenda, CadastroCliente, TelaImpressaoCarne, TelaCadastroDadosVenda, TelaImpressaoDadosVenda, TelaTipoDescontoItem,
      ImportarPreVenda, TelaFechamentoOrcamento, TelaDadosCliente, TelaCadastroObs, UnitLibrary, TelaConsultaLiberacaoCredito, DataModuloTemplate,
      IMPNAOFISCAL, TelaDadosCartaoCreditoManual, TelaTroco, TelaAssistenteLancamentoContasReceber, TelaAssistenteLancamentoPlanoVariavelCheckout,
-     TelaConsultaRapidaDependente, LeitorCodigoBarrasCheckout, TelaGeracaoXMLVendas, TelaDataEntrega,
+     TelaConsultaRapidaDependente, LeitorCodigoBarrasCheckout, TelaGeracaoXMLVendas, TelaDataEntrega, TelaCodigo,
   udmECF, udmSiTef, Math;
 
 {$R *.DFM}
@@ -481,6 +481,8 @@ Var
   RetornoUser : TInfoRetornoUser;
   ImprimeConfDivida:Boolean;
 begin
+  if (Key <> VK_ESCAPE) and (fBloqueioSitef) then
+    exit;
   if (Key = VK_ESCAPE) and (EstadoFechVenda = FinalizandoVenda) then
     begin
       if Pergunta('Não', '* * * TEM CERTEZA QUE DESEJA CANCELAR ESTA VENDA ? * * *') then
@@ -3571,6 +3573,19 @@ begin
               Application.ProcessMessages;
             end;
           end;
+        if dm.SQLConfigVendaUTILIZA_NUMERO_SEQ.AsString = 'S' then
+        begin
+          dm.sqlConsulta.SQL.Clear;
+          dm.sqlConsulta.SQL.Add('SELECT SEQ_DIA FROM PREVENDA WHERE TERMICOD = ' + IntToStr(TerminalAtual));
+          dm.sqlConsulta.SQL.Add(' AND PRVDICOD = ' + IntToStr(CodNextPreVenda));
+          dm.sqlConsulta.Open;
+          if not DM.sqlConsulta.IsEmpty then
+          begin
+            Application.CreateForm(TFormTelaCodigo,FormTelaCodigo);
+            FormTelaCodigo.labelcodigo.Caption :=  FormatFloat('0',dm.sqlConsulta.FieldByName('SEQ_DIA').AsInteger);
+            FormTelaCodigo.ShowModal;
+          end;
+        end;
 
         FormTelaItens.LimparTabTempItens;
         FormTelaItens.CurSubTotal.Value := 0;
@@ -5258,7 +5273,7 @@ end ;
 function TFormTelaFechamentoVenda.GravarItensCupom : boolean ;
 var
   PercItemSobreTot,VlrDesc : double;
-  vRateioDesconto, vTotalItem, vEstimativa : Real;
+  vRateioDesconto, vTotalItem, vEstimativa, ReducaoICMS : Real;
   GravouItem : Boolean;
   Tentativa : integer;
   IniFile: TiniFile;
@@ -5316,14 +5331,11 @@ begin
         if Dm.SQLCupomItemCPITN2VLRDESCSOBTOT.AsVariant = null then
           Dm.SQLCupomItemCPITN2VLRDESCSOBTOT.AsVariant := 0;
 
-        if (SQLLocate('PRODUTO', 'PRODICOD', 'BASE_ICM_ST_RET', FormTelaItens.SQLItensVendaTempCODIGO.AsString) <> '') and
-           (SQLLocate('PRODUTO', 'PRODICOD', 'VALOR_ICM_ST_RET', FormTelaItens.SQLItensVendaTempCODIGO.AsString) <> '') and
-           (StrToInt(SQLLocate('PRODUTO', 'PRODICOD', 'PRODISITTRIB', FormTelaItens.SQLItensVendaTempCODIGO.AsString)) = 60) then
+        if (StrToInt(SQLLocate('PRODUTO', 'PRODICOD', 'PRODISITTRIB', FormTelaItens.SQLItensVendaTempCODIGO.AsString)) = 60) then
         begin
-          Dm.SQLCupomItemVALOR_ST_RETIDO.AsFloat := (StrToFloat(SQLLocate('PRODUTO', 'PRODICOD', 'BASE_ICM_ST_RET', FormTelaItens.SQLItensVendaTempCODIGO.AsString)) * FormTelaItens.SQLItensVendaTempQUANTIDADE.Value);
-          Dm.SQLCupomItemBASE_ST_RETIDO.AsFloat := (StrToFloat(SQLLocate('PRODUTO', 'PRODICOD', 'VALOR_ICM_ST_RET', FormTelaItens.SQLItensVendaTempCODIGO.AsString)) * FormTelaItens.SQLItensVendaTempQUANTIDADE.Value);
+          Dm.SQLCupomItemVALOR_ST_RETIDO.AsFloat := (StrToFloatDef(SQLLocate('PRODUTO', 'PRODICOD', 'BASE_ICM_ST_RET', FormTelaItens.SQLItensVendaTempCODIGO.AsString),0) * FormTelaItens.SQLItensVendaTempQUANTIDADE.Value);
+          Dm.SQLCupomItemBASE_ST_RETIDO.AsFloat := (StrToFloatDef(SQLLocate('PRODUTO', 'PRODICOD', 'VALOR_ICM_ST_RET', FormTelaItens.SQLItensVendaTempCODIGO.AsString),0) * FormTelaItens.SQLItensVendaTempQUANTIDADE.Value);
         end;
-
 
         DM.SQLCupomItemCPITN3VLRUNIT.Value     := FormTelaItens.SQLItensVendaTempVLRUNITBRUT.Value;
         { Removido Adilson porque estava ficando o valor unitario errado diminuindo o desconto do Unitario
@@ -5371,11 +5383,24 @@ begin
           DM.SQLCupomItemVLR_BASE_COFINS.AsFloat := FormTelaItens.SQLItensVendaTempVLR_BASE_COFINS.AsFloat;
         end;}
 
+        //Recalcula valor icms caso tenha desconto no final da venda
+        ReducaoICMS := 0;
         if (FormTelaItens.SQLItensVendaTempTROCA.Value <> 'S') then
           begin
-            DM.SQLCupomItemCPITN2BASEICMS.AsFloat  := FormTelaItens.SQLItensVendaTempBASEICMS.AsFloat;
-            DM.SQLCupomItemCPITN2VLRICMS.AsFloat   := FormTelaItens.SQLItensVendaTempVLRICMS.AsFloat;
-            DM.SQLCupomItemPERC_REDUCAO_BASE_CALCULO.AsFloat := FormTelaItens.SQLItensVendaTempPERC_RED_BASE_ICMS.AsFloat
+            ReducaoICMS := FormTelaItens.SQLItensVendaTempPERC_RED_BASE_ICMS.AsFloat;
+            if VlrDesc > 0 then
+            begin
+              DM.SQLCupomItemCPITN2BASEICMS.AsFloat  := FormTelaItens.SQLItensVendaTempVLRTOTAL.AsFloat - VlrDesc;
+              if ReducaoICMS > 0 then
+                DM.SQLCupomItemCPITN2BASEICMS.AsFloat  := DM.SQLCupomItemCPITN2BASEICMS.AsFloat * ReducaoICMS / 100;
+              DM.SQLCupomItemCPITN2VLRICMS.AsFloat   := DM.SQLCupomItemCPITN2BASEICMS.AsFloat * FormTelaItens.SQLItensVendaTempALIQUOTA.AsFloat / 100;
+            end
+            else
+            begin
+              DM.SQLCupomItemCPITN2BASEICMS.AsFloat  := FormTelaItens.SQLItensVendaTempBASEICMS.AsFloat;
+              DM.SQLCupomItemCPITN2VLRICMS.AsFloat   := FormTelaItens.SQLItensVendaTempVLRICMS.AsFloat;
+            end;
+            DM.SQLCupomItemPERC_REDUCAO_BASE_CALCULO.AsFloat := ReducaoICMS;
           end
         else
           begin

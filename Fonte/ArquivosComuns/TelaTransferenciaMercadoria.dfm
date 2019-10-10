@@ -13,17 +13,17 @@ inherited FormTelaTransferencia: TFormTelaTransferencia
   TextHeight = 13
   inherited ScrollBoxFundo: TScrollBox
     Width = 1165
-    Height = 541
+    Height = 540
     Color = 15461355
     inherited PanelCentral: TPanel
       Top = 73
       Width = 1161
-      Height = 464
+      Height = 463
       object PageControl: TPageControl [0]
         Left = 130
         Top = 0
         Width = 1031
-        Height = 464
+        Height = 463
         ActivePage = TabSheetGerarTransferencia
         Align = alClient
         Font.Charset = ANSI_CHARSET
@@ -64,7 +64,7 @@ inherited FormTelaTransferencia: TFormTelaTransferencia
             Left = 0
             Top = 25
             Width = 1023
-            Height = 430
+            Height = 429
             Align = alClient
             BevelInner = bvLowered
             Font.Charset = ANSI_CHARSET
@@ -79,7 +79,7 @@ inherited FormTelaTransferencia: TFormTelaTransferencia
               Left = 441
               Top = 204
               Width = 4
-              Height = 224
+              Height = 223
               Beveled = True
             end
             object Splitter2: TSplitter
@@ -171,7 +171,7 @@ inherited FormTelaTransferencia: TFormTelaTransferencia
               Left = 2
               Top = 204
               Width = 439
-              Height = 224
+              Height = 223
               Align = alLeft
               BorderStyle = bsNone
               Color = clWhite
@@ -277,7 +277,7 @@ inherited FormTelaTransferencia: TFormTelaTransferencia
               Left = 445
               Top = 204
               Width = 576
-              Height = 224
+              Height = 223
               Align = alClient
               BevelKind = bkFlat
               BorderStyle = bsNone
@@ -420,7 +420,7 @@ inherited FormTelaTransferencia: TFormTelaTransferencia
           end
           object gboPesquisaProduto: TGroupBox
             Left = 0
-            Top = 385
+            Top = 384
             Width = 1023
             Height = 70
             Align = alBottom
@@ -581,7 +581,7 @@ inherited FormTelaTransferencia: TFormTelaTransferencia
             Left = 0
             Top = 81
             Width = 1023
-            Height = 304
+            Height = 303
             Align = alClient
             BevelInner = bvLowered
             Font.Charset = ANSI_CHARSET
@@ -596,7 +596,7 @@ inherited FormTelaTransferencia: TFormTelaTransferencia
               Left = 2
               Top = 2
               Width = 1019
-              Height = 300
+              Height = 299
               Align = alClient
               BorderStyle = bsNone
               Color = clWhite
@@ -716,7 +716,7 @@ inherited FormTelaTransferencia: TFormTelaTransferencia
             Left = 0
             Top = 25
             Width = 1023
-            Height = 430
+            Height = 429
             Align = alClient
             BevelInner = bvLowered
             Font.Charset = ANSI_CHARSET
@@ -731,7 +731,7 @@ inherited FormTelaTransferencia: TFormTelaTransferencia
               Left = 441
               Top = 204
               Width = 4
-              Height = 224
+              Height = 223
               Beveled = True
             end
             object Splitter4: TSplitter
@@ -822,7 +822,7 @@ inherited FormTelaTransferencia: TFormTelaTransferencia
               Left = 2
               Top = 204
               Width = 439
-              Height = 224
+              Height = 223
               Align = alLeft
               BorderStyle = bsNone
               Color = clWhite
@@ -927,7 +927,7 @@ inherited FormTelaTransferencia: TFormTelaTransferencia
               Left = 445
               Top = 204
               Width = 576
-              Height = 224
+              Height = 223
               Align = alClient
               BevelKind = bkFlat
               BorderStyle = bsNone
@@ -942,7 +942,7 @@ inherited FormTelaTransferencia: TFormTelaTransferencia
         end
       end
       inherited PanelBarra: TPanel
-        Height = 464
+        Height = 463
         TabOrder = 1
         object Button2: TRxSpeedButton
           Tag = 2

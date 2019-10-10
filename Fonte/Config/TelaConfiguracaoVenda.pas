@@ -145,6 +145,8 @@ type
     DBEdit6: TDBEdit;
     DBCheckBox2: TDBCheckBox;
     SQLConfigVendaUTILIZA_PROMOCAO_PRODUTO: TStringField;
+    DBCheckBox22: TDBCheckBox;
+    SQLConfigVendaUTILIZA_NUMERO_SEQ: TStringField;
     procedure BotaoGravarClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);

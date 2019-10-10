@@ -44,7 +44,7 @@ end;
 
 procedure TFormTelaAtivacao.FormCreate(Sender: TObject);
 begin
- if (dm.SQLConfigGeralCFGECBLOQ.AsString <> 'S') then
+ if (dm.SQLEmpresaCFGECBLOQ.AsString <> 'S') then
    lblMensagem.Caption := 'Licença de Uso Expira em ' + DM.OBSAutorizacao;
 end;
 

@@ -164,6 +164,8 @@ begin
       Application.Terminate;
     end;
 
+  DM.GetDataValidadeSistema;
+
   // IMPRESSORA NAO FISCAL
   ImpNaoFiscalAtual := '';
   PortaImpNaoFiscalAtual := '';

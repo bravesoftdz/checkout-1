@@ -2201,7 +2201,7 @@ begin
     dm.SQLConfigVenda.Close;
     dm.SQLConfigVenda.Open;
   except
-    //não existe base
+    //não conseguiu conectar no online
   end;
 end;
 
@@ -2226,6 +2226,7 @@ begin
   dm.SQLPopUP.Close;
 
   dm.SQLEmpresa.Open;
+  dm.SQLEmpresa.Locate('EMPRICOD',EmpresaCorrente,[loCaseInsensitive]);
   dm.SQLTerminalAtivo.Open;
   dm.SQLUsuario.Open;
   dm.SQLConfigCrediario.Open;

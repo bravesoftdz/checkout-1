@@ -5,7 +5,6 @@ inherited DM: TDM
   Height = 726
   Width = 1364
   inherited DB: TDatabase
-    Connected = False
     AfterConnect = DBAfterConnect
     Left = 32
     Top = 8
@@ -1816,6 +1815,12 @@ inherited DM: TDM
       FieldName = 'VALOR_LIMITE_PAGTO'
       Origin = 'DB.CONFIGVENDA.VALOR_LIMITE_PAGTO'
     end
+    object SQLConfigVendaUTILIZA_NUMERO_SEQ: TStringField
+      FieldName = 'UTILIZA_NUMERO_SEQ'
+      Origin = 'DB.CONFIGVENDA.UTILIZA_NUMERO_SEQ'
+      FixedChar = True
+      Size = 1
+    end
   end
   object DatabaseTerm: TDatabase
     AliasName = 'Easy_Gestao'
@@ -3051,6 +3056,16 @@ inherited DM: TDM
       FieldName = 'VERSAO'
       Size = 1
     end
+    object SQLEmpresaCFGEDBLOQ: TDateTimeField
+      FieldName = 'CFGEDBLOQ'
+      Origin = 'DB.EMPRESA.CFGEDBLOQ'
+    end
+    object SQLEmpresaCFGECBLOQ: TStringField
+      FieldName = 'CFGECBLOQ'
+      Origin = 'DB.EMPRESA.CFGECBLOQ'
+      FixedChar = True
+      Size = 1
+    end
   end
   object TblTicketPreVendaCab: TTable
     DatabaseName = 'Easy_Temp'
@@ -3235,6 +3250,12 @@ inherited DM: TDM
     object TblTicketPreVendaCabTerminal: TStringField
       FieldName = 'Terminal'
       Size = 30
+    end
+    object TblTicketPreVendaCabSequencial: TIntegerField
+      FieldName = 'Sequencial'
+    end
+    object TblTicketPreVendaCabSeq_Dia: TIntegerField
+      FieldName = 'Seq_Dia'
     end
   end
   object TblTicketPreVendaItem: TTable
@@ -3798,7 +3819,8 @@ inherited DM: TDM
       '  P.CLIENTEFONE,'
       '  P.CLIENTEOBS,'
       '  P.PDVCPreConclu,'
-      '  P.CLDPICOD'
+      '  P.CLDPICOD,'
+      '  P.SEQ_DIA'
       'from'
       '  PREVENDA P, CLIENTE C, VENDEDOR V, TERMINAL T'
       'where'
@@ -3994,6 +4016,9 @@ inherited DM: TDM
     object SQLPreVendaCLIETOBS1: TBlobField
       FieldName = 'CLIETOBS1'
       Size = 1
+    end
+    object SQLPreVendaSEQ_DIA: TIntegerField
+      FieldName = 'SEQ_DIA'
     end
   end
   object SQLPreVendaItem1: TRxQuery
@@ -4893,7 +4918,7 @@ inherited DM: TDM
     PrinterSetup.mmMarginTop = 6350
     PrinterSetup.mmPaperHeight = 0
     PrinterSetup.mmPaperWidth = 0
-    PrinterSetup.PaperSize = 160
+    PrinterSetup.PaperSize = 256
     DeviceType = 'Screen'
     EmailSettings.ReportFormat = 'PDF'
     OutlineSettings.CreateNode = True

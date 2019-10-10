@@ -124,7 +124,7 @@ DLL=0
 Locale=1046
 CodePage=1252
 [Version Info Keys]
-CompanyName=Automafour 
+CompanyName=Automafour
 FileDescription=Sistema de Gestão Empresarial
 FileVersion=1.0.0.21
 InternalName=Advanced Control Cash
@@ -149,7 +149,9 @@ C:\Program Files (x86)\Developer Express Inc\Library\Delphi7\dcldxPScxScheduler3
 Count=1
 Item0=WinTypes=Windows;WinProcs=Windows;DbiTypes=BDE;DbiProcs=BDE;DbiErrs=BDE;
 [HistoryLists\hlOutputDirectorry]
-Count=3
+Count=5
 Item0=D:\Easy2Solutions\Gestao
-Item1=C:\Easy2Solutions\Gestao
-Item2=D:\Easy2Solutions
+Item1=D:\Easy2Solutions
+Item2=C:\Easy2Solutions
+Item3=C:\Easy2Solutions\Gestao
+Item4=C:\Unit\Gestao

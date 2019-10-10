@@ -34,6 +34,7 @@ type
   TNCMCampos = record
     vPercRedBaseST : Real;
     vPercICMSST : Real;
+    vPercFCP : Real;
   end;
 
 type
@@ -539,7 +540,7 @@ function TFormTelaItens.Gerar_NFCe(idCupom: string): string;
 var xCliente, xDocumento, xPlano, vTotaItem, Associado: string;
 var iCRT, vCont, vUltimo: integer;
 var VlrDescNoTotal, VlrTroca, VlrTotalItens, PercDescTroca, TotalDesconto: double;
-  vaux, Total_vTotTrib, VlrTroco, AliquotaPis, AliquotaCofins, ValorPis, ValorCofins, ValorBasePis, ValorBaseCofins, vPercSTEfe : Currency;
+  vaux, Total_vTotTrib, VlrTroco, AliquotaPis, AliquotaCofins, ValorPis, ValorCofins, ValorBasePis, ValorBaseCofins, vPercSTEfe, vPercFCP : Currency;
 var vDescTodosItens : Boolean;
 var DadosNCm : TNCMCampos;
 begin
@@ -699,12 +700,10 @@ begin
         if DadosNCm.vPercICMSST > 0 then
           vPercSTEfe := DadosNCm.vPercICMSST
         else
-        if SQLLocate('NCM', 'NCMICOD', 'ALIQ_ICMS', SQLLocate('PRODUTO', 'PRODICOD', 'NCMICOD', SQLImpressaoCupom.fieldbyname('PRODICOD').AsString)) <> '' then
-          vPercSTEfe := StrToFloat(SQLLocate('NCM', 'NCMICOD', 'ALIQ_ICMS', SQLLocate('PRODUTO', 'PRODICOD', 'NCMICOD', SQLImpressaoCupom.fieldbyname('PRODICOD').AsString)))
-        else
-        if SQLLocate('ICMSUF', 'ICMUA2UF', 'ICMUN2ALIQUOTA', QuotedStr(Emit.EnderEmit.UF)) <> '' then
-          vPercSTEfe := StrToFloat(SQLLocate('ICMSUF', 'ICMUA2UF', 'ICMUN2ALIQUOTA', QuotedStr(Emit.EnderEmit.UF)));
-
+          vPercSTEfe := StrToFloatDef(SQLLocate('NCM', 'NCMICOD', 'ALIQ_ICMS', SQLLocate('PRODUTO', 'PRODICOD', 'NCMICOD', SQLImpressaoCupom.fieldbyname('PRODICOD').AsString)),0);
+        if vPercSTEfe = 0 then
+          vPercSTEfe := StrToFloatDef(SQLLocate('ICMSUF', 'ICMUA2UF', 'ICMUN2ALIQUOTA', QuotedStr(Emit.EnderEmit.UF)),0);
+        vPercFCP := DadosNCm.vPercFCP;
         Prod.EXTIPI := '';
         if (dm.sqlConsulta.fieldbyname('PRODISITTRIB').asstring = '60') or (dm.sqlConsulta.fieldbyname('PRODISITTRIB').asstring = '500') then
           Prod.CFOP := '5405'
@@ -807,8 +806,8 @@ begin
                       end;
                       if vPercSTEfe > 0 then
                       begin
-                        ICMS.vICMSEfet := (Prod.vProd - Prod.vDesc) * vPercSTEfe / 100;
-                        ICMS.pICMSEfet := vPercSTEfe;
+                        ICMS.vICMSEfet := (Prod.vProd - Prod.vDesc) * (vPercSTEfe + vPercFCP) / 100;
+                        ICMS.pICMSEfet := vPercSTEfe + vPercFCP;
                         ICMS.vBCEfet := Prod.vProd - Prod.vDesc;
                       end;
 //                      ICMS.vBCSTRet := 0; // Adilson, verificar melhor
@@ -849,10 +848,10 @@ begin
                     begin
                       ICMS.pRedBCEfet := DadosNCm.vPercRedBaseST;
                       if ICMS.pRedBCEfet > 0 then
-                        ICMS.vICMSEfet := ((Prod.vProd * (ICMS.pRedBCEfet / 100)) - Prod.vDesc) * vPercSTEfe / 100
+                        ICMS.vICMSEfet := ((Prod.vProd  - Prod.vDesc) * (ICMS.pRedBCEfet / 100)) * (vPercSTEfe + vPercFCP) / 100
                       else
-                        ICMS.vICMSEfet := (Prod.vProd - Prod.vDesc) * vPercSTEfe / 100;
-                      ICMS.pICMSEfet := vPercSTEfe;
+                        ICMS.vICMSEfet := (Prod.vProd - Prod.vDesc) * (vPercSTEfe + vPercFCP) / 100;
+                      ICMS.pICMSEfet := vPercSTEfe + vPercFCP;
                       ICMS.vBCEfet := Prod.vProd - Prod.vDesc;
                     end;
                   end;
@@ -870,7 +869,7 @@ begin
                 ICMS.pICMS := SQLImpressaoCupom.fieldbyname('COITN2ICMSALIQ').AsFloat;
                 ICMS.vICMS := SQLImpressaoCupom.fieldbyname('CPITN2VLRICMS').AsFloat;
                 if ICMS.CST = cst20 then
-                  ICMS.pRedBC := SQLImpressaoCupom.fieldbyname('PERC_REDUCAO_BASE_CALCULO').AsFloat;
+                  ICMS.pRedBC := 100 - SQLImpressaoCupom.fieldbyname('PERC_REDUCAO_BASE_CALCULO').AsFloat;
 
                 ICMS.vBCST := 0;
                 ICMS.pICMSST := 0;
@@ -2748,7 +2747,7 @@ begin
         begin
           SQLItensVendaTempBASEICMS.asFloat := SQLItensVendaTempVLRTOTAL.AsFloat;
           SQLItensVendaTempALIQUOTA.AsFloat := RetornaAliquotaICMSProduto(SQLProdutoICMSICOD.AsInteger);
-          ReducaoICMS := SQLProdutoPERC_REDUCAO_BASE_CALCULO.AsFloat;
+          ReducaoICMS := 100 - SQLProdutoPERC_REDUCAO_BASE_CALCULO.AsFloat;
 //          ReducaoICMS := RetornaREDUCAOICMSProduto(SQLProdutoICMSICOD.AsInteger);
               if ReducaoICMS > 0 then
                 begin
@@ -4887,6 +4886,7 @@ begin
               finally
                 FreeAndNil(FormTelaTransferencia);
               end;
+              Inicia_NFe;
               //CriaFormulario(TFormTelaTransferencia,
               //  'FormTelaTransferencia', False,  False,  True, '');
             end;
@@ -6648,6 +6648,8 @@ begin
 end;
 
 procedure TFormTelaItens.ExecutarCtrlQ;
+var
+  Tentativas : Integer;
 begin
   if FileExists('BalancaCheckoutFilizola.txt') or FileExists('BalancaCheckoutToledo.txt') or FileExists('BalancaCheckoutUrano.txt') then
   begin
@@ -6696,8 +6698,17 @@ begin
     if Toledo_Baud = 4 then
       ACBrBAL1.Device.Baud := 19200;
 
-                    // Conecta com a balança
+    // Conecta com a balança
     ACBrBAL1.Ativar;
+    Tentativas := 0;
+    while Tentativas < 5 do
+    begin
+      if ACBrBAL1.LePeso(ACBrBAL1.Intervalo) > 0 then
+        Break;
+      Sleep(1500);
+      Inc(Tentativas);
+    end;
+
     EditQtde.Value := ACBrBAL1.LePeso(ACBrBAL1.Intervalo);
     ACBrBAL1.Desativar;
 
@@ -7345,13 +7356,14 @@ begin
   Result.vPercICMSST := 0;
   dm.SQLTemplate.Close;
   dm.SQLTemplate.sql.Clear;
-  dm.SQLTemplate.SQL.Add('select ALIQ_ICMSST, ALIQ_RED_BASE_ST');
+  dm.SQLTemplate.SQL.Add('select ALIQ_ICMSST, ALIQ_RED_BASE_ST, COALESCE(PERC_FCP,0) PERC_FCP');
   dm.SQLTemplate.SQL.Add('from NCM where NCMICOD = ' + aNCM);
   dm.SQLTemplate.Open;
   if not(dm.SQLTemplate.Eof) then
   begin
     result.vPercRedBaseST := dm.SQLTemplate.FieldByName('ALIQ_RED_BASE_ST').AsFloat;
     Result.vPercICMSST := dm.SQLTemplate.FieldByName('ALIQ_ICMSST').AsFloat;
+    Result.vPercFCP := DM.SQLTemplate.FieldByName('PERC_FCP').AsFloat;
   end;
   dm.SQLTemplate.Close;
 end;

@@ -1,6 +1,6 @@
 inherited FormTelaConfiguracaoVenda: TFormTelaConfiguracaoVenda
-  Left = 310
-  Top = 103
+  Left = 268
+  Top = 113
   Width = 812
   Height = 600
   BorderIcons = [biSystemMenu, biMinimize]
@@ -11,19 +11,19 @@ inherited FormTelaConfiguracaoVenda: TFormTelaConfiguracaoVenda
   TextHeight = 13
   inherited ScrollBoxFundo: TScrollBox
     Width = 796
-    Height = 562
+    Height = 561
     inherited PanelCentral: TPanel
       Width = 792
-      Height = 478
+      Height = 477
       inherited PanelBarra: TPanel
         Width = 1
-        Height = 478
+        Height = 477
       end
       object PageControl1: TPageControl
         Left = 1
         Top = 0
         Width = 791
-        Height = 478
+        Height = 477
         ActivePage = TabConfiguracoes
         Align = alClient
         Style = tsFlatButtons
@@ -32,7 +32,7 @@ inherited FormTelaConfiguracaoVenda: TFormTelaConfiguracaoVenda
           Caption = '&Configura'#231#245'es'
           object GroupBox1: TGroupBox
             Left = 2
-            Top = 165
+            Top = 180
             Width = 551
             Height = 156
             Caption = ' Opera'#231#245'es de Estoque Padronizadas '
@@ -204,7 +204,7 @@ inherited FormTelaConfiguracaoVenda: TFormTelaConfiguracaoVenda
             Left = 2
             Top = 0
             Width = 737
-            Height = 163
+            Height = 178
             Caption = 'Configura'#231#245'es de Venda'
             Font.Charset = ANSI_CHARSET
             Font.Color = clWindowText
@@ -317,7 +317,7 @@ inherited FormTelaConfiguracaoVenda: TFormTelaConfiguracaoVenda
               Font.Name = 'Tahoma'
               Font.Style = [fsBold]
               ParentFont = False
-              TabOrder = 11
+              TabOrder = 12
               ValueChecked = 'S'
               ValueUnchecked = 'N'
             end
@@ -335,7 +335,7 @@ inherited FormTelaConfiguracaoVenda: TFormTelaConfiguracaoVenda
               Font.Name = 'Tahoma'
               Font.Style = [fsBold]
               ParentFont = False
-              TabOrder = 12
+              TabOrder = 13
               ValueChecked = 'S'
               ValueUnchecked = 'N'
             end
@@ -353,7 +353,7 @@ inherited FormTelaConfiguracaoVenda: TFormTelaConfiguracaoVenda
               Font.Name = 'Tahoma'
               Font.Style = [fsBold]
               ParentFont = False
-              TabOrder = 13
+              TabOrder = 14
               ValueChecked = 'S'
               ValueUnchecked = 'N'
             end
@@ -371,7 +371,7 @@ inherited FormTelaConfiguracaoVenda: TFormTelaConfiguracaoVenda
               Font.Name = 'Tahoma'
               Font.Style = [fsBold]
               ParentFont = False
-              TabOrder = 14
+              TabOrder = 15
               ValueChecked = 'S'
               ValueUnchecked = 'N'
             end
@@ -389,7 +389,7 @@ inherited FormTelaConfiguracaoVenda: TFormTelaConfiguracaoVenda
               Font.Name = 'Tahoma'
               Font.Style = [fsBold]
               ParentFont = False
-              TabOrder = 15
+              TabOrder = 16
               ValueChecked = 'S'
               ValueUnchecked = 'N'
             end
@@ -407,7 +407,7 @@ inherited FormTelaConfiguracaoVenda: TFormTelaConfiguracaoVenda
               Font.Name = 'Tahoma'
               Font.Style = [fsBold]
               ParentFont = False
-              TabOrder = 9
+              TabOrder = 10
               ValueChecked = 'S'
               ValueUnchecked = 'N'
             end
@@ -481,7 +481,7 @@ inherited FormTelaConfiguracaoVenda: TFormTelaConfiguracaoVenda
               Font.Name = 'Tahoma'
               Font.Style = [fsBold]
               ParentFont = False
-              TabOrder = 17
+              TabOrder = 18
               ValueChecked = 'S'
               ValueUnchecked = 'N'
             end
@@ -499,7 +499,7 @@ inherited FormTelaConfiguracaoVenda: TFormTelaConfiguracaoVenda
               Font.Name = 'Tahoma'
               Font.Style = [fsBold]
               ParentFont = False
-              TabOrder = 10
+              TabOrder = 11
               ValueChecked = 'S'
               ValueUnchecked = 'N'
             end
@@ -517,7 +517,7 @@ inherited FormTelaConfiguracaoVenda: TFormTelaConfiguracaoVenda
               Font.Name = 'Tahoma'
               Font.Style = [fsBold]
               ParentFont = False
-              TabOrder = 16
+              TabOrder = 17
               ValueChecked = 'S'
               ValueUnchecked = 'N'
             end
@@ -539,10 +539,28 @@ inherited FormTelaConfiguracaoVenda: TFormTelaConfiguracaoVenda
               ValueChecked = 'S'
               ValueUnchecked = 'N'
             end
+            object DBCheckBox22: TDBCheckBox
+              Left = 4
+              Top = 156
+              Width = 257
+              Height = 17
+              Caption = 'Utiliza N'#250'mero Sequencial Dia Pre-Venda'
+              DataField = 'UTILIZA_NUMERO_SEQ'
+              DataSource = DSSQLConfigVenda
+              Font.Charset = ANSI_CHARSET
+              Font.Color = 8404992
+              Font.Height = -11
+              Font.Name = 'Tahoma'
+              Font.Style = [fsBold]
+              ParentFont = False
+              TabOrder = 9
+              ValueChecked = 'S'
+              ValueUnchecked = 'N'
+            end
           end
           object GroupBox7: TGroupBox
             Left = 2
-            Top = 322
+            Top = 337
             Width = 551
             Height = 40
             Caption = '  Mensagem personalizada para bloqueio de venda  '
@@ -571,7 +589,7 @@ inherited FormTelaConfiguracaoVenda: TFormTelaConfiguracaoVenda
           end
           object GroupBox8: TGroupBox
             Left = 278
-            Top = 363
+            Top = 378
             Width = 275
             Height = 41
             Caption = ' Tabela de Pre'#231'o Padr'#227'o '
@@ -598,7 +616,7 @@ inherited FormTelaConfiguracaoVenda: TFormTelaConfiguracaoVenda
           end
           object GroupBox9: TGroupBox
             Left = 2
-            Top = 363
+            Top = 378
             Width = 273
             Height = 41
             Caption = ' Motivo de Bloqueio Venda Consignada '
@@ -625,7 +643,7 @@ inherited FormTelaConfiguracaoVenda: TFormTelaConfiguracaoVenda
           end
           object GroupBox3: TGroupBox
             Left = 558
-            Top = 166
+            Top = 181
             Width = 182
             Height = 48
             Caption = ' Ordem Importa Prevenda'
@@ -651,19 +669,21 @@ inherited FormTelaConfiguracaoVenda: TFormTelaConfiguracaoVenda
                 'Nome Cliente'
                 'Data e Hora Desc'
                 'Mesa / Comanda'
-                'Data e Hora Asc')
+                'Data e Hora Asc'
+                'Codigo')
               TabOrder = 0
               Values.Strings = (
                 'TERMICOD, PRVDICOD'
                 'CLIENTENOME Asc'
                 'PDVDDHVENDA Desc'
                 'MESAICOD, PRVDICOD Asc'
-                'PDVDDHVENDA Asc')
+                'PDVDDHVENDA Asc'
+                'SEQ_DIA Asc')
             end
           end
           object GroupBox6: TGroupBox
             Left = 558
-            Top = 217
+            Top = 232
             Width = 182
             Height = 48
             Caption = 'Valor Limite Pagamento'
@@ -1438,6 +1458,12 @@ inherited FormTelaConfiguracaoVenda: TFormTelaConfiguracaoVenda
     object SQLConfigVendaUTILIZA_PROMOCAO_PRODUTO: TStringField
       FieldName = 'UTILIZA_PROMOCAO_PRODUTO'
       Origin = 'DB.CONFIGVENDA.UTILIZA_PROMOCAO_PRODUTO'
+      FixedChar = True
+      Size = 1
+    end
+    object SQLConfigVendaUTILIZA_NUMERO_SEQ: TStringField
+      FieldName = 'UTILIZA_NUMERO_SEQ'
+      Origin = 'DB.CONFIGVENDA.UTILIZA_NUMERO_SEQ'
       FixedChar = True
       Size = 1
     end

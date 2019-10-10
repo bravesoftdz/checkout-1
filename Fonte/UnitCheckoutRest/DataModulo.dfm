@@ -1,10 +1,11 @@
 inherited DM: TDM
   OldCreateOrder = True
-  Left = 64405
-  Top = 48
+  Left = 255
+  Top = 46
   Height = 724
   Width = 859
   inherited DB: TDatabase
+    Connected = False
     Left = 32
   end
   inherited SQLTemplate: TRxQuery
@@ -2937,6 +2938,16 @@ inherited DM: TDM
     object SQLEmpresaVERSAO: TStringField
       FieldName = 'VERSAO'
       Origin = 'DB.EMPRESA.VERSAO'
+      FixedChar = True
+      Size = 1
+    end
+    object SQLEmpresaCFGEDBLOQ: TDateTimeField
+      FieldName = 'CFGEDBLOQ'
+      Origin = 'DB.EMPRESA.CFGEDBLOQ'
+    end
+    object SQLEmpresaCFGECBLOQ: TStringField
+      FieldName = 'CFGECBLOQ'
+      Origin = 'DB.EMPRESA.CFGECBLOQ'
       FixedChar = True
       Size = 1
     end

@@ -232,6 +232,7 @@ var
   cForma, ValorSTR : String;
   Dia, Mes, Ano : Word;
   vAux : Double;
+  Key : Word;
 begin
   UsuarioAutorizouOperacao := '';
 
@@ -1393,8 +1394,12 @@ begin
               if RetornoCampoUsuario <> 'S' then
                 Exit;
             end
-            else
-             exit;
+          else
+          begin
+            Key := word(#88);
+            FormTelaItens.FormKeyDown(Self,Key,[ssAlt]);
+            Exit;
+          end;
         end;
       end;
 
@@ -1406,7 +1411,10 @@ begin
               Exit;
           end
         else
+        begin
           Exit;
+
+        end;
 
        //GRAVAR STATUS DE FECHAMENTO DO CAIXA NA TABELA TERMINAL(PDV)
        DM.SQLTemplate.Close ;

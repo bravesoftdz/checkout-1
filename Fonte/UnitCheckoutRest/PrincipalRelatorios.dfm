@@ -4840,7 +4840,6 @@ object FormPrincipalRelatorios: TFormPrincipalRelatorios
     Top = 185
   end
   object SQLVendaCartoesCheques: TRxQuery
-    Active = True
     DatabaseName = 'DB'
     SQL.Strings = (
       'select'

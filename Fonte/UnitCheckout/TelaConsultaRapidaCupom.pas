@@ -52,10 +52,6 @@ type
     cxGrid1DBTableView1CUPOINRO: TcxGridDBColumn;
     cxGrid1DBTableView1VLRLIQ: TcxGridDBColumn;
     cxGrid1DBTableView1CUPODEMIS: TcxGridDBColumn;
-    cxGrid1DBTableView1CLIEA60RAZAOSOC: TcxGridDBColumn;
-    cxGrid1DBTableView1VENDA60NOME: TcxGridDBColumn;
-    cxGrid1DBTableView1PLRCA60DESCR: TcxGridDBColumn;
-    cxGrid1DBTableView1CLIENTECNPJ: TcxGridDBColumn;
     cxGrid1DBTableView1CHAVEACESSO: TcxGridDBColumn;
     cxGrid1DBTableView1Selecionar: TcxGridDBColumn;
     cxGrid1DBTableView1Mensagem: TcxGridDBColumn;
@@ -192,7 +188,7 @@ begin
       cdsCupomPLRCA60DESCR.Value := SQLCupomPLRCA60DESCR.Value;
       cdsCupomCLIENTECNPJ.Value := SQLCupomCLIENTECNPJ.Value;
       cdsCupomCHAVEACESSO.Value := SQLCupomCHAVEACESSO.Value;
-      cdsCupomSelecionar.Value := False;
+      cdsCupomSelecionar.Value := True;
       cdsCupom.Post;
       SQLCupom.next;
     end;

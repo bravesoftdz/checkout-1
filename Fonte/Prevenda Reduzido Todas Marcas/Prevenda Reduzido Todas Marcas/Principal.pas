@@ -87,6 +87,8 @@ type
     TblPreVendaItemImpCozinha: TStringField;
     TblPreVendaItemImpVale: TStringField;
     Connection: TSQLConnection;
+    TblPreVendaCabSequencial: TIntegerField;
+    TblPreVendaCabSeq_Dia: TIntegerField;
     procedure FormCreate(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
   private
@@ -111,6 +113,7 @@ uses DataModulo;
 procedure TFormPrincipal.FormCreate(Sender: TObject);
 var Inifile: TInifile;
 var hostName, dataBase, CodCliente, NroReduzido, ImpMarca, ImpCaixaPorta, ImpCaixaVeloc, MostraDisplay, Cartao, NroVias, Obs_Venda,UsaSenha,Saltar  : String;
+var ImprimirSequencial : string;
 var TotDesc, TotConfissao, TotalTroca : Double;
 
 begin
@@ -135,6 +138,7 @@ begin
     MostraDisplay       := IniFile.ReadString('IB_Software','GravarDisplaySequencial','');
     Obs_Venda           := IniFile.ReadString('IB_Software','Obs_Venda','');
     Saltar              := Inifile.ReadString('IB_SOFTWARE','Saltar','');
+    ImprimirSequencial  := Inifile.ReadString('IB_Software','ImprimirSequencial','N');
     ImpMarca            := IniFile.ReadString('Restaurante','ImpMarca','');
     ImpCaixaPorta       := IniFile.ReadString('Restaurante','ImpCaixaPorta','');
     ImpCaixaVeloc       := IniFile.ReadString('Restaurante','ImpCaixaVeloc','9600');
@@ -156,6 +160,8 @@ begin
     if UsaSenha = 'S' then
       ImprimirCodigo(hostName, dataBase);
 
+    if ImprimirSequencial = 'S' then
+      memo.Lines.Add('</ce><e>'  +FormatFloat('00000',TblPreVendaCabSeq_Dia.Value)+'</e>');
     memo.Lines.Add('</ce><e>'  +TblPreVendaCabEmpresaEmit.Value+'</e>');
     memo.Lines.Add('</fn></ce>'+TblPreVendaCabEmpresaEmit_Ender.Value);
     memo.Lines.Add('</fn></ce>'+TblPreVendaCabEmpresaEmit_Cidade.Value);
