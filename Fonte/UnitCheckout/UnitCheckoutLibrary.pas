@@ -291,6 +291,7 @@ begin
   DM.TblTicketPreVendaCabTroco.AsString        := SQLCup.FieldByName('TROCO').AsString ;
   DM.TblTicketPreVendaCabTipoVenda.AsString    := SQLCup.FieldByName('CUPOCTIPOPADRAO').AsString ;
   DM.TblTicketPreVendaCabPEDIDOORCAMENTO.Value := 'PEDIDO';
+  DM.TblTicketPreVendaCabSeq_Dia.AsInteger     := SQLCup.FieldByName('SEQ_DIA').AsInteger;
 
   if Reimpressao = 'N' then
     begin
