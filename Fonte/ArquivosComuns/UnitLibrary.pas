@@ -41,6 +41,7 @@ var
   TermPVImp,
   VendedorVenda,
   CodPVImp,
+  CodSeq_Dia,
   ConvenioVenda,
   TipoVenda,
   CodUsuarioAutorizouOperacao,

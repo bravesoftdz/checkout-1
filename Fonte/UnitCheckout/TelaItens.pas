@@ -4303,6 +4303,7 @@ begin
               end;
             end;
             FormTelaImportarPreVenda.ShowModal;
+            VoltaParaEntradaDados;
           end;
           //IMPRIMIR VENDA
         'X': begin {Cttl X}
@@ -6803,6 +6804,7 @@ begin
   CodigoAntigoCupom := '';
   SaldoEstoqueAtual := 0;
   ItemCancelado := 0;
+  CodSeq_Dia := 0;
   if SQLItensVendaTemp.RecordCount > 0 then
   begin
     SQLItensVendaTemp.Last;

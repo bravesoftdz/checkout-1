@@ -205,6 +205,7 @@ type
     btAdd10: TcxButton;
     btDiminuir10: TcxButton;
     TblMemPreVendaSeq_Dia: TIntegerField;
+    SQLImportarPrevendaSelSeq_Dia: TIntegerField;
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure FormCreate(Sender: TObject);
     procedure FormKeyDown(Sender: TObject; var Key: Word;
@@ -453,6 +454,7 @@ begin
           TblMemPreVendaCLIETOBS.Value     := DM.SQLPreVendaCLIETOBS1.Value;
         if DM.SQLPreVendaCLIENTECNPJ.Value <> '' then
           TblMemPreVendaClienteDocumento.Value   := DM.SQLPreVendaCLIENTECNPJ.Value;
+        TblMemPreVendaSeq_Dia.AsInteger := DM.SQLPreVendaSEQ_DIA.AsInteger;
 
         TblMemPrevenda.Post ;
 
@@ -520,7 +522,7 @@ begin
           TblMemPreVendaCLIETOBS.Value     := DM.SQLPreVendaCLIETOBS1.Value;
         if DM.SQLPreVendaCLIENTECNPJ.Value <> '' then
           TblMemPreVendaClienteDocumento.Value   := DM.SQLPreVendaCLIENTECNPJ.Value;
-
+        TblMemPreVendaSeq_Dia.AsInteger := DM.SQLPreVendaSEQ_DIA.AsInteger;
         TblMemPrevenda.Post ;
 
         DM.SQLPreVenda.Next;
@@ -653,8 +655,7 @@ begin
                   DM.SQLTemplate.SQL.Add('where TERMICOD = ' + TblMemPrevendaTERMICOD.AsString) ;
                   DM.SQLTemplate.SQL.Add('and   PRVDICOD = ' + TblMemPrevendaPRVDICOD.AsString) ;
                   DM.SQLTemplate.ExecSQL ;
-                end ;
-
+                end;
               TblMemPrevenda.Next ;
             end ;
         end
@@ -689,6 +690,7 @@ begin
 
                       TermPVImp := SQLImportarPrevendaSelTERMICOD.Value ;
                       CodPVImp  := SQLImportarPrevendaSelPRVDICOD.Value ;
+                      CodSeq_Dia := SQLImportarPrevendaSelSeq_Dia.AsInteger;
 
                       ValorDescontoASerImportado := ValorDescontoASerImportado + SQLImportarPrevendaSelValorDesconto.Value;
 
