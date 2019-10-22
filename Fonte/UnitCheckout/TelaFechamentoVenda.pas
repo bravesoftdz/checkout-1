@@ -1049,6 +1049,7 @@ begin
                            SQLPlanoRecebimento,
                            SQLPlanoRecebimentoParcela,
                            ValorEntrada.Value,
+//                           DM.SQLPreVendaNumerarioPVNUN2VLR.AsFloat,
                            0,
                            TiraPontoMilhar(ValorTotalVenda.Value),
                            PlanoVenda,
@@ -1372,9 +1373,8 @@ begin
                   SQLParcelasVistaVendaTemp.Edit ;
                  // SQLParcelasVistaVendaTempVALORPARC.Value := StrToFloatDef(EntradaDados.Text,0) - ValorDevido ;
                  //SQLParcelasVistaVendaTempVALORPARC.Value := StrToFloatDef(EntradaDados.Text,0) + VarValorRecebido ;
-                 if not fBloqueioSitef then
-                   SQLParcelasVistaVendaTempVALORPARC.Value := StrToFloatDef(EntradaDados.Text,0) + SQLParcelasVistaVendaTempVALORPARC.Value;
-                    SQLParcelasVistaVendaTempTIPOPADR.Value  := TipoPadrao ;
+                  SQLParcelasVistaVendaTempVALORPARC.Value := StrToFloatDef(EntradaDados.Text,0) + SQLParcelasVistaVendaTempVALORPARC.Value;
+                  SQLParcelasVistaVendaTempTIPOPADR.Value  := TipoPadrao ;
                   SQLParcelasVistaVendaTemp.Post ;
                 end;
 
@@ -1393,6 +1393,18 @@ begin
                   NumerarioAtual := 0;
                   if not dmSiTef.EfetuarPagamentoSiTef(NumerarioAtual, StrToFloatDef(EntradaDados.Text,0), '') then
                   begin
+                    SQLParcelasVistaVendaTemp.Close ;
+                    SQLParcelasVistaVendaTemp.SQL.Clear ;
+                    SQLParcelasVistaVendaTemp.SQL.Add('select * from PARCELASVISTAVENDATEMP') ;
+                    SQLParcelasVistaVendaTemp.SQL.Add('where TERMICOD = ' + IntToStr(TerminalAtual)) ;
+                    SQLParcelasVistaVendaTemp.SQL.Add('and   NUMEICOD = ' + IntToStr(NumerarioVista)) ;
+                    SQLParcelasVistaVendaTemp.Open ;
+                    ValorDevido := ValorEntrada.Value + ValorRecebido.Value ;
+                    AtualizarSaldoEdit;
+                    SQLParcelasVistaVendaTemp.Edit ;
+                    SQLParcelasVistaVendaTempVALORPARC.Value := StrToFloatDef(EntradaDados.Text,0) - SQLParcelasVistaVendaTempVALORPARC.Value;
+                    SQLParcelasVistaVendaTempTIPOPADR.Value  := TipoPadrao ;
+                    SQLParcelasVistaVendaTemp.Post ;
                     EntradaDados.SelectAll ;
                     exit;
                   end
@@ -1462,6 +1474,8 @@ begin
                   IF TecladoReduzidoModelo = 'TEC65' THEN
                     EnviaTecladoTextoDisplay65('Valor Troco',FormatFloat('##0.00', VarValorTroco));
                 end;
+                if fUsandoSitef then
+                  EntradaDadosKeyDown(Sender, Enter, [ssAlt]);
               exit;
             end
           else
@@ -1477,6 +1491,8 @@ begin
         begin
           if (EntradaDados.text = '') or (not IsNumeric(EntradaDados.Text, 'INTEGER')) then
             begin
+
+
               if (not IsNumeric(EntradaDados.Text, 'INTEGER')) and
                  (SQLLocate('NUMERARIO', 'NUMEA30DESCR', 'NUMEICOD', '"' + EntradaDados.Text + '"') <> '') and
                  (Key <> VK_Down) then
@@ -1605,7 +1621,7 @@ begin
           if EstadoFechVendaAnt = '' then
             EstadoFechVenda := FinalizandoVenda
           else
-            EstadoFechVenda := EstadoFechVendaAnt ;
+            EstadoFechVenda := EstadoFechVendaAnt;
 
           EstadoFechVendaAnt := '' ;
           PreparaEstadoFech(EstadoFechVenda) ;
@@ -4463,7 +4479,8 @@ begin
       begin
         if PlanoVenda = 0 then
           PlanoVenda := DM.SQLTerminalAtivoPLRCICOD.Value ;
-
+        if (DM.SQLConfigVendaCFVECFINVENDADPREVD.Value = 'S') and (TerminalModo = 'C') then
+          ValorEntrada.Value := DM.SQLPreVendaNumerarioPVNUN2VLR.AsFloat;
         EstadoFechVenda := InformandoPlano ;
         EntradaDados.Text := IntToStr(PlanoVenda) ;
         EntradaDadosKeyDown(Sender, Enter, [ssAlt]);
@@ -4493,12 +4510,16 @@ begin
               DM.SQLPreVendaNumerario.First ;
               EntradaDados.Text := DM.SQLPreVendaNumerarioNUMEICOD.AsString ;
               NumerarioVista    := DM.SQLPreVendaNumerarioNUMEICOD.Value ;
+              ValorEntrada.Value := DM.SQLPreVendaNumerarioPVNUN2VLR.AsFloat;
+//              if ImportandoPreVenda then
+//                ValorRecebido.Value := DM.SQLPreVendaNumerarioPVNUN2VLR.AsFloat;
               EntradaDadosKeyDown(Sender, Enter, [ssAlt]) ;
             end ;
 
           if EstadoFechVenda = InformandoValorNumerarioVista then
             begin
-              EntradaDadosKeyDown(Sender, Enter, [ssAlt]) ;
+              //tirei, pq tinha que solicitar o valor, caso houver troco
+//              EntradaDadosKeyDown(Sender, Enter, [ssAlt]) ;
             end ;
         end ;
 
@@ -4506,11 +4527,14 @@ begin
       DM.SQLPreVendaContasReceber.Last ;
       if DM.SQLPreVendaContasReceber.RecordCount > 0 then
         begin
+//          if ImportandoPreVenda then
+//            EstadoFechVenda := InformandoNumerarioPrazo;
           if EstadoFechVenda = InformandoNumerarioPrazo then
             begin
               DM.SQLPreVendaContasReceber.First ;
-              EntradaDados.Text := DM.SQLPreVendaContasReceberNUMEICOD.AsString ;
-              NumerarioVista    := DM.SQLPreVendaContasReceberNUMEICOD.Value ;
+              EntradaDados.Text := DM.SQLPreVendaContasReceberNUMEICOD.AsString;
+              NumerarioPrazo    := DM.SQLPreVendaContasReceberNUMEICOD.Value;
+//              NumerarioVista    := DM.SQLPreVendaContasReceberNUMEICOD.Value;
               EntradaDadosKeyDown(Sender, Enter, [ssAlt]) ;
             end ;
         end ;
@@ -4784,9 +4808,11 @@ begin
     DM.SQLTemplate.Close ;
     DM.SQLTemplate.SQL.Clear ;
     DM.SQLTemplate.SQL.Add('Insert into PREVENDA') ;
-    DM.SQLTemplate.SQL.Add('(TERMICOD, PRVDICOD, CLIEA13ID, PLRCICOD, VENDICOD, CONVICOD, PRVDN2TOTITENS,') ;
-    DM.SQLTemplate.SQL.Add('PRVDN2DESC, PRVDN2ACRESC, PRVDN2TOTITENSRET, PRVDCTIPOPADRAO, PRVDN2CONVTAXA,') ;
-    DM.SQLTemplate.SQL.Add('PRVDINROORDCOMPRA, PRVDCIMPORT, PRVDCMARCADO, PDVDDHVENDA, CLIENTENOME, CLIENTECNPJ, CLIENTEENDE, CLIENTECIDA,CLIENTEOBS, PDVCPRECONCLU, CLIENTEFONE, CLDPICOD, TROCO)') ;
+    DM.SQLTemplate.SQL.Add('(TERMICOD, PRVDICOD, CLIEA13ID, PLRCICOD, VENDICOD, CONVICOD, PRVDN2TOTITENS,');
+    DM.SQLTemplate.SQL.Add('PRVDN2DESC, PRVDN2ACRESC, PRVDN2TOTITENSRET, PRVDCTIPOPADRAO, PRVDN2CONVTAXA,');
+    DM.SQLTemplate.SQL.Add('PRVDINROORDCOMPRA, PRVDCIMPORT, PRVDCMARCADO, PDVDDHVENDA, CLIENTENOME, ');
+    DM.SQLTemplate.SQL.Add('CLIENTECNPJ, CLIENTEENDE, CLIENTECIDA,CLIENTEOBS, PDVCPRECONCLU, CLIENTEFONE, ');
+    DM.SQLTemplate.SQL.Add('CLDPICOD, TROCO, SEQ_DIA)') ;
     DM.SQLTemplate.SQL.Add('Values (') ;
     DM.SQLTemplate.SQL.Add(IntToStr(TerminalAtual) + ',') ;//TERMICOD
     DM.SQLTemplate.SQL.Add(IntToStr(CodNextPreVenda) + ', ') ;//PRVDICOD
@@ -4851,9 +4877,14 @@ begin
       DM.SQLTemplate.SQL.Add('Null,') ;{vazio}
 
     if ValorTroco.Value > 0 then
-      DM.SQLTemplate.SQL.Add(ConvFloatToStr(ValorTroco.Value) + ')')//TROCO
+      DM.SQLTemplate.SQL.Add(ConvFloatToStr(ValorTroco.Value) + ',')//TROCO
     else
-      DM.SQLTemplate.SQL.Add('0)') ;//TROCO
+      DM.SQLTemplate.SQL.Add('0,') ;//TROCO
+
+    if CodSeq_Dia > 0 then
+      DM.SQLTemplate.SQL.Add(IntToStr(CodSeq_Dia) + ')')//Sequencia dia
+    else
+      DM.SQLTemplate.SQL.Add('Null)') ;//Sequencia dia
 
     try
       DM.SQLTemplate.ExecSQL ;
@@ -6499,7 +6530,10 @@ begin
               begin
                 RetornoCampoUsuario := AutenticaUsuario(UsuarioAtualNome,'USUACVENDCLIBLOQMOTIV',InfoRetornoUser);
                 if RetornoCampoUsuario <> 'S' then
-                  Result := True
+                begin
+                  Result := True;
+                  Exit;
+                end
                 else
                   Result := False;
               end
@@ -6512,7 +6546,10 @@ begin
               begin
                 RetornoCampoUsuario := AutenticaUsuario(UsuarioAtualNome,'USUACVENDCLIBLOQ',InfoRetornoUser);
                 if RetornoCampoUsuario <> 'S' then
-                  Result := True
+                begin
+                  Result := True;
+                  Exit;
+                end
                 else
                   Result := False;
               end
