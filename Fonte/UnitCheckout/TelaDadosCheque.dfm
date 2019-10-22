@@ -1,11 +1,11 @@
 object FormTelaDadosCheque: TFormTelaDadosCheque
-  Left = 249
-  Top = 104
+  Left = 331
+  Top = 85
   Width = 798
   Height = 580
   BorderIcons = []
   Caption = 'Dados Cheque'
-  Color = 14731440
+  Color = 5278518
   Font.Charset = ANSI_CHARSET
   Font.Color = clWindowText
   Font.Height = -32
@@ -113,7 +113,7 @@ object FormTelaDadosCheque: TFormTelaDadosCheque
     Height = 213
     BorderStyle = bsNone
     Color = clWhite
-    FixedColor = 10053171
+    FixedColor = clGreen
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
     Font.Height = -21

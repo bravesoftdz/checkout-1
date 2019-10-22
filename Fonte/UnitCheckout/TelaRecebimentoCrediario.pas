@@ -1556,14 +1556,25 @@ begin
               dm.TblCheques.Post ;
               Application.CreateForm(TFormTelaDadosCheque, FormTelaDadosCheque) ;
               FormTelaDadosCheque.ShowModal;
-              if dm.TblCheques.Active then dm.TblCheques.Close ;
+//              if dm.TblCheques.Active then dm.TblCheques.Close ;
 
               {Cadastrar o Cheque Recebido}
               DM.SQLContasReceber.Close ;
               DM.SQLContasReceber.MacroByName('MFiltro').Value := 'CTRCA13ID is null' ;
               DM.SQLContasReceber.Open ;
 
-              Inc(CodProxCntRecTemp) ;
+
+              DM.sqlConsulta.Close;
+              DM.sqlconsulta.sql.Clear;
+              DM.sqlconsulta.sql.Text := 'select max(CTRCICOD) from contasreceber where empricod=' + EmpresaPadrao + ' and termicod=' + IntToStr(TerminalAtual);
+              DM.sqlconsulta.open;
+
+              if (dm.sqlconsulta.fieldbyname('MAX').Value > 0) then
+                CodProxCntRecTemp := dm.sqlconsulta.fieldbyname('MAX').Value + 1
+              else
+                CodProxCntRecTemp := 1;
+              dm.sqlconsulta.Close;
+//              Inc(CodProxCntRecTemp) ;
 
               CodNextContaRec := FormatFloat('000' ,StrToFloat(EmpresaPadrao)) +
                                  FormatFloat('000' ,StrToFloat(IntToStr(TerminalAtual))) +
