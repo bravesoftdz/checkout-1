@@ -1,6 +1,6 @@
 object FormTelaImportarPreVenda: TFormTelaImportarPreVenda
-  Left = 308
-  Top = 40
+  Left = 186
+  Top = 23
   BorderIcons = []
   BorderStyle = bsNone
   Caption = 'FormTelaImportarPreVenda'
@@ -1646,6 +1646,10 @@ object FormTelaImportarPreVenda: TFormTelaImportarPreVenda
     end
     object SQLImportarPrevendaSelCLDPICOD: TIntegerField
       FieldName = 'CLDPICOD'
+    end
+    object SQLImportarPrevendaSelSeq_Dia: TIntegerField
+      FieldName = 'Seq_Dia'
+      Origin = 'EASY_TEMP."TblMemPreVenda.DB".Seq_Dia'
     end
   end
 end
