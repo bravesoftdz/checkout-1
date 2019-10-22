@@ -1326,7 +1326,7 @@ object FormPrincipalRelatorios: TFormPrincipalRelatorios
       '  (%MTerminal) and'
       '  (%MOperador)'
       'Order BY'
-      '  CONTASRECEBER.NUMEICOD')
+      '  CONTASRECEBER.CTRCA13ID')
     Macros = <
       item
         DataType = ftString
