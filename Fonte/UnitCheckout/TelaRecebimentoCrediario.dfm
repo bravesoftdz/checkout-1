@@ -1767,7 +1767,7 @@ object FormTelaRecebimentoCrediario: TFormTelaRecebimentoCrediario
     PrinterSetup.mmMarginTop = 6350
     PrinterSetup.mmPaperHeight = 0
     PrinterSetup.mmPaperWidth = 0
-    PrinterSetup.PaperSize = 160
+    PrinterSetup.PaperSize = 256
     Units = utMillimeters
     AllowPrintToFile = True
     BeforePrint = ReportAutenticBeforePrint
@@ -2416,7 +2416,7 @@ object FormTelaRecebimentoCrediario: TFormTelaRecebimentoCrediario
     PrinterSetup.mmMarginTop = 6350
     PrinterSetup.mmPaperHeight = 0
     PrinterSetup.mmPaperWidth = 0
-    PrinterSetup.PaperSize = 160
+    PrinterSetup.PaperSize = 256
     Units = utMillimeters
     AllowPrintToFile = True
     BeforePrint = ReportAutenticBeforePrint
