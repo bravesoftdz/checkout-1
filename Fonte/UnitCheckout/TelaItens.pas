@@ -7167,7 +7167,7 @@ begin
     dm.ACBrPosPrinter.Device.DeviceType := dtFile;
   end;
 
-  dm.ACBrNFeDANFeESCPOS.ImprimeEmUmaLinha := False;
+  dm.ACBrNFeDANFeESCPOS.ImprimeEmUmaLinha := True;
   dm.ACBrNFeDANFeESCPOS.ImprimeDescAcrescItem := True;
 end;
 

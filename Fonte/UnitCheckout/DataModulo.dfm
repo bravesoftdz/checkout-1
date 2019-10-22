@@ -6947,6 +6947,7 @@ inherited DM: TDM
     CasasDecimais.MaskvUnCom = ',0.00'
     ACBrNFe = ACBrNFe
     TipoDANFE = tiSemGeracao
+    ImprimeEmUmaLinha = True
     PosPrinter = ACBrPosPrinter
     Left = 952
     Top = 248
