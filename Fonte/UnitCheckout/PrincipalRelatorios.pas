@@ -178,6 +178,20 @@ type
     ppTitleBand3: TppTitleBand;
     ppDetailBand4: TppDetailBand;
     ppSummaryBand3: TppSummaryBand;
+    ppDBText14: TppDBText;
+    ppDBText15: TppDBText;
+    ppLabel20: TppLabel;
+    shpStatusServidor: TShape;
+    SQLTrocas: TRxQuery;
+    DSSQLTrocas: TDataSource;
+    SQLTrocasVALOR_TROCA: TFloatField;
+    SQLTrocasQTDE_TROCA: TIntegerField;
+    PipeTrocas: TppBDEPipeline;
+    ppSubReport5: TppSubReport;
+    ppChildReport7: TppChildReport;
+    ppTitleBand4: TppTitleBand;
+    ppDetailBand5: TppDetailBand;
+    ppSummaryBand4: TppSummaryBand;
     SubProdutosVendidos: TppSubReport;
     ppChildReport5: TppChildReport;
     TituloProdutosVendidos: TppTitleBand;
@@ -235,11 +249,10 @@ type
     ppDBText26: TppDBText;
     Produto: TppLabel;
     ppDBText20: TppDBText;
-    ppDBText14: TppDBText;
-    ppDBText15: TppDBText;
-    ppLabel20: TppLabel;
+    ppLabel21: TppLabel;
+    ppDBText16: TppDBText;
+    ppDBText17: TppDBText;
     ppLine1: TppLine;
-    shpStatusServidor: TShape;
     procedure FormCreate(Sender: TObject);
     procedure BtnVisualizarClick(Sender: TObject);
     procedure ReportTotaisPreviewFormCreate(Sender: TObject);
@@ -435,6 +448,23 @@ begin
     SQLCancelados.MacroByName('MData').Value := 'REGISTRO >= "' + FormatDateTime('mm/dd/yyyy ', De.Date) + HoraInicial.Text + '" and ' + 'REGISTRO <= "' + FormatDateTime('mm/dd/yyyy ', Ate.Date) + HoraFinal.Text + '"';
   SQLCancelados.Open;
 
+  //Trocas
+  SQLTrocas.Close;
+  SQLTrocas.MacrobyName('MEmpresa').Value := 'EMPRICOD  = ' + EmpresaPadrao;
+  if ComboTerminal.Value <> '' then
+    SQLTrocas.MacroByName('MTerminal').Value := 'C.TERMICOD = ' + ComboTerminal.Value;
+  if ComboTerminal2.Value <> '' then
+    SQLTrocas.MacroByName('MTerminal').Value := SQLItensVendidos.MacroByName('MTerminal').Value + ' or ' + 'C.TERMICOD = ' + ComboTerminal2.Value;
+  if ComboOperador.Value <> '' then
+    SQLTrocas.MacroByName('MOperador').Value := 'C.USUAICODVENDA = ' + ComboOperador.Value
+  else
+    SQLTrocas.MacroByName('MOperador').Value := '0=0';
+  if (HoraInicial.Text = '') and (HoraInicial.Text = '') then
+    SQLTrocas.MacroByName('MData').Value := 'C.CUPODEMIS >= "' + FormatDateTime('mm/dd/yyyy', De.Date) + '" and ' + 'C.CUPODEMIS <= "' + FormatDateTime('mm/dd/yyyy', Ate.Date) + '"'
+  else
+    SQLTrocas.MacroByName('MData').Value := 'REGISTRO >= "' + FormatDateTime('mm/dd/yyyy ', De.Date) + HoraInicial.Text + '" and ' + 'REGISTRO <= "' + FormatDateTime('mm/dd/yyyy ', Ate.Date) + HoraFinal.Text + '"';
+  SQLTrocas.Open;
+
   if not ckBobina.checked then
     ReportTotais.Print
   else
@@ -504,6 +534,7 @@ begin
     memo.Lines.Add('------------------------------------------------');
     memo.Lines.Add('<ad><n>TOTAL Cupons  => ' + SQLTotalCupomQTDE_CUPOM.AsString + '  ' + FormatFloat('R$ ##0.00', SQLTotalCupomVALOR_TOTAL.AsFloat) + '</n></ad>');
     memo.Lines.Add('<ad><n>Cancelados  => ' + SQLCanceladosQTDE_CANCELADO.AsString + '  ' + FormatFloat('R$ ##0.00', SQLCanceladosVALOR_CANCELADO.AsFloat) + '</n></ad>');
+    memo.Lines.Add('<ad><n>Trocas  => ' + SQLTrocasQTDE_TROCA.AsString + '  ' + FormatFloat('R$ ##0.00', SQLTrocasVALOR_TROCA.AsFloat) + '</n></ad>');
     memo.Lines.Add('------------------------------------------------');
 
       // Produtos Vendidos
