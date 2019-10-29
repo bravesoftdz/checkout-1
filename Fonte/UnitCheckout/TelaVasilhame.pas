@@ -49,8 +49,15 @@ begin
     edtCodigoBarra.Clear;
     edtCodigoBarra.SetFocus;
   end;
+
+  if FormTelaItens.cdsVasilhame.IsEmpty then
+    Close;
+
   if Key = VK_ESCAPE then
-   Close;
+  begin
+    FormTelaItens.CalcularSemVasilhame;
+    Close;
+  end;
 end;
 
 end.

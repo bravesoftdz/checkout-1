@@ -7004,4 +7004,24 @@ inherited DM: TDM
       FieldName = 'DATA_VALIDADE'
     end
   end
+  object SQLPrecoCliente: TRxQuery
+    DatabaseName = 'DB'
+    SQL.Strings = (
+      'select * from CLIENTEPRODUTOPRECO'
+      'Where PRODICOD = :PRODICOD AND CLIEA13ID = :CLIEA13ID')
+    Macros = <>
+    Left = 628
+    Top = 109
+    ParamData = <
+      item
+        DataType = ftInteger
+        Name = 'PRODICOD'
+        ParamType = ptInput
+      end
+      item
+        DataType = ftString
+        Name = 'CLIEA13ID'
+        ParamType = ptInput
+      end>
+  end
 end

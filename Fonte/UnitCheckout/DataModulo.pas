@@ -1178,6 +1178,7 @@ type
     SQLConfigVendaUTILIZA_NUMERO_SEQ: TStringField;
     TblTicketPreVendaCabSequencial: TIntegerField;
     TblTicketPreVendaCabSeq_Dia: TIntegerField;
+    SQLPrecoCliente: TRxQuery;
     procedure DataModuleCreate(Sender: TObject);
     procedure SQLCupomNewRecord(DataSet: TDataSet);
     procedure SQLCupomBeforePost(DataSet: TDataSet);

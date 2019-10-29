@@ -240,7 +240,7 @@ function  EncontrouProduto(Codigo:string;Tabela:TObject):Boolean;
 function  HistoricoPadraoCaixa(TipoPadrao : string ) : string ;
 procedure GravaArqTexto(Str, NomeArq, Tipo : String) ;
 function  CancelamentoCupom(Documento, Usuario:string) : boolean ;
-function  RetornaPreco(QueryProduto : TQuery; TabelaPrecoEmpresa:String; TabelaPrecoCliente:String) : double ;
+function  RetornaPreco(QueryProduto : TQuery; TabelaPrecoEmpresa:String; TabelaPrecoCliente:String; CodigoClientePreco : String = '') : double ;
 function  CalculaJuroMultaDesc(VlrVenc, TxJuroMultaDescCobr : double; DVenc, DPag, DVencOrig : TDateTime; Toler : integer; Tipo, Cupom, Parc : string) : Double;
 function  RetornarNomeComputador : String;
 function DelphiAberto: Boolean;
@@ -3659,13 +3659,27 @@ begin
   CancelamentoCupom := true ;
 end ;
 
-function RetornaPreco(QueryProduto : TQuery; TabelaPrecoEmpresa:String; TabelaPrecoCliente:String) : double ;
+function RetornaPreco(QueryProduto : TQuery; TabelaPrecoEmpresa:String; TabelaPrecoCliente:String; CodigoClientePreco : String = '') : double ;
 Var
   DataIni,
   DataFim : TDateTime ;
   PrecoOk : Boolean;
 begin
   PrecoOk := False;
+  if CodigoClientePreco <> EmptyStr then
+  begin
+    DM.SQLPrecoCliente.ParamByName('CLIEA13ID').asString  := CodigoClientePreco;
+    DM.SQLPrecoCliente.ParamByName('PRODICOD').asInteger := QueryProduto.FindField('PRODICOD').asInteger;
+    DM.SQLPrecoCliente.Open;
+    DM.SQLPrecoCliente.First;
+    If Not DM.SQLPrecoCliente.Eof Then
+      Begin
+        RetornaPreco := DM.SQLPrecoCliente.FieldByName('PRECO').Value;
+        PrecoOk := True;
+      End;
+    DM.SQLPrecoCliente.Close;
+  end;
+
   If (Not PrecoOk) AND (TabelaPrecoCliente <> '') Then
     if (TabelaPrecoCliente <> 'V') and (copy(TabelaPrecoCliente,1,1) <> 'A') then
       Begin

@@ -12,7 +12,7 @@ uses
   AdvSmoothPanel, AdvReflectionLabel, AdvSmoothSlideShow, ComCtrls, TFlatPanelUnit,
   OleCtrls, SHDocVw, ACBrBAL, XMLIntf, XMLDoc, zlib, ACBrNFe, ACBrMail, ACBrBase, ACBrPosPrinter,
   pcnConversao, ACBrUtil, ACBrDevice, RXClock, cxStyles, dxSkinsCore, pcnConversaoNFe, ACBrDFeUtil,
-  WiniNet;
+  WiniNet, DBClient;
 
 const
   //AS VARIAVEIS ABAIXO FORAM CRIADAS PARA NÃO CORRER O RISCO DE DIGITAR ERRADO
@@ -307,6 +307,9 @@ type
     SQLVasilhameQTDE: TFloatField;
     SQLVasilhameVALOR: TFloatField;
     curSubTotalDesc: TCurrencyEdit;
+    cdsVasilhame: TClientDataSet;
+    cdsVasilhameCodigo: TIntegerField;
+    cdsVasilhameQtde: TIntegerField;
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure FormCreate(Sender: TObject);
     procedure EntradaDadosKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
@@ -427,7 +430,8 @@ type
     procedure StatusServicoNFE;
     function Transmite_NFCe(idCupom: string): Boolean;
     procedure ImprimirConfissaoDeDivida(pTotalPrazo:Double; nomeCliente:String);
-    procedure CalcularVasilhame(CodigoBarra : string);
+    procedure CalcularVasilhame(CodigoBarra : string; CodigoProdutoVasilhame : Integer = 0; QtdeVasilhame : Integer = 0);
+    procedure CalcularSemVasilhame;
 
   end;
 
@@ -2216,7 +2220,7 @@ begin
         end;
 
       if (ValorItem = 0) then
-        ValorItem := StrToFloat(FormatFloat(FormatStrVlrVenda, RetornaPreco(SQLProduto, DM.SQLConfigVendaTPRCICOD.AsString, UsaPrecoVenda)));
+        ValorItem := StrToFloat(FormatFloat(FormatStrVlrVenda, RetornaPreco(SQLProduto, DM.SQLConfigVendaTPRCICOD.AsString, UsaPrecoVenda, ClienteVenda)));
 
       //Busca desconto no produto
       CalcularDescontoProduto(True);
@@ -2855,7 +2859,16 @@ begin
         else
           TemProdutoSemSubsTrib := True;
         if SQLProdutoPRODVASILHAME.AsString = 'S' then
+        begin
           TemProdutoVasilhame := True;
+          if cdsVasilhame.Locate('Codigo',SQLProdutoPRODICOD.AsInteger,[loCaseInsensitive]) then
+            cdsVasilhame.Edit
+          else
+            cdsVasilhame.Insert;
+          cdsVasilhameCodigo.AsInteger := SQLProdutoPRODICOD.AsInteger;
+          cdsVasilhameQtde.AsFloat := cdsVasilhameQtde.AsFloat + EditQtde.Value;
+          cdsVasilhame.Post;
+        end;
         CodigoProduto := '';
         CodigoBarrasProduto := '';
         NroSerieProduto := '';
@@ -3512,7 +3525,8 @@ begin
           EnviaTecladoTextoDisplay44('Tela para Cadastro de Cliente...', '');
         if TecladoReduzidoModelo = 'TEC65' then
           EnviaTecladoTextoDisplay65('Tela para Cadastro de Cliente...', '');
-
+        if (EstadoPDVChk = AguardandoNovaVenda) then
+          FormKeyDown(Sender, F2, [ssAlt]);
         if DM.SQLUsuario.Locate('USUAICOD', UsuarioCorrente, []) then
           if DM.SQLUsuario.FieldByName('USUACPVERCLICASH').AsString <> 'S' then
           begin
@@ -3533,7 +3547,7 @@ begin
                   False,
                   '',
                   True) = 2 then
-                  rxClienteNome.caption := SQLLocate('CLIENTE', 'CLIEA13ID', 'CLIEA60RAZAOSOC', '''' + ClienteVenda + '''');
+                   rxClienteNome.caption := SQLLocate('CLIENTE', 'CLIEA13ID', 'CLIEA60RAZAOSOC', '''' + ClienteVenda + '''');
               end;
             end;
           end
@@ -3546,7 +3560,7 @@ begin
               False,
               '',
               True) = 2 then
-              rxClienteNome.caption := SQLLocate('CLIENTE', 'CLIEA13ID', 'CLIEA60RAZAOSOC', '''' + ClienteVenda + '''');
+               rxClienteNome.caption := SQLLocate('CLIENTE', 'CLIEA13ID', 'CLIEA60RAZAOSOC', '''' + ClienteVenda + '''');
           end;
       end;
     VK_F12: begin     
@@ -6793,7 +6807,9 @@ begin
     slideshow.Animation := True;
     PagePrincipal.ActivePage := TabVenda;
   end;
-
+  cdsVasilhame.Close;
+  cdsVasilhame.CreateDataSet;
+  cdsVasilhame.EmptyDataSet;
   UsuarioAutorizouOperacao := '';
   ImpCupomAutomatico := false;
   E_Orcamento := false;
@@ -7251,7 +7267,7 @@ begin
   end;
 end;
 
-procedure TFormTelaItens.CalcularVasilhame(CodigoBarra : string);
+procedure TFormTelaItens.CalcularVasilhame(CodigoBarra : string; CodigoProdutoVasilhame : Integer = 0; QtdeVasilhame : Integer = 0);
 var
   vQtde, vQtdeRestante,vCodigoProduto, vCodigoProdutoFilho : Integer;
   vValorVasilhame, vValorAcrescimo : Real;
@@ -7267,25 +7283,37 @@ begin
   SQLVasilhame.Open;
 
   vValorVasilhame := 0;
-  DM.sqlConsulta.Close;
-  DM.sqlConsulta.SQL.Clear;
-  DM.sqlConsulta.SQL.Add('Select * from PRODUTOVASILHAME where CODIGO = ''' + CodigoBarra + '''');
-  DM.sqlConsulta.Open;
-  if DM.sqlConsulta.IsEmpty then
-    exit;
-  if dm.sqlConsulta.FieldByName('DATA_UTILIZACAO').AsDateTime > 0 then
+  if CodigoProdutoVasilhame = 0 then
   begin
-    Informa('Ticket já utilizado em:' + #13 + FormatDateTime('mm/dd/yyyy', dm.sqlConsulta.FieldByName('DATA_UTILIZACAO').AsDateTime));
-    Exit;
+    DM.sqlConsulta.Close;
+    DM.sqlConsulta.SQL.Clear;
+    DM.sqlConsulta.SQL.Add('Select * from PRODUTOVASILHAME where CODIGO = ''' + CodigoBarra + '''');
+    DM.sqlConsulta.Open;
+    if DM.sqlConsulta.IsEmpty then
+      exit;
+    if dm.sqlConsulta.FieldByName('DATA_UTILIZACAO').AsDateTime > 0 then
+    begin
+      Informa('Ticket já utilizado em:' + #13 + FormatDateTime('mm/dd/yyyy', dm.sqlConsulta.FieldByName('DATA_UTILIZACAO').AsDateTime));
+      Exit;
+    end;
+    if dm.sqlConsulta.FieldByName('QUANTIDADE').AsInteger > 0 then
+      vQtdeRestante := dm.sqlConsulta.FieldByName('QUANTIDADE').AsInteger
+    else
+     vQtdeRestante := 0;
+
+    vCodigoProduto := dm.sqlConsulta.FieldByName('PRODICOD').AsInteger;
+  end
+  else
+  begin
+//    if QtdeVasilhame > 0 then
+//      vQtdeRestante := QtdeVasilhame
+//    else
+     vQtdeRestante := 0;
+    vCodigoProduto := CodigoProdutoVasilhame;
   end;
 
-  if dm.sqlConsulta.FieldByName('QUANTIDADE').AsInteger > 0 then
-    vQtdeRestante := dm.sqlConsulta.FieldByName('QUANTIDADE').AsInteger
-  else
-   vQtdeRestante := 0;
-
-//  vQtdeRestante := dm.sqlConsulta.FieldByName('QUANTIDADE').AsInteger;
-  vCodigoProduto := dm.sqlConsulta.FieldByName('PRODICOD').AsInteger;
+  if (CodigoProdutoVasilhame = 0) and (cdsVasilhame.Locate('Codigo',vCodigoProduto,[loCaseInsensitive])) then
+    cdsVasilhame.Delete;
 
   //Busca a composição (vasilhame cadastrado)
   DM.sqlConsulta.Close;
@@ -7381,6 +7409,20 @@ begin
     if (Estado and  INTERNET_CONNECTION_LAN <> 0) or (Estado and INTERNET_CONNECTION_MODEM <> 0) or (Estado and INTERNET_CONNECTION_PROXY <> 0)  then
       Result := True;
   end;
+end;
+
+procedure TFormTelaItens.CalcularSemVasilhame;
+begin
+  cdsVasilhame.DisableControls;
+  cdsVasilhame.First;
+  while not cdsVasilhame.Eof do
+  begin
+    CalcularVasilhame('',cdsVasilhameCodigo.AsInteger,cdsVasilhameQtde.AsInteger);
+    cdsVasilhame.Next;
+  end;
+  cdsVasilhame.EnableControls;
+  cdsVasilhame.EmptyDataSet;
+  TemProdutoVasilhame := False;
 end;
 
 end.
