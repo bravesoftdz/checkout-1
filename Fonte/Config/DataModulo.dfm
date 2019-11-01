@@ -1398,4 +1398,24 @@ inherited DM: TDM
     Left = 565
     Top = 64
   end
+  object SQLPrecoCliente: TRxQuery
+    DatabaseName = 'DB'
+    SQL.Strings = (
+      'select * from CLIENTEPRODUTOPRECO'
+      'Where PRODICOD = :PRODICOD AND CLIEA13ID = :CLIEA13ID')
+    Macros = <>
+    Left = 572
+    Top = 109
+    ParamData = <
+      item
+        DataType = ftInteger
+        Name = 'PRODICOD'
+        ParamType = ptInput
+      end
+      item
+        DataType = ftString
+        Name = 'CLIEA13ID'
+        ParamType = ptInput
+      end>
+  end
 end

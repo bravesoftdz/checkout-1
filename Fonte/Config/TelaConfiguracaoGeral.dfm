@@ -1,6 +1,6 @@
 inherited FormTelaConfiguracaoGeral: TFormTelaConfiguracaoGeral
-  Left = -5
-  Top = 56
+  Left = -8
+  Top = -8
   Width = 1382
   Height = 744
   Caption = 'Configura'#231#245'es Gerais'
@@ -21,6 +21,34 @@ inherited FormTelaConfiguracaoGeral: TFormTelaConfiguracaoGeral
         Width = 92
         Height = 13
         Caption = 'Empresa Padr'#227'o'
+        FocusControl = ComboEmpresa
+        Font.Charset = ANSI_CHARSET
+        Font.Color = 8404992
+        Font.Height = -11
+        Font.Name = 'Tahoma'
+        Font.Style = [fsBold]
+        ParentFont = False
+      end
+      object Label3: TLabel [1]
+        Left = 141
+        Top = 481
+        Width = 69
+        Height = 13
+        Caption = 'IP Link Web:'
+        FocusControl = ComboEmpresa
+        Font.Charset = ANSI_CHARSET
+        Font.Color = 8404992
+        Font.Height = -11
+        Font.Name = 'Tahoma'
+        Font.Style = [fsBold]
+        ParentFont = False
+      end
+      object Label4: TLabel [2]
+        Left = 156
+        Top = 505
+        Width = 54
+        Height = 13
+        Caption = 'Link Web:'
         FocusControl = ComboEmpresa
         Font.Charset = ANSI_CHARSET
         Font.Color = 8404992
@@ -241,7 +269,7 @@ inherited FormTelaConfiguracaoGeral: TFormTelaConfiguracaoGeral
         Left = 136
         Top = 356
         Width = 457
-        Height = 105
+        Height = 70
         Caption = 'Opera'#231#227'o de Estoque para Transfer'#234'ncia de Produtos'
         Font.Charset = ANSI_CHARSET
         Font.Color = 8404992
@@ -252,10 +280,10 @@ inherited FormTelaConfiguracaoGeral: TFormTelaConfiguracaoGeral
         TabOrder = 14
         object Label11: TLabel
           Left = 9
-          Top = 20
-          Width = 44
+          Top = 24
+          Width = 47
           Height = 13
-          Caption = 'Entrada'
+          Caption = 'Entrada:'
           Font.Charset = ANSI_CHARSET
           Font.Color = 8404992
           Font.Height = -11
@@ -264,11 +292,11 @@ inherited FormTelaConfiguracaoGeral: TFormTelaConfiguracaoGeral
           ParentFont = False
         end
         object Label2: TLabel
-          Left = 9
-          Top = 58
-          Width = 31
+          Left = 22
+          Top = 49
+          Width = 34
           Height = 13
-          Caption = 'Sa'#237'da'
+          Caption = 'Sa'#237'da:'
           Font.Charset = ANSI_CHARSET
           Font.Color = 8404992
           Font.Height = -11
@@ -277,8 +305,8 @@ inherited FormTelaConfiguracaoGeral: TFormTelaConfiguracaoGeral
           ParentFont = False
         end
         object dblOpEntradaTransf: TRxDBLookupCombo
-          Left = 7
-          Top = 35
+          Left = 58
+          Top = 16
           Width = 314
           Height = 21
           DropDownCount = 8
@@ -300,8 +328,8 @@ inherited FormTelaConfiguracaoGeral: TFormTelaConfiguracaoGeral
           OnChange = dblOpEntradaTransfChange
         end
         object dblOpSaidaTransf: TRxDBLookupCombo
-          Left = 7
-          Top = 72
+          Left = 58
+          Top = 41
           Width = 314
           Height = 21
           DropDownCount = 8
@@ -325,7 +353,7 @@ inherited FormTelaConfiguracaoGeral: TFormTelaConfiguracaoGeral
       end
       object GroupBox3: TGroupBox
         Left = 136
-        Top = 466
+        Top = 428
         Width = 193
         Height = 45
         Caption = ' Ultimo Bonus p/Cliente'
@@ -372,7 +400,7 @@ inherited FormTelaConfiguracaoGeral: TFormTelaConfiguracaoGeral
       end
       object GroupBox6: TGroupBox
         Left = 400
-        Top = 466
+        Top = 428
         Width = 193
         Height = 45
         Caption = 'Dias Aviso Bloqueio'
@@ -452,6 +480,36 @@ inherited FormTelaConfiguracaoGeral: TFormTelaConfiguracaoGeral
         TabOrder = 10
         ValueChecked = 'S'
         ValueUnchecked = 'N'
+      end
+      object dbedtIP_Link_Web: TDBEdit
+        Left = 213
+        Top = 473
+        Width = 380
+        Height = 21
+        DataField = 'IP_LINK_WEB'
+        DataSource = DSSQLConfigGeral
+        Font.Charset = ANSI_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'Tahoma'
+        Font.Style = []
+        ParentFont = False
+        TabOrder = 17
+      end
+      object dbedtLink_Web: TDBEdit
+        Left = 213
+        Top = 497
+        Width = 380
+        Height = 21
+        DataField = 'LINK_WEB'
+        DataSource = DSSQLConfigGeral
+        Font.Charset = ANSI_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'Tahoma'
+        Font.Style = []
+        ParentFont = False
+        TabOrder = 18
       end
     end
     inherited ScrollBoxTopo: TScrollBox
@@ -775,6 +833,15 @@ inherited FormTelaConfiguracaoGeral: TFormTelaConfiguracaoGeral
       Origin = 'DB.CONFIGGERAL.UTILIZA_CREDIARIO_ONLINE'
       FixedChar = True
       Size = 1
+    end
+    object SQLConfigGeralIP_LINK_WEB: TStringField
+      FieldName = 'IP_LINK_WEB'
+      Origin = 'DB.CONFIGGERAL.IP_LINK_WEB'
+    end
+    object SQLConfigGeralLINK_WEB: TStringField
+      FieldName = 'LINK_WEB'
+      Origin = 'DB.CONFIGGERAL.LINK_WEB'
+      Size = 100
     end
   end
   object DSSQLConfigGeral: TDataSource

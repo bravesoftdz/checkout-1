@@ -1842,6 +1842,7 @@ inherited DM: TDM
     SQL.Strings = (
       'select * from CUPOM'
       'where %MFiltro')
+    UpdateMode = upWhereKeyOnly
     Macros = <
       item
         DataType = ftString

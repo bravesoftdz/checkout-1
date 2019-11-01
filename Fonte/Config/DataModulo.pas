@@ -230,6 +230,7 @@ type
     SQLConfigGeralCFGEDBLOQ: TDateTimeField;
     SQLConfigVendaCFVENIMPFINANC: TStringField;
     SQLConfigGeralVERIFICA_CUPOM_PENDENTE: TStringField;
+    SQLPrecoCliente: TRxQuery;
     procedure DataModuleCreate(Sender: TObject);
     procedure SQLConfigContaBeforeEdit(DataSet: TDataSet);
     procedure SQLConfigContaNewRecord(DataSet: TDataSet);

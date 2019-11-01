@@ -91,6 +91,12 @@ type
     SQLConfigGeralNAO_OBRIGA_FECHAR_CAIXA: TStringField;
     SQLConfigGeralUTILIZA_CREDIARIO_ONLINE: TStringField;
     DBCheckBox9: TDBCheckBox;
+    dbedtIP_Link_Web: TDBEdit;
+    Label3: TLabel;
+    SQLConfigGeralIP_LINK_WEB: TStringField;
+    Label4: TLabel;
+    dbedtLink_Web: TDBEdit;
+    SQLConfigGeralLINK_WEB: TStringField;
     procedure FormCreate(Sender: TObject);
     procedure BotaoGravarClick(Sender: TObject);
     procedure DSSQLConfigGeralDataChange(Sender: TObject; Field: TField);
