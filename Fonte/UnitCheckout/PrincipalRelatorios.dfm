@@ -59,8 +59,8 @@ object FormPrincipalRelatorios: TFormPrincipalRelatorios
     object RxLabel2: TRxLabel
       Left = 0
       Top = 0
-      Width = 656
-      Height = 49
+      Width = 414
+      Height = 39
       Align = alClient
       Alignment = taCenter
       Caption = 'Relat'#243'rio para Resumo de Caixa'
@@ -4036,8 +4036,9 @@ object FormPrincipalRelatorios: TFormPrincipalRelatorios
     DatabaseName = 'DB'
     SQL.Strings = (
       
-        'select sum(C.CUPON2TOTITENS - coalesce(C.CUPON3BONUSTROCA, 0)) V' +
-        'alor_Total, count(c.cupoa13id)Qtde_Cupom'
+        'select sum(C.CUPON2TOTITENS - coalesce(C.CUPON3BONUSTROCA, 0) - ' +
+        'coalesce(C.cupon2desc,0)) Valor_Total, count(c.cupoa13id)Qtde_Cu' +
+        'pom'
       'from CUPOM C'
       'where C.CUPOCSTATUS <> '#39'C'#39' and'
       '          COALESCE(C.CUPON3BONUSTROCA,0) = 0 and'
@@ -4162,7 +4163,6 @@ object FormPrincipalRelatorios: TFormPrincipalRelatorios
     end
   end
   object SQLTrocas: TRxQuery
-    Active = True
     DatabaseName = 'DB'
     SQL.Strings = (
       

@@ -17,6 +17,7 @@ inherited FormCadastroBalanca: TFormCadastroBalanca
       inherited PanelFundoDados: TPanel
         inherited Panel5: TPanel
           inherited PagePrincipal: TPageControl
+            ActivePage = TabSheetDadosPrincipais
             inherited TabSheetConsulta: TTabSheet
               inherited DBGridLista: TDBGrid
                 Columns = <

@@ -16,6 +16,7 @@ type
     RxLabel2: TRxLabel;
     PanelCodigoBarra: TPanel;
     edtCodigoBarra: TEdit;
+    lblNomeProduto: TRxLabel;
     procedure FormKeyDown(Sender: TObject; var Key: Word;
       Shift: TShiftState);
   private

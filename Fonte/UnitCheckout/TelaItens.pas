@@ -1924,7 +1924,7 @@ begin
             SQLProduto.Open;
             if not SQLProduto.Eof then
             begin
-              ValorItem := StrToFloat(FormatFloat(FormatStrVlrVenda, RetornaPreco(SQLProduto, DM.SQLConfigVendaTPRCICOD.AsString, UsaPrecoVenda)));
+              ValorItem := StrToFloat(FormatFloat(FormatStrVlrVenda, RetornaPreco(SQLProduto, DM.SQLConfigVendaTPRCICOD.AsString, UsaPrecoVenda, ClienteVenda)));
 
               if SQLBalancaCFBLCTIPOPRECO.AsString = 'V' then
               begin
@@ -1953,8 +1953,12 @@ begin
                       Copy(EntradaDados.Text, SQLBalancaCFBLIVLRPOS.Value + SQLBalancaCFBLIVLRTAM.Value - 2, 2));
 
                   if SQLBalancaCFBLIDECIMAIS.AsInteger = 3 then
+                  begin
                     QuantItem := StrToCurr(Copy(EntradaDados.Text, SQLBalancaCFBLIVLRPOS.Value, SQLBalancaCFBLIVLRTAM.Value - 3) + ',' +
                       Copy(EntradaDados.Text, SQLBalancaCFBLIVLRPOS.Value + SQLBalancaCFBLIVLRTAM.Value - 3, 3));
+                    if (SQLBalancaCFBLCTIPOPRECO.AsString = 'P') and (SQLProdutoUNIDADE.AsString <> 'KG') then
+                      QuantItem := QuantItem * 1000;
+                  end;
                 end
                 else
                   QuantItem := StrToCurr(Copy(EntradaDados.Text, SQLBalancaCFBLIVLRPOS.Value, SQLBalancaCFBLIVLRTAM.Value));
@@ -3249,6 +3253,7 @@ begin
         if TemProdutoVasilhame then
         begin
           Application.CreateForm(TFormTelaVasilhame, FormTelaVasilhame);
+          FormTelaVasilhame.lblNomeProduto.Caption := CodigoProduto + ' ' + ProdutoDescricao;
           FormTelaVasilhame.ShowModal;
         end;
 

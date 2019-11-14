@@ -1,5 +1,5 @@
 object FormTelaFechamentoVenda: TFormTelaFechamentoVenda
-  Left = 49
+  Left = -18
   Top = 0
   BorderIcons = []
   BorderStyle = bsNone

@@ -4568,7 +4568,7 @@ begin
       begin
         Sigla   := 'VDVIS' ;
         MsgErro := 'Não há nenhuma Operação de Caixa configurada com a sigla de Venda a Vista!' ;
-        VlrLanc := SQLParcelasVistaVendaTempVALORPARC.Value ;
+        VlrLanc := SQLParcelasVistaVendaTempVALORPARC.Value;
       end ;
 
     if Copy(TipoPadrao1,1,3) = 'CHQ' then
@@ -4578,8 +4578,8 @@ begin
         else
           Sigla   := 'VDVIS';
         MsgErro := 'Não há nenhuma Operação de Caixa configurada com a sigla de Venda Cheque!' ;
-        VlrLanc := SQLParcelasVistaVendaTempVALORPARC.Value ;
-        
+        VlrLanc := SQLParcelasVistaVendaTempVALORPARC.Value;
+
 //        VlrLanc := ValorTotalVenda.Value ;
       end ;
 
@@ -4587,14 +4587,14 @@ begin
       begin
         Sigla   := 'VDCRD' ;
         MsgErro := 'Não há nenhuma Operação de Caixa configurada com a sigla de Venda Crediário!' ;
-        VlrLanc := SQLParcelasVistaVendaTempVALORPARC.Value ;
+        VlrLanc := SQLParcelasVistaVendaTempVALORPARC.Value;
       end ;
 
     if TipoPadrao1 = 'CNV' then
       begin
         Sigla   := 'VDCNV' ;
         MsgErro := 'Não há nenhuma Operação de Caixa configurada com a sigla de Venda Convênio!' ;
-        VlrLanc := SQLParcelasVistaVendaTempVALORPARC.Value ;
+        VlrLanc := SQLParcelasVistaVendaTempVALORPARC.Value;
       end ;
 
     if (TipoPadrao1 = 'CRT') or (TipoPadrao1 = 'CRTF') then
@@ -4631,26 +4631,92 @@ begin
       end ;
 
     if VlrLanc > 0 then
-      if (TotalVistaAut > 0)  and (ValorPrazo > 0) then
-        GravaMovimentoCaixa(DM.SQLTotalizadorCaixa,
-                            DM.SQLTotalizar,
-                            EmpresaPadrao,//WEMPRICOD
-                            IntToStr(TerminalAtual),//WTERMICOD
-                            FormatDateTime('mm/dd/yyyy', Now),//WMVCIXDMOV
-                            'Null',//WNUMEICOD
-                            DM.SQLTemplate.FieldByName('OPCXICOD').AsString,//WOPCXICOD
-                            IntToStr(DM.UsuarioAtual),//WUSUAICOD
-                            DM.CodNextCupom,//WMVCIXA15DOCORIG
-                            ValorPrazo,//WMOVICAIXN2VLR
-                            VlrAcresc,//WMOVICAIXN2VLRJURO
-                            0,//WMOVICAIXN2VLRMULTA
-                            FormTelaItens.TotalDescItens+VlrDesc,//WMOVICAIXN2VLRDEC
-                            'Null',//WMOVICAIXA6NUMCUPOM
-                            'C',//WTIPO
-                            UsuarioAtualNome+'/'+UsuarioAutorizouOperacao+' Cliente: '+NomeClienteVenda,//WMVCXA255HIST
-                            'N',
-                            '')
-      else
+      GravaMovimentoCaixa(DM.SQLTotalizadorCaixa,
+                          DM.SQLTotalizar,
+                          EmpresaPadrao,//WEMPRICOD
+                          IntToStr(TerminalAtual),//WTERMICOD
+                          FormatDateTime('mm/dd/yyyy', Now),//WMVCIXDMOV
+                          'Null',//WNUMEICOD
+                          DM.SQLTemplate.FieldByName('OPCXICOD').AsString,//WOPCXICOD
+                          IntToStr(DM.UsuarioAtual),//WUSUAICOD
+                          DM.CodNextCupom,//WMVCIXA15DOCORIG
+                          VlrLanc - ValorTroco.Value,//WMOVICAIXN2VLR
+                          VlrAcresc,//WMOVICAIXN2VLRJURO
+                          0,//WMOVICAIXN2VLRMULTA
+//                            FormTelaItens.TotalDescItens+VlrDesc,//WMOVICAIXN2VLRDEC
+                          VlrDesc,//WMOVICAIXN2VLRDEC
+                          'Null',//WMOVICAIXA6NUMCUPOM
+                          'C',//WTIPO
+                          UsuarioAtualNome+'/'+UsuarioAutorizouOperacao+' Cliente: '+NomeClienteVenda,//WMVCXA255HIST
+                          'N',
+                          '');
+    SQLParcelasVistaVendaTemp.Next;
+  end;
+
+
+  SQLParcelasPrazoVendaTemp.First;
+  while not SQLParcelasPrazoVendaTemp.Eof do
+  begin
+    TipoPadrao1 := SQLParcelasPrazoVendaTempTIPOPADR.AsString;
+
+    if Copy(TipoPadrao1,1,3) = 'CHQ' then
+      begin
+        if TipoPadrao1 = 'CHQP' then
+          Sigla   := 'VDCHQ'
+        else
+          Sigla   := 'VDVIS';
+        MsgErro := 'Não há nenhuma Operação de Caixa configurada com a sigla de Venda Cheque!' ;
+        VlrLanc := SQLParcelasPrazoVendaTempVALORVENCTO.Value;
+      end ;
+
+    if TipoPadrao1 = 'CRD' then
+      begin
+        Sigla   := 'VDCRD' ;
+        MsgErro := 'Não há nenhuma Operação de Caixa configurada com a sigla de Venda Crediário!' ;
+        VlrLanc := SQLParcelasPrazoVendaTempVALORVENCTO.Value;
+      end ;
+
+    if TipoPadrao1 = 'CNV' then
+      begin
+        Sigla   := 'VDCNV' ;
+        MsgErro := 'Não há nenhuma Operação de Caixa configurada com a sigla de Venda Convênio!' ;
+        VlrLanc := SQLParcelasPrazoVendaTempVALORVENCTO.Value;
+      end ;
+
+    if (TipoPadrao1 = 'CRT') or (TipoPadrao1 = 'CRTF') then
+      begin
+        Sigla   := 'VDCRT' ;
+        MsgErro := 'Não há nenhuma Operação de Caixa configurada com a sigla de Venda Cartão!' ;
+        VlrLanc := SQLParcelasPrazoVendaTempVALORVENCTO.Value ;
+      end ;
+
+    //TESTAR SE MOVIMENTO DO CAIXA PADRAO PARA TIPO VENDA EXISTE
+    DM.SQLTemplate.Close ;
+    DM.SQLTemplate.SQL.Clear ;
+    DM.SQLTemplate.SQL.Add('select * from OPERACAOCAIXA') ;
+    DM.SQLTemplate.SQL.Add('where OPCXA5SIGLA = "' + Sigla + '"') ;
+    DM.SQLTemplate.Open ;
+    if DM.SQLTemplate.IsEmpty then
+      begin
+         Informa(MsgErro) ;
+
+        if not FileExists('SemTransacao.Arq') then
+          if DM.DB.InTransaction then
+            DM.DB.RollBack ;
+
+        if (ECFAtual <> '') and (PortaECFAtual <> '') then
+          if not CancelarCupomFiscal(ECFAtual, PortaECFAtual) then
+            exit ;
+        FormTelaItens.CancelarVenda ;
+        FormTelaItens.EstadoPDVChk := 'AguardandoNovaVenda' ;
+        FormTelaItens.PreparaEstadoBalcao(FormTelaItens.EstadoPDVChk) ;
+        Close ;
+
+        exit ;
+      end ;
+
+    if VlrLanc > 0 then
+//      if (ValorPrazo > 0) then
         GravaMovimentoCaixa(DM.SQLTotalizadorCaixa,
                             DM.SQLTotalizar,
                             EmpresaPadrao,//WEMPRICOD
@@ -4663,14 +4729,18 @@ begin
                             VlrLanc,//WMOVICAIXN2VLR
                             VlrAcresc,//WMOVICAIXN2VLRJURO
                             0,//WMOVICAIXN2VLRMULTA
-                            FormTelaItens.TotalDescItens+VlrDesc,//WMOVICAIXN2VLRDEC
+                            VlrDesc,//WMOVICAIXN2VLRDEC
+//                            FormTelaItens.TotalDescItens+VlrDesc,//WMOVICAIXN2VLRDEC
                             'Null',//WMOVICAIXA6NUMCUPOM
                             'C',//WTIPO
                             UsuarioAtualNome+'/'+UsuarioAutorizouOperacao+' Cliente: '+NomeClienteVenda,//WMVCXA255HIST
                             'N',
                             '');
-    SQLParcelasVistaVendaTemp.Next;
+    SQLParcelasPrazoVendaTemp.Next;
   end;
+
+
+
 end;
 
 procedure TFormTelaFechamentoVenda.GravarCaixaPrazo ;
@@ -5941,7 +6011,7 @@ begin
                                DM.SQLTemplate.FieldByName('OPCXICOD').AsString,//WOPCXICOD
                                IntToStr(DM.UsuarioAtual),//WUSUAICOD
                                DM.CodNextCupom,//WMVCIXA15DOCORIG
-                               SQLParcelasVistaVendaTempVALORPARC.Value,//WMOVICAIXN2VLR
+                               SQLParcelasVistaVendaTempVALORPARC.Value - ValorTroco.Value,//WMOVICAIXN2VLR
                                0,//WMOVICAIXN2VLRJURO
                                0,//WMOVICAIXN2VLRMULTA
                                0,//WMOVICAIXN2VLRDEC
