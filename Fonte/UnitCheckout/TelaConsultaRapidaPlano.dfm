@@ -1,6 +1,6 @@
 object FormTelaConsultaRapidaPlano: TFormTelaConsultaRapidaPlano
-  Left = 325
-  Top = 66
+  Left = 302
+  Top = 56
   BorderIcons = []
   BorderStyle = bsSingle
   Caption = 'ADVANCED CONTROL'

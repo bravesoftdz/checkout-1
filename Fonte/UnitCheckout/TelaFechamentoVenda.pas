@@ -4023,12 +4023,13 @@ begin
                 EntradaDados.Clear ;
                 EstadoFechVenda    := InformandoPlano ;
 
-                if not DescTotVenda then
-                begin
-                  LblValorDescontoAcrescimo.Caption := 'ACRÉSCIMO' ;
-                  ValorDescontoAcrescimo.Value      := 0 ;
-                  VlrAcresc              := 0;
-                end ;
+//                if not DescTotVenda then
+//                begin
+//                  LblValorDescontoAcrescimo.Caption := 'ACRÉSCIMO' ;
+//                  ValorDescontoAcrescimo.Value      := 0 ;
+//                  VlrAcresc              := 0;
+//                end ;
+
                 VlrTxCrediario.Value   := 0 ;
                 VlrTxCred              := 0;
                 LblTxCrediario.Visible := false ;
@@ -4070,6 +4071,7 @@ begin
               end ;
           'S':begin
                 ImpCupomAutomatico := False;
+                ImportandoPreVenda := False;
                 Close ;
               end ;
           'T':begin

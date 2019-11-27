@@ -1321,7 +1321,7 @@ begin
           begin
             try
               dm.sqlConsulta.Close;
-              dm.sqlConsulta.sql.text := 'select CUP.CUPOA13ID, US.USUAA60LOGIN, CUP.CUPODEMIS, TER.TERMA60DESCR, CUP.CUPON2TOTITENS, CUP.CHAVEACESSO from CUPOM CUP ';
+              dm.sqlConsulta.sql.text := 'select CUP.CUPOA13ID, US.USUAA60LOGIN, CUP.CUPODEMIS, TER.TERMA60DESCR, CUP.CUPON2TOTITENS, CUP.CHAVEACESSO, CUP.CUPON2DESC from CUPOM CUP ';
               dm.sqlConsulta.sql.text := dm.sqlConsulta.sql.text + 'left join USUARIO US on CUP.USUAICODCANC = US.USUAICOD';
               dm.sqlConsulta.sql.text := dm.sqlConsulta.sql.text + 'left join TERMINAL TER on TER.TERMICOD = CUP.TERMICOD ';
               dm.sqlConsulta.sql.text := dm.sqlConsulta.sql.text + 'where CUPOA13ID="'+Docum+'"';
@@ -1338,7 +1338,7 @@ begin
                 FormTelaItens.MemoRetornoNFE.Lines.Add('Impresso em '+FormatDateTime('dd/mm/yy hh:mm',now));
                 FormTelaItens.MemoRetornoNFE.Lines.Add('Cupom: ' + dm.sqlConsulta.fieldbyname('CUPOA13ID').Value);
                 FormTelaItens.MemoRetornoNFE.Lines.Add('Operador: ' + dm.sqlConsulta.fieldbyname('USUAA60LOGIN').Value);
-                FormTelaItens.MemoRetornoNFE.Lines.Add('Valor: ' +  FormatFloat('#,##0.000',dm.sqlConsulta.fieldbyname('CUPON2TOTITENS').Value));
+                FormTelaItens.MemoRetornoNFE.Lines.Add('Valor: ' +  FormatFloat('#,##0.000',dm.sqlConsulta.fieldbyname('CUPON2TOTITENS').Value - dm.sqlConsulta.fieldbyname('CUPON2DESC').Value));
                 if dm.sqlConsulta.fieldbyname('CHAVEACESSO').AsString <> '' then
                   FormTelaItens.MemoRetornoNFE.Lines.Add('Chave de Acesso: ' + dm.sqlConsulta.fieldbyname('CHAVEACESSO').Value);
                 FormTelaItens.MemoRetornoNFE.Lines.Add('Data Emissão:  ' + FormatDateTime('dd/mm/yyyy',dm.sqlConsulta.fieldbyname('CUPODEMIS').Value));

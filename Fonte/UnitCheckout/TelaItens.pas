@@ -542,7 +542,7 @@ end;
 
 function TFormTelaItens.Gerar_NFCe(idCupom: string): string;
 var xCliente, xDocumento, xPlano, vTotaItem, Associado: string;
-var iCRT, vCont, vUltimo: integer;
+var iCRT, vCont, vUltimo, cMunicipioCliente: integer;
 var VlrDescNoTotal, VlrTroca, VlrTotalItens, PercDescTroca, TotalDesconto: double;
   vaux, Total_vTotTrib, VlrTroco, AliquotaPis, AliquotaCofins, ValorPis, ValorCofins, ValorBasePis, ValorBaseCofins, vPercSTEfe, vPercFCP : Currency;
 var vDescTodosItens : Boolean;
@@ -571,6 +571,7 @@ begin
   if dm.sqlconsulta.fieldbyname('CUPON3BONUSTROCA').Value > 0 then
     VlrTroca := dm.sqlconsulta.fieldbyname('CUPON3BONUSTROCA').Value;
   Associado := SQLLocate('CLIENTE', 'CLIEA13ID', 'ASSOCIADO', dm.sqlconsulta.fieldbyname('CLIEA13ID').Value);
+  cMunicipioCliente := StrToIntDef(SQLLocate('CLIENTE','CLIEA13ID','CLIEIMUNICODFED',dm.sqlconsulta.fieldbyname('CLIEA13ID').Value),0);
 
   if dm.sqlconsulta.fieldbyname('CUPOINRO').Value > 0 then {Retransmite NFCe que deu erro por qualquer motivo}
     NumNFe := dm.sqlconsulta.fieldbyname('CUPOINRO').value
@@ -651,6 +652,22 @@ begin
 
     Dest.xNome := xCliente;
     Dest.indIEDest := inNaoContribuinte; {Pq NFCe nao informa Destinatario}
+
+//    if dm.sqlconsulta.fieldbyname('CLIEA13ID').AsString <> EmptyStr then
+//    begin
+//      Dest.EnderDest.CEP := StrToIntDef(SQLLocate('CLIENTE','CLIEA13ID','CLIEA8CEPRES',dm.sqlconsulta.fieldbyname('CLIEA13ID').Value),0);
+//      Dest.EnderDest.xLgr := ConverteAcentos(SQLLocate('CLIENTE','CLIEA13ID','CLIEA60ENDRES',dm.sqlconsulta.fieldbyname('CLIEA13ID').Value));
+//      Dest.EnderDest.nro := SQLLocate('CLIENTE','CLIEA13ID','CLIEA60ENDRES',dm.sqlconsulta.fieldbyname('CLIEA13ID').Value);
+//      Dest.EnderDest.xCpl := ''; // Complemento
+//      Dest.EnderDest.xBairro := ConverteAcentos(SQLLocate('CLIENTE','CLIEA13ID','CLIEA60BAIRES',dm.sqlconsulta.fieldbyname('CLIEA13ID').Value));
+//      Dest.EnderDest.cMun := StrToIntDef(SQLLocate('CLIENTE','CLIEA13ID','CLIEIMUNICODFED',dm.sqlconsulta.fieldbyname('CLIEA13ID').Value),0);
+//      Dest.EnderDest.xMun := SQLLocate('CLIENTE','CLIEA13ID','CLIEA60CIDRES',dm.sqlconsulta.fieldbyname('CLIEA13ID').Value);
+//      Dest.EnderDest.UF := SQLLocate('CLIENTE','CLIEA13ID','CLIEA2UFRES',dm.sqlconsulta.fieldbyname('CLIEA13ID').Value);
+//    end;
+
+    if cMunicipioCliente > 0 then
+      Dest.EnderDest.cMun := cMunicipioCliente;
+
 
     SQLImpressaoCupom.Close;
     SQLImpressaoCupom.RequestLive := False;
@@ -1880,7 +1897,7 @@ begin
         EntradaDados.Clear;
       end;
     end;
-   if (Length(EntradaDados.Text) = 13) or (StrToIntDef(EntradaDados.Text, -1) <> -1) then
+   if ((Length(EntradaDados.Text) = 13) or (StrToIntDef(EntradaDados.Text, -1) <> -1)) and (EstadoPDVChk <> 'CancelandoItem') then
      ExecutarPessagemAutomatica;
 
     {* * * * INFORMADO ITENS * * * *}
@@ -2036,6 +2053,8 @@ begin
             CodigoProduto := '';
 
           EntradaDados.text := CodigoProduto;
+          if StrToIntDef(EntradaDados.Text, -1) <> -1 then
+            ExecutarPessagemAutomatica;
           EntradaDados.SelectAll;
         end
         else

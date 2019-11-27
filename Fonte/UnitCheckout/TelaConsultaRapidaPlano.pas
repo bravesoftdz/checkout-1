@@ -200,9 +200,9 @@ begin
                                  ((FormTelaItens.CurSubTotal.Value + FormTelaFechamentoVenda.VlrTxCrediario.Value - (VlrBonusTroca)) *
                                   (SQLPlanoRecebimentoPLRCN2PERCDESC.AsFloat/100)) ;
 
-        if (FormTelaFechamentoVenda.LblValorDescontoAcrescimo.Caption = 'DESCONTO') and (FormTelaFechamentoVenda.ValorDescontoAcrescimo.Value > 0 ) then
-          FormTelaFechamentoVenda.ValorTotalVenda.Value := FormTelaFechamentoVenda.ValorTotalVenda.Value -
-                                   FormTelaFechamentoVenda.ValorDescontoAcrescimo.Value ;
+//        if (FormTelaFechamentoVenda.LblValorDescontoAcrescimo.Caption = 'DESCONTO') and (FormTelaFechamentoVenda.ValorDescontoAcrescimo.Value > 0 ) then
+//          FormTelaFechamentoVenda.ValorTotalVenda.Value := FormTelaFechamentoVenda.ValorTotalVenda.Value -
+//                                   FormTelaFechamentoVenda.ValorDescontoAcrescimo.Value ;
 
         VlrJuro    := SQLPlanoRecebimentoPLRCN2TXJURO.AsFloat;
         VlrTxCred  := SQLPlanoRecebimentoPLRCN2TXCRED.AsFloat;

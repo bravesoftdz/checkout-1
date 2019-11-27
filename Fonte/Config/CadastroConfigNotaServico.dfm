@@ -132,6 +132,19 @@ inherited FormCadastroNotaServico: TFormCadastroNotaServico
                 Font.Style = [fsBold]
                 ParentFont = False
               end
+              object Label2: TLabel
+                Left = 2
+                Top = 87
+                Width = 124
+                Height = 13
+                Caption = 'Regime de Tributa'#231#227'o'
+                Font.Charset = DEFAULT_CHARSET
+                Font.Color = 8404992
+                Font.Height = -11
+                Font.Name = 'Tahoma'
+                Font.Style = [fsBold]
+                ParentFont = False
+              end
               object DBEditEmpresa: TDBEdit
                 Left = 2
                 Top = 19
@@ -221,6 +234,32 @@ inherited FormCadastroNotaServico: TFormCadastroNotaServico
                   '5'
                   '6')
               end
+              object ComboRegimeTrib: TRxDBComboBox
+                Left = 2
+                Top = 101
+                Width = 167
+                Height = 21
+                Style = csDropDownList
+                DataField = 'REGIME_TRIBUTACAO'
+                DataSource = DSTemplate
+                EnableValues = True
+                ItemHeight = 13
+                Items.Strings = (
+                  '1 '#8211' Microempresa Municipal'
+                  '2 '#8211' Estimativa'
+                  '3 '#8211' Sociedade de Profissionais'
+                  '4 '#8211' Cooperativa'
+                  '5 '#8211' MEI '#8211' Simples Nacional'
+                  '6 '#8211' ME EPP '#8211' Simples Nacional')
+                TabOrder = 5
+                Values.Strings = (
+                  '1'
+                  '2'
+                  '3'
+                  '4'
+                  '5'
+                  '6')
+              end
             end
           end
           inherited PanelMaster: TPanel
@@ -267,6 +306,10 @@ inherited FormCadastroNotaServico: TFormCadastroNotaServico
       KeyFields = 'EMPRICOD'
       Size = 100
       Lookup = True
+    end
+    object SQLTemplateREGIME_TRIBUTACAO: TIntegerField
+      FieldName = 'REGIME_TRIBUTACAO'
+      Origin = 'DB.CONFIG_SERVICO.REGIME_TRIBUTACAO'
     end
   end
   object TblEmpresa: TTable

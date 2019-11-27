@@ -4089,8 +4089,8 @@ object FormPrincipalRelatorios: TFormPrincipalRelatorios
     DatabaseName = 'DB'
     SQL.Strings = (
       
-        'select sum(C.CUPON2TOTITENS)Valor_Cancelado, count(c.cupoa13id)Q' +
-        'tde_Cancelado'
+        'select sum(C.CUPON2TOTITENS - C.CUPON2DESC)Valor_Cancelado, coun' +
+        't(c.cupoa13id)Qtde_Cancelado'
       'from CUPOM C'
       'where C.CUPOCSTATUS = '#39'C'#39' and'
       '      %MTERMINAL and'

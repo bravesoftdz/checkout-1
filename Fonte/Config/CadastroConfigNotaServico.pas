@@ -42,6 +42,9 @@ type
     RxDBLookupCombo1: TRxDBLookupCombo;
     Label1: TLabel;
     RxDBComboBox1: TRxDBComboBox;
+    ComboRegimeTrib: TRxDBComboBox;
+    Label2: TLabel;
+    SQLTemplateREGIME_TRIBUTACAO: TIntegerField;
     procedure RetornaEmpresaClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure AcessaSeriesClick(Sender: TObject);
