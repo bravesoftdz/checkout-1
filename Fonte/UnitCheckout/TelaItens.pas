@@ -2054,7 +2054,10 @@ begin
 
           EntradaDados.text := CodigoProduto;
           if StrToIntDef(EntradaDados.Text, -1) <> -1 then
+          begin
             ExecutarPessagemAutomatica;
+            QuantItem := EditQtde.Value;
+          end;
           EntradaDados.SelectAll;
         end
         else

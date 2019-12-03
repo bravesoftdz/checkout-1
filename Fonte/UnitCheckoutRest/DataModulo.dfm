@@ -1,11 +1,10 @@
 inherited DM: TDM
   OldCreateOrder = True
-  Left = 255
-  Top = 46
+  Left = 465
+  Top = 48
   Height = 724
   Width = 859
   inherited DB: TDatabase
-    Connected = False
     Left = 32
   end
   inherited SQLTemplate: TRxQuery
@@ -5700,5 +5699,25 @@ inherited DM: TDM
       FieldName = 'DIAS_AVISO'
       Size = 15
     end
+  end
+  object SQLPrecoCliente: TRxQuery
+    DatabaseName = 'DB'
+    SQL.Strings = (
+      'select * from CLIENTEPRODUTOPRECO'
+      'Where PRODICOD = :PRODICOD AND CLIEA13ID = :CLIEA13ID')
+    Macros = <>
+    Left = 404
+    Top = 325
+    ParamData = <
+      item
+        DataType = ftInteger
+        Name = 'PRODICOD'
+        ParamType = ptInput
+      end
+      item
+        DataType = ftString
+        Name = 'CLIEA13ID'
+        ParamType = ptInput
+      end>
   end
 end

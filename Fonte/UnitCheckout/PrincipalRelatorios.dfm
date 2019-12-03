@@ -4041,7 +4041,9 @@ object FormPrincipalRelatorios: TFormPrincipalRelatorios
         'pom'
       'from CUPOM C'
       'where C.CUPOCSTATUS <> '#39'C'#39' and'
-      '          COALESCE(C.CUPON3BONUSTROCA,0) = 0 and'
+      
+        '         (C.CUPON2TOTITENS - coalesce(C.CUPON3BONUSTROCA, 0)) > ' +
+        '0 and'
       '      %MTERMINAL and'
       '      %MDATA and'
       '      %MOperador and'

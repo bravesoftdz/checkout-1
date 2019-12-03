@@ -1067,6 +1067,7 @@ type
     TblTicketPreVendaFinBonusTroca: TStringField;
     SQLEmpresaCFGEDBLOQ: TDateTimeField;
     SQLEmpresaCFGECBLOQ: TStringField;
+    SQLPrecoCliente: TRxQuery;
     procedure DataModuleCreate(Sender: TObject);
     procedure SQLCupomNewRecord(DataSet: TDataSet);
     procedure SQLCupomBeforePost(DataSet: TDataSet);

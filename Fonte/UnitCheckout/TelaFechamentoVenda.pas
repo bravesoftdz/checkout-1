@@ -956,7 +956,7 @@ begin
            if (FormTelaFechamentoVenda.SQLPlanoRecebimentoPLRCCDFIX.Value = 'V') then
              begin
                Application.CreateForm(TFormTelaAssistenteLancamentoPlanoVariavelCheckout,FormTelaAssistenteLancamentoPlanoVariavelCheckout);
-               FormTelaAssistenteLancamentoPlanoVariavelCheckout.edtTotal.Text := FormatCurr('##0.00',ValorTotalVenda.value);
+               FormTelaAssistenteLancamentoPlanoVariavelCheckout.edtTotal.Text := FormatCurr('##0.00',ValorTotalVenda.value - ValorDescontoAcrescimo.Value);
                FormTelaAssistenteLancamentoPlanoVariavelCheckout.edtTotal.ReadOnly := True;
                FormTelaAssistenteLancamentoPlanoVariavelCheckout.edtTotal.TabStop  := False;
                FormTelaAssistenteLancamentoPlanoVariavelCheckout.ShowModal;

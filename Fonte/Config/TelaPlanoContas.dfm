@@ -1,6 +1,6 @@
 inherited FormTelaPlanoContas: TFormTelaPlanoContas
-  Left = 152
-  Top = 72
+  Left = 371
+  Top = 64
   Width = 808
   Height = 608
   Caption = 'Plano de Contas'
@@ -9,14 +9,14 @@ inherited FormTelaPlanoContas: TFormTelaPlanoContas
   TextHeight = 13
   inherited ScrollBoxFundo: TScrollBox
     Width = 792
-    Height = 570
+    Height = 569
     inherited PanelCentral: TPanel
       Width = 788
-      Height = 486
+      Height = 485
       inherited PanelBarra: TPanel
         Top = 142
         Width = 0
-        Height = 344
+        Height = 343
       end
       object Panel4: TPanel
         Left = 0
@@ -685,7 +685,7 @@ inherited FormTelaPlanoContas: TFormTelaPlanoContas
         Left = 0
         Top = 142
         Width = 788
-        Height = 344
+        Height = 343
         Align = alClient
         Caption = 'PanelArvore'
         TabOrder = 3
@@ -693,7 +693,7 @@ inherited FormTelaPlanoContas: TFormTelaPlanoContas
           Left = 1
           Top = 1
           Width = 786
-          Height = 326
+          Height = 325
           Hint = 'Bot'#227'o Direito do Mouse'
           Align = alClient
           Font.Charset = DEFAULT_CHARSET
@@ -715,7 +715,7 @@ inherited FormTelaPlanoContas: TFormTelaPlanoContas
         end
         object ProgressBar: TProgressBar
           Left = 1
-          Top = 327
+          Top = 326
           Width = 786
           Height = 16
           Align = alBottom
@@ -730,72 +730,72 @@ inherited FormTelaPlanoContas: TFormTelaPlanoContas
         Width = 788
         inherited PanelNavigator: TPanel
           Width = 788
-          object BtnGravar: TSpeedButton [0]
-            Tag = 3
-            Left = 5
-            Top = 3
-            Width = 163
-            Height = 25
-            Cursor = crHandPoint
-            Hint = 'Fechar Tela'
-            Caption = '&Gravar Config Iniciais'
-            Flat = True
-            Font.Charset = ANSI_CHARSET
-            Font.Color = clBlack
-            Font.Height = -11
-            Font.Name = 'Tahoma'
-            Font.Style = [fsBold]
-            Glyph.Data = {
-              96010000424D9601000000000000760000002800000018000000180000000100
-              0400000000002001000000000000000000001000000000000000000000000000
-              8000008000000080800080000000800080008080000080808000C0C0C0000000
-              FF0000FF000000FFFF00FF000000FF00FF00FFFF0000FFFFFF00FFFFFFFFFFFF
-              FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF00000FFFFFFFFFFFFFFF
-              FFF0676F700FFFFFFFFFFFFFFF06778F88700FFFFFFFFFFFFF0876F078F8700F
-              FFFFFFFFF07778F68FF877000FFFFFFFF087768FFFF867600FFFFFFF077FF776
-              8FF776700FFFFFFF08FF7FF776067670FFFFFFF077FF700FF7766700FFFFFFF0
-              8FF7F8300FF7770FFFFFFF078FF7FF0870FF700FFFFFFF0888FF7FF0870F70FF
-              FFFFFFF00788FFFF087000FFFFFFFFFFF00888FFF0870FFFFFFFFFFFFFF00888
-              FF0870FFFFFFFFFFFFFFF0088F70870FFFFFFFFFFFFFFFF007000870FFFFFFFF
-              FFFFFFFFF00FF0870FFFFFFFFFFFFFFFFFFFFF080FFFFFFFFFFFFFFFFFFFFFF0
-              FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF}
-            ParentFont = False
-            OnClick = BtnGravarClick
-          end
-          object BtApagarContas: TSpeedButton [1]
-            Tag = 3
-            Left = 175
-            Top = 3
-            Width = 242
-            Height = 25
-            Cursor = crHandPoint
-            Hint = 'Fechar Tela'
-            Caption = 'Apagar todas as contas criadas'
-            Flat = True
-            Font.Charset = ANSI_CHARSET
-            Font.Color = clBlack
-            Font.Height = -11
-            Font.Name = 'Tahoma'
-            Font.Style = [fsBold]
-            Glyph.Data = {
-              96010000424D9601000000000000760000002800000018000000180000000100
-              0400000000002001000000000000000000001000000000000000000000000000
-              8000008000000080800080000000800080008080000080808000C0C0C0000000
-              FF0000FF000000FFFF00FF000000FF00FF00FFFF0000FFFFFF00FFFFFFFFFFFF
-              FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
-              FFFFFFFFFFFFFFFFFFFFFFFFFFF000000000FFFFFFFFFFFFFF077777777000FF
-              FFFFFFFFF078787727770000FFFFFFFFF0787837272700000FFFFFFFF0787837
-              272700000FFFFFFFF0787837272700000FFFFFFFF078783727270000FFFFFFFF
-              F078783727270FFFFFFFFFFFF070000000070FFFFFFFFFFFF007777777200FFF
-              FFFFFFFF07777777777770FFFFFFFFFF07888877777770FFFFFFFFFF07888777
-              777770FFFFFFFFFF08888700077770FFFFFFFFFFF0088F7737700FFFFFFFFFFF
-              FFF00000000FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
-              FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF}
-            ParentFont = False
-            OnClick = BtApagarContasClick
-          end
           inherited AdvPanelNavigator: TAdvOfficeStatusBar
             Width = 788
+            object BtApagarContas: TSpeedButton
+              Tag = 3
+              Left = 175
+              Top = 3
+              Width = 242
+              Height = 25
+              Cursor = crHandPoint
+              Hint = 'Fechar Tela'
+              Caption = 'Apagar todas as contas criadas'
+              Flat = True
+              Font.Charset = ANSI_CHARSET
+              Font.Color = clBlack
+              Font.Height = -11
+              Font.Name = 'Tahoma'
+              Font.Style = [fsBold]
+              Glyph.Data = {
+                96010000424D9601000000000000760000002800000018000000180000000100
+                0400000000002001000000000000000000001000000000000000000000000000
+                8000008000000080800080000000800080008080000080808000C0C0C0000000
+                FF0000FF000000FFFF00FF000000FF00FF00FFFF0000FFFFFF00FFFFFFFFFFFF
+                FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+                FFFFFFFFFFFFFFFFFFFFFFFFFFF000000000FFFFFFFFFFFFFF077777777000FF
+                FFFFFFFFF078787727770000FFFFFFFFF0787837272700000FFFFFFFF0787837
+                272700000FFFFFFFF0787837272700000FFFFFFFF078783727270000FFFFFFFF
+                F078783727270FFFFFFFFFFFF070000000070FFFFFFFFFFFF007777777200FFF
+                FFFFFFFF07777777777770FFFFFFFFFF07888877777770FFFFFFFFFF07888777
+                777770FFFFFFFFFF08888700077770FFFFFFFFFFF0088F7737700FFFFFFFFFFF
+                FFF00000000FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+                FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF}
+              ParentFont = False
+              OnClick = BtApagarContasClick
+            end
+            object BtnGravar: TSpeedButton
+              Tag = 3
+              Left = 5
+              Top = 3
+              Width = 163
+              Height = 25
+              Cursor = crHandPoint
+              Hint = 'Fechar Tela'
+              Caption = '&Gravar Config Iniciais'
+              Flat = True
+              Font.Charset = ANSI_CHARSET
+              Font.Color = clBlack
+              Font.Height = -11
+              Font.Name = 'Tahoma'
+              Font.Style = [fsBold]
+              Glyph.Data = {
+                96010000424D9601000000000000760000002800000018000000180000000100
+                0400000000002001000000000000000000001000000000000000000000000000
+                8000008000000080800080000000800080008080000080808000C0C0C0000000
+                FF0000FF000000FFFF00FF000000FF00FF00FFFF0000FFFFFF00FFFFFFFFFFFF
+                FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF00000FFFFFFFFFFFFFFF
+                FFF0676F700FFFFFFFFFFFFFFF06778F88700FFFFFFFFFFFFF0876F078F8700F
+                FFFFFFFFF07778F68FF877000FFFFFFFF087768FFFF867600FFFFFFF077FF776
+                8FF776700FFFFFFF08FF7FF776067670FFFFFFF077FF700FF7766700FFFFFFF0
+                8FF7F8300FF7770FFFFFFF078FF7FF0870FF700FFFFFFF0888FF7FF0870F70FF
+                FFFFFFF00788FFFF087000FFFFFFFFFFF00888FFF0870FFFFFFFFFFFFFF00888
+                FF0870FFFFFFFFFFFFFFF0088F70870FFFFFFFFFFFFFFFF007000870FFFFFFFF
+                FFFFFFFFF00FF0870FFFFFFFFFFFFFFFFFFFFF080FFFFFFFFFFFFFFFFFFFFFF0
+                FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF}
+              ParentFont = False
+              OnClick = BtnGravarClick
+            end
           end
         end
       end
