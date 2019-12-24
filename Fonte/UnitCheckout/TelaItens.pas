@@ -1120,10 +1120,10 @@ begin
               else
                 if fieldbyname('ctrca5tipopadrao').AsString = 'CRT' then
                 begin
-                  if fieldbyname('numecvistaprazo').AsString = 'P' then
-                    tPag := fpCartaoCredito
-                  else
+                  if fieldbyname('numecvistaprazo').AsString = 'V' then
                     tPag := fpCartaoDebito
+                  else
+                    tPag := fpCartaoCredito
                 end
                 else
                   if fieldbyname('ctrca5tipopadrao').AsString = 'CRD' then

@@ -263,6 +263,15 @@ type
     Label26: TLabel;
     DBEdit18: TDBEdit;
     SQLTemplatePERC_FAIXASIMPLES: TFloatField;
+    tsTributacao: TTabSheet;
+    cxGroupBox3: TcxGroupBox;
+    Label27: TLabel;
+    Label28: TLabel;
+    dbedtPercPis: TcxDBTextEdit;
+    dbedtPercCofins: TcxDBTextEdit;
+    SQLTemplatePERC_PIS: TFloatField;
+    SQLTemplatePERC_COFINS: TFloatField;
+    ButtonTributacao: TRxSpeedButton;
     procedure FormCreate(Sender: TObject);
     procedure SQLTemplateBeforePost(DataSet: TDataSet);
     procedure SQLTemplateAfterPost(DataSet: TDataSet);
@@ -284,6 +293,7 @@ type
     procedure ACBrMailMailException(const AMail: TACBrMail;
       const E: Exception; var ThrowIt: Boolean);
     procedure ACBrMailAfterMailProcess(Sender: TObject);
+    procedure ButtonTributacaoClick(Sender: TObject);
   private
     { Private declarations }
     IncluindoEmpresa:Boolean;
@@ -644,6 +654,12 @@ begin
   inherited;
   lbStatusEmail.Caption := 'Email enviado com Sucesso!';
   lbStatusEmail.Update;
+end;
+
+procedure TFormCadastroEmpresa.ButtonTributacaoClick(Sender: TObject);
+begin
+  inherited;
+  PagePrincipal.ActivePage := tsTributacao;
 end;
 
 end.

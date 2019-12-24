@@ -619,12 +619,12 @@ begin
   end;
 
   {Grava Total desconto nos itens na coluna Desconto do Cabecalho}
-  if Desco > 0 then
-    begin
-      DM.TblTicketPreVendaCab.Edit;
-      DM.TblTicketPreVendaCabTotalNominal.Value := DM.TblTicketPreVendaCabTotalNominal.Value + Desco;
-      DM.TblTicketPreVendaCab.Post;
-    end;
+//  if Desco > 0 then
+//    begin
+//      DM.TblTicketPreVendaCab.Edit;
+//      DM.TblTicketPreVendaCabTotalNominal.Value := DM.TblTicketPreVendaCabTotalNominal.Value + Desco;
+//      DM.TblTicketPreVendaCab.Post;
+//    end;
 
   // Lanca Numerarios A Vista
   DM.TblTicketPreVendaFin.Open;

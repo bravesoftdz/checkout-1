@@ -314,7 +314,10 @@ begin
       TblMemPedidoOrcamento.Append;
       TblMemPedidoOrcamentoPDVDA13ID.Value      := DM.SQLPedidoOrcamentoPDVDA13ID.Value;
       TblMemPedidoOrcamentoCLIEA13ID.Value      := DM.SQLPedidoOrcamentoCLIEA13ID.Value;
-      TblMemPedidoOrcamentoClienteNome.Value    := DM.SQLPedidoOrcamentoCLIEA60RAZAOSOC.Value;
+      if DM.SQLPedidoOrcamentoCLIENTENOME.Value = EmptyStr then
+        TblMemPedidoOrcamentoClienteNome.Value    := DM.SQLPedidoOrcamentoCLIEA60RAZAOSOC.Value
+      else
+        TblMemPedidoOrcamentoClienteNome.Value    := DM.SQLPedidoOrcamentoCLIENTENOME.Value;
       TblMemPedidoOrcamentoVENDICOD.Value       := DM.SQLPedidoOrcamentoVENDICOD.Value;
       TblMemPedidoOrcamentoPlanoNome.Value      := DM.SQLPedidoOrcamentoPLRCA60DESCR.Value;
       TblMemPedidoOrcamentoPLRCICOD.Value       := DM.SQLPedidoOrcamentoPLRCICOD.Value;

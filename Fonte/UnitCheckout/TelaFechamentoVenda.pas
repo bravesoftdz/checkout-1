@@ -1034,9 +1034,13 @@ begin
               VlrTxCrediario.Value := 0 ;
               //SUBTRAIR DESCONTO NO PLANO SE NAO ESTIVER IMPORTANDO PREVENDA
               if (not ImportandoPreVenda) and (not ForcaDescTotVenda) then
+//             if (not ForcaDescTotVenda) then
                 ValorTotalVenda.Value := (FormTelaItens.CurSubTotal.Value + VlrTxCrediario.Value - (VlrBonusTroca + VlrRetConfig_SldCad)) -
                                          ((FormTelaItens.CurSubTotal.Value + VlrTxCrediario.Value - (VlrBonusTroca + VlrRetConfig_SldCad)) *
                                          (SQLPlanoRecebimentoPLRCN2PERCDESC.Value/100))
+              else
+              if ImportandoPreVenda then
+                ValorTotalVenda.Value := (FormTelaItens.CurSubTotal.Value + VlrTxCrediario.Value)
               else
                 ValorTotalVenda.Value := (FormTelaItens.CurSubTotal.Value + VlrTxCrediario.Value) - (VlrBonusTroca + VlrRetConfig_SldCad + ValorDescontoAcrescimo.Value);
 
@@ -3711,6 +3715,9 @@ begin
                   ValorTotalVenda.Value := FormTelaItens.CurSubTotal.Value ;
                 end ;
 
+              if ImportandoPreVenda then
+                ImportandoPreVenda := False;
+
               if TipoDescFech = 'VALOR' then
                 ValorDescontoAcrescimo.Value := ValorDescontoAcrescimo.Value + FormTelaTipoDescontoItem.EditDesconto.Value  ;
 
@@ -4570,7 +4577,7 @@ begin
       begin
         Sigla   := 'VDVIS' ;
         MsgErro := 'Não há nenhuma Operação de Caixa configurada com a sigla de Venda a Vista!' ;
-        VlrLanc := SQLParcelasVistaVendaTempVALORPARC.Value;
+        VlrLanc := SQLParcelasVistaVendaTempVALORPARC.Value - ValorTroco.Value;
       end ;
 
     if Copy(TipoPadrao1,1,3) = 'CHQ' then
@@ -4642,7 +4649,7 @@ begin
                           DM.SQLTemplate.FieldByName('OPCXICOD').AsString,//WOPCXICOD
                           IntToStr(DM.UsuarioAtual),//WUSUAICOD
                           DM.CodNextCupom,//WMVCIXA15DOCORIG
-                          VlrLanc - ValorTroco.Value,//WMOVICAIXN2VLR
+                          VlrLanc,//WMOVICAIXN2VLR
                           VlrAcresc,//WMOVICAIXN2VLRJURO
                           0,//WMOVICAIXN2VLRMULTA
 //                            FormTelaItens.TotalDescItens+VlrDesc,//WMOVICAIXN2VLRDEC
@@ -4977,11 +4984,12 @@ begin
 end ;
 
 function TFormTelaFechamentoVenda.GravarItensPreVenda : boolean ;
+var
+  VlrDesc, vTotalItem, vEstimativa : Real;
 begin
   if not DM.SQLPreVendaItem2.Active then
     DM.SQLPreVendaItem2.Open ;
-
-
+  vEstimativa := 0;
   LblInstrucoes.Caption := 'Gravando Itens da Pré-Venda...' ;
   LblInstrucoes.Refresh ;
 
@@ -4990,6 +4998,14 @@ begin
   begin
     if FormTelaItens.SQLItensVendaTempCANCELADO.Value <> 'S' then
       begin
+        VlrDesc    := 0;
+        vTotalItem := 0;
+        if (LblValorDescontoAcrescimo.Caption = 'DESCONTO') and (ValorDescontoAcrescimo.Value > 0) and (not FormTelaItens.DescontoNoItem) then
+        begin
+          vTotalItem  := (FormTelaItens.SQLItensVendaTempVLRUNITBRUT.Value * FormTelaItens.SQLItensVendaTempQUANTIDADE.Value);
+          VlrDesc := RoundTo((vTotalItem * ValorDescontoAcrescimo.Value) / (ValorTotalVenda.Value + ValorDescontoAcrescimo.Value),-2);
+        end;
+        vEstimativa := vEstimativa + VlrDesc;
         DM.SQLPreVendaItem2.Append ;
         DM.SQLPreVendaItem2TERMICOD.Value           := TerminalAtual ;
         DM.SQLPreVendaItem2PRVDICOD.Value           := CodNextPreVenda ;
@@ -5001,7 +5017,9 @@ begin
           DM.SQLPreVendaItem2PVITN3QTDTROCA.Value   := FormTelaItens.SQLItensVendaTempQUANTIDADE.Value;
         DM.SQLPreVendaItem2PVITN3VLRUNIT.Value      := FormTelaItens.SQLItensVendaTempVLRUNITBRUT.Value ;
         DM.SQLPreVendaItem2PVITN3VLRCUSTUNIT.Value  := 0 ;
-        DM.SQLPreVendaItem2PVITN2DESC.Value         := FormTelaItens.SQLItensVendaTempVLRDESC.Value ;
+        DM.SQLPreVendaItem2PVITN2DESC.AsFloat       := VlrDesc;
+        if FormTelaItens.SQLItensVendaTempVLRDESC.Value > 0 then
+          DM.SQLPreVendaItem2PVITN2DESC.Value         := FormTelaItens.SQLItensVendaTempVLRDESC.Value ;
         DM.SQLPreVendaItem2VENDICOD.Value           := VendedorVenda ;
         DM.SQLPreVendaItem2PVITN3VLRUNITLUCR.Value  := 0 ;
         DM.SQLPreVendaItem2PVITCSTATUS.Value        := 'A' ;
@@ -5017,6 +5035,20 @@ begin
 
     FormTelaItens.SQLItensVendaTemp.Next ;
   end ;
+
+  if (ValorDescontoAcrescimo.Value <> vEstimativa) and (not FormTelaItens.DescontoNoItem) then
+  begin
+    DM.SQLPreVendaItem2.Close;
+    DM.SQLPreVendaItem2.MacroByName('MFiltro').Value := 'CUPOA13ID = ' + QuotedStr(DM.CodNextCupom);
+    DM.SQLPreVendaItem2.Open;
+    if not DM.SQLPreVendaItem2.IsEmpty then
+    begin
+      DM.SQLPreVendaItem2.Last;
+      DM.SQLPreVendaItem2.Edit;
+      DM.SQLPreVendaItem2PVITN2DESC.AsFloat := Dm.SQLPreVendaItem2PVITN2DESC.AsFloat + (ValorDescontoAcrescimo.Value - vEstimativa);
+      DM.SQLPreVendaItem2.Post
+    end;
+  end;
 
   if not GravaPrevendaSemFinanceiro then
     GravarTabelaTempImpPreVenda(IntToStr(TerminalAtual),

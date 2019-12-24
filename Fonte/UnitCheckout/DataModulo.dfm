@@ -1,7 +1,7 @@
 inherited DM: TDM
   OldCreateOrder = True
-  Left = 1
-  Top = 6
+  Left = 4
+  Top = 7
   Height = 726
   Width = 1364
   inherited DB: TDatabase
@@ -3431,8 +3431,14 @@ inherited DM: TDM
     RequestLive = True
     SQL.Strings = (
       'select * from PREVENDAITEM'
-      'where PRVDICOD is null')
-    Macros = <>
+      'where PRVDICOD is null and %MFiltro')
+    Macros = <
+      item
+        DataType = ftString
+        Name = 'MFiltro'
+        ParamType = ptInput
+        Value = '0=0'
+      end>
     Left = 204
     Top = 272
     object SQLPreVendaItem2TERMICOD: TIntegerField
