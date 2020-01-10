@@ -1,6 +1,6 @@
 object FormTelaRecebimentoCrediario: TFormTelaRecebimentoCrediario
-  Left = 319
-  Top = 27
+  Left = 265
+  Top = 53
   BorderIcons = []
   BorderStyle = bsSingle
   Caption = ' '
@@ -85,27 +85,70 @@ object FormTelaRecebimentoCrediario: TFormTelaRecebimentoCrediario
     ShadowPos = spRightBottom
     Transparent = True
   end
-  object LblTROCO: TLabel
-    Left = 680
-    Top = 496
-    Width = 87
-    Height = 33
-    Alignment = taRightJustify
-    Caption = 'TROCO'
-    Font.Charset = ANSI_CHARSET
-    Font.Color = clWhite
-    Font.Height = -27
-    Font.Name = 'Tahoma'
-    Font.Style = []
-    ParentFont = False
-  end
   object shpStatusServidor: TShape
-    Left = 696
-    Top = 564
+    Left = 752
+    Top = 20
     Width = 10
     Height = 10
     Brush.Color = clRed
     Shape = stCircle
+  end
+  object LblRecebido: TRxLabel
+    Left = 501
+    Top = 526
+    Width = 109
+    Height = 25
+    Caption = 'RECEBIDO'
+    Color = 32767
+    Font.Charset = ANSI_CHARSET
+    Font.Color = clBlack
+    Font.Height = -20
+    Font.Name = 'Verdana'
+    Font.Style = []
+    ParentColor = False
+    ParentFont = False
+    ShadowColor = clBlack
+    ShadowSize = 2
+    ShadowPos = spRightBottom
+    Transparent = True
+  end
+  object LblEntrada: TRxLabel
+    Left = 536
+    Top = 492
+    Width = 72
+    Height = 25
+    Caption = 'SALDO'
+    Color = 32767
+    Font.Charset = ANSI_CHARSET
+    Font.Color = clBlack
+    Font.Height = -20
+    Font.Name = 'Verdana'
+    Font.Style = []
+    ParentColor = False
+    ParentFont = False
+    ShadowColor = clBlack
+    ShadowSize = 2
+    ShadowPos = spRightBottom
+    Transparent = True
+  end
+  object RxLabel2: TRxLabel
+    Left = 476
+    Top = 564
+    Width = 89
+    Height = 29
+    Caption = 'TROCO'
+    Color = 32767
+    Font.Charset = ANSI_CHARSET
+    Font.Color = clBlack
+    Font.Height = -24
+    Font.Name = 'Verdana'
+    Font.Style = []
+    ParentColor = False
+    ParentFont = False
+    ShadowColor = clBlack
+    ShadowSize = 2
+    ShadowPos = spRightBottom
+    Transparent = True
   end
   object Panel7: TPanel
     Left = 5
@@ -944,6 +987,87 @@ object FormTelaRecebimentoCrediario: TFormTelaRecebimentoCrediario
     SymbolColorOpen = 14731440
     SymbolColorClose = 14731440
     Transparent = True
+  end
+  object ValorRecebido: TCurrencyEdit
+    Left = 613
+    Top = 521
+    Width = 138
+    Height = 32
+    TabStop = False
+    Alignment = taCenter
+    AutoSize = False
+    Color = clMoneyGreen
+    Ctl3D = True
+    Font.Charset = ANSI_CHARSET
+    Font.Color = clBlack
+    Font.Height = -24
+    Font.Name = 'Verdana'
+    Font.Style = []
+    ParentCtl3D = False
+    ParentFont = False
+    ReadOnly = True
+    TabOrder = 4
+  end
+  object ValorEntrada: TCurrencyEdit
+    Left = 615
+    Top = 488
+    Width = 136
+    Height = 32
+    TabStop = False
+    Alignment = taCenter
+    AutoSize = False
+    Color = 14731440
+    Ctl3D = True
+    Font.Charset = ANSI_CHARSET
+    Font.Color = clNavy
+    Font.Height = -24
+    Font.Name = 'Verdana'
+    Font.Style = []
+    ParentCtl3D = False
+    ParentFont = False
+    ReadOnly = True
+    TabOrder = 5
+    Visible = False
+  end
+  object ValorTroco: TCurrencyEdit
+    Left = 574
+    Top = 554
+    Width = 177
+    Height = 40
+    TabStop = False
+    Alignment = taCenter
+    AutoSize = False
+    Color = clMoneyGreen
+    Ctl3D = True
+    Font.Charset = ANSI_CHARSET
+    Font.Color = clRed
+    Font.Height = -32
+    Font.Name = 'Verdana'
+    Font.Style = []
+    ParentCtl3D = False
+    ParentFont = False
+    ReadOnly = True
+    TabOrder = 6
+  end
+  object edtSaldo: TCurrencyEdit
+    Left = 613
+    Top = 488
+    Width = 138
+    Height = 32
+    TabStop = False
+    Alignment = taCenter
+    AutoSize = False
+    Color = clMoneyGreen
+    Ctl3D = True
+    Font.Charset = ANSI_CHARSET
+    Font.Color = clBlack
+    Font.Height = -24
+    Font.Name = 'Verdana'
+    Font.Style = []
+    ParentCtl3D = False
+    ParentFont = False
+    ReadOnly = True
+    TabOrder = 7
   end
   object SQLParcelasReceberTemp: TRxQuery
     BeforeDelete = SQLParcelasReceberTempBeforeDelete
@@ -2711,8 +2835,8 @@ object FormTelaRecebimentoCrediario: TFormTelaRecebimentoCrediario
         ParamType = ptInput
         Value = '0=0'
       end>
-    Left = 657
-    Top = 441
+    Left = 705
+    Top = 321
     object SQLProvedorCartaoPRCAA13ID: TStringField
       FieldName = 'PRCAA13ID'
       Origin = 'DB.PROVEDORCARTAO.PRCAA13ID'
@@ -2770,13 +2894,13 @@ object FormTelaRecebimentoCrediario: TFormTelaRecebimentoCrediario
   end
   object TimerCartao: TTimer
     Enabled = False
-    Left = 629
-    Top = 441
+    Left = 677
+    Top = 321
   end
   object DSSQLParcelasPrazoVendaTemp: TDataSource
     DataSet = SQLParcelasPrazoVendaTemp
-    Left = 562
-    Top = 433
+    Left = 610
+    Top = 313
   end
   object SQLParcelasPrazoVendaTemp: TRxQuery
     DatabaseName = 'DB'
@@ -2791,8 +2915,8 @@ object FormTelaRecebimentoCrediario: TFormTelaRecebimentoCrediario
         ParamType = ptInput
         Value = '0=0'
       end>
-    Left = 534
-    Top = 433
+    Left = 582
+    Top = 313
     object SQLParcelasPrazoVendaTempTERMICOD: TIntegerField
       FieldName = 'TERMICOD'
       Origin = 'DB.PARCELASPRAZOVENDATEMP.TERMICOD'
@@ -2828,7 +2952,8 @@ object FormTelaRecebimentoCrediario: TFormTelaRecebimentoCrediario
     RequestLive = True
     SQL.Strings = (
       'select * from PARCELASVISTAVENDATEMP'
-      'Where (%MFiltro)')
+      'Where (%MFiltro)'
+      'order by VALORPARC ASC')
     Macros = <
       item
         DataType = ftString
@@ -2836,8 +2961,13 @@ object FormTelaRecebimentoCrediario: TFormTelaRecebimentoCrediario
         ParamType = ptInput
         Value = '0=0'
       end>
-    Left = 534
-    Top = 461
+    Left = 582
+    Top = 341
+    object SQLParcelasVistaVendaTempVALORPARC: TFloatField
+      FieldName = 'VALORPARC'
+      Origin = 'DB.PARCELASVISTAVENDATEMP.VALORPARC'
+      DisplayFormat = '#,##0.00'
+    end
     object SQLParcelasVistaVendaTempTERMICOD: TIntegerField
       FieldName = 'TERMICOD'
       Origin = 'DB.PARCELASVISTAVENDATEMP.TERMICOD'
@@ -2851,11 +2981,6 @@ object FormTelaRecebimentoCrediario: TFormTelaRecebimentoCrediario
       FieldName = 'NUMEICOD'
       Origin = 'DB.PARCELASPRAZOVENDATEMP.NUMEICOD'
     end
-    object SQLParcelasVistaVendaTempVALORPARC: TFloatField
-      FieldName = 'VALORPARC'
-      Origin = 'DB.PARCELASVISTAVENDATEMP.VALORPARC'
-      DisplayFormat = '#,##0.00'
-    end
     object SQLParcelasVistaVendaTempTIPOPADR: TStringField
       FieldName = 'TIPOPADR'
       Origin = 'DB.PARCELASVISTAVENDATEMP.TIPOPADR'
@@ -2865,8 +2990,8 @@ object FormTelaRecebimentoCrediario: TFormTelaRecebimentoCrediario
   end
   object DSSQLParcelasVistaVendaTemp: TDataSource
     DataSet = SQLParcelasVistaVendaTemp
-    Left = 562
-    Top = 461
+    Left = 610
+    Top = 341
   end
   object RDPrint: TRDprint
     ImpressoraPersonalizada.NomeImpressora = 'Modelo Personalizado - (Epson)'
@@ -2964,8 +3089,8 @@ object FormTelaRecebimentoCrediario: TFormTelaRecebimentoCrediario
   end
   object rxMemoryData: TRxMemoryData
     FieldDefs = <>
-    Left = 388
-    Top = 496
+    Left = 676
+    Top = 352
   end
   object SQLPesquisa: TRxQuery
     DatabaseName = 'DB'
@@ -3356,5 +3481,40 @@ object FormTelaRecebimentoCrediario: TFormTelaRecebimentoCrediario
   object UdpateRenegociacao: TUpdateSQL
     Left = 232
     Top = 36
+  end
+  object SQLMovCaixa: TClientDataSet
+    Aggregates = <>
+    IndexFieldNames = 'DOC_ORIGEM'
+    Params = <>
+    Left = 352
+    Top = 504
+    object SQLMovCaixaID_CUPOM: TStringField
+      DisplayWidth = 13
+      FieldName = 'ID_CUPOM'
+      Size = 13
+    end
+    object SQLMovCaixaVLR_AMORTIZACAO: TFloatField
+      FieldName = 'VLR_AMORTIZACAO'
+    end
+    object SQLMovCaixaVLR_JUROS: TFloatField
+      FieldName = 'VLR_JUROS'
+    end
+    object SQLMovCaixaVLR_MULTA: TFloatField
+      FieldName = 'VLR_MULTA'
+    end
+    object SQLMovCaixaVLR_DESC: TFloatField
+      FieldName = 'VLR_DESC'
+    end
+    object SQLMovCaixaNOME_CLIENTE: TStringField
+      FieldName = 'NOME_CLIENTE'
+      Size = 100
+    end
+    object SQLMovCaixaNRO_PARCELAS: TStringField
+      FieldName = 'NRO_PARCELAS'
+    end
+    object SQLMovCaixaDOC_ORIGEM: TStringField
+      FieldName = 'DOC_ORIGEM'
+      Size = 30
+    end
   end
 end

@@ -3396,6 +3396,11 @@ begin
     (Tabela as TQuery).Close ;
     (Tabela as TQuery).SQL.Clear ;
     (Tabela as TQuery).SQL.Add('Select * from PRODUTO') ;
+    if dm.SQLConfigGeralRETORNO_CONS_PROD.AsString <> 'B' then
+    begin
+      (Tabela as TQuery).SQL.Add('where PRODCATIVO = ''S'' and PRODICOD = ''' + (Codigo) + '''');
+    end
+    else
     if ProcuraProdutoPelaRef08Char then
       (Tabela as TQuery).SQL.Add('where PRODCATIVO = ''S'' and PRODA60CODBAR = ''' + Copy(Codigo,1,8) + '''')
      else

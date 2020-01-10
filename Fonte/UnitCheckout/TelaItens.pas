@@ -2042,8 +2042,11 @@ begin
             begin
               SQLProduto.Close;
               SQLProduto.SQL.Clear;
-              SQLProduto.SQL.Add('select * from PRODUTO');
-              SQLProduto.SQL.Add('where PRODICOD = ' + CodigoProduto);
+              SQLProduto.SQL.Add('select first(1) * from PRODUTO');
+              if dm.SQLConfigGeralRETORNO_CONS_PROD.asstring <> 'B' then
+                SQLProduto.SQL.Add('where PRODICOD = ' + CodigoProduto)
+              else
+                SQLProduto.SQL.Add('where PRODA60CODBAR = ' + trim(CodigoBarrasProduto));
               SQLProduto.Open;
             end
             else
@@ -2052,7 +2055,10 @@ begin
           else
             CodigoProduto := '';
 
-          EntradaDados.text := CodigoProduto;
+          if dm.SQLConfigGeralRETORNO_CONS_PROD.asstring <> 'B' then
+            EntradaDados.text := CodigoProduto
+          else
+            EntradaDados.text := trim(CodigoBarrasProduto);
           if StrToIntDef(EntradaDados.Text, -1) <> -1 then
           begin
             ExecutarPessagemAutomatica;

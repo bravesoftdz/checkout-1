@@ -316,6 +316,7 @@ begin
   if (Key = VK_Return) then
   begin
     CodigoProduto := SQLProduto.FieldByName('PRODICOD').AsString;
+    CodigoBarrasProduto := SQLProduto.FieldByName('PRODA60CODBAR').AsString;
     FormTelaConsultaRapidaItem.ModalResult := MrOK;
   end ;
 end;

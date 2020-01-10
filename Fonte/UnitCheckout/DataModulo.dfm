@@ -5,6 +5,7 @@ inherited DM: TDM
   Height = 726
   Width = 1364
   inherited DB: TDatabase
+    Connected = False
     AfterConnect = DBAfterConnect
     Left = 32
     Top = 8
@@ -1345,6 +1346,12 @@ inherited DM: TDM
     object SQLConfigGeralVERIFICA_CUPOM_PENDENTE: TStringField
       FieldName = 'VERIFICA_CUPOM_PENDENTE'
       Origin = 'DB.CONFIGGERAL.VERIFICA_CUPOM_PENDENTE'
+      FixedChar = True
+      Size = 1
+    end
+    object SQLConfigGeralRETORNO_CONS_PROD: TStringField
+      FieldName = 'RETORNO_CONS_PROD'
+      Origin = 'DB.CONFIGGERAL.RETORNO_CONS_PROD'
       FixedChar = True
       Size = 1
     end

@@ -97,6 +97,8 @@ type
     Label4: TLabel;
     dbedtLink_Web: TDBEdit;
     SQLConfigGeralLINK_WEB: TStringField;
+    rdgConsultaProduto: TDBRadioGroup;
+    SQLConfigGeralRETORNO_CONS_PROD: TStringField;
     procedure FormCreate(Sender: TObject);
     procedure BotaoGravarClick(Sender: TObject);
     procedure DSSQLConfigGeralDataChange(Sender: TObject; Field: TField);

@@ -1,6 +1,6 @@
 inherited FormTelaConfiguracaoGeral: TFormTelaConfiguracaoGeral
-  Left = -8
-  Top = -8
+  Left = -1374
+  Top = -91
   Width = 1382
   Height = 744
   Caption = 'Configura'#231#245'es Gerais'
@@ -511,6 +511,22 @@ inherited FormTelaConfiguracaoGeral: TFormTelaConfiguracaoGeral
         ParentFont = False
         TabOrder = 18
       end
+      object rdgConsultaProduto: TDBRadioGroup
+        Left = 616
+        Top = 20
+        Width = 177
+        Height = 65
+        Caption = 'Retorno da Consulta R'#225'pida'
+        DataField = 'RETORNO_CONS_PROD'
+        DataSource = DSSQLConfigGeral
+        Items.Strings = (
+          'Cod.Agrupamento'
+          'Cod.Barras')
+        TabOrder = 19
+        Values.Strings = (
+          'C'
+          'B')
+      end
     end
     inherited ScrollBoxTopo: TScrollBox
       Width = 1362
@@ -842,6 +858,12 @@ inherited FormTelaConfiguracaoGeral: TFormTelaConfiguracaoGeral
       FieldName = 'LINK_WEB'
       Origin = 'DB.CONFIGGERAL.LINK_WEB'
       Size = 100
+    end
+    object SQLConfigGeralRETORNO_CONS_PROD: TStringField
+      FieldName = 'RETORNO_CONS_PROD'
+      Origin = 'DB.CONFIGGERAL.RETORNO_CONS_PROD'
+      FixedChar = True
+      Size = 1
     end
   end
   object DSSQLConfigGeral: TDataSource

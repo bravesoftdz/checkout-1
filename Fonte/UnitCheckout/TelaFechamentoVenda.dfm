@@ -1,6 +1,6 @@
 object FormTelaFechamentoVenda: TFormTelaFechamentoVenda
-  Left = -18
-  Top = 0
+  Left = 27
+  Top = 44
   BorderIcons = []
   BorderStyle = bsNone
   Caption = 'Tela Fechamento Venda'
@@ -2116,7 +2116,7 @@ object FormTelaFechamentoVenda: TFormTelaFechamentoVenda
         Transparent = True
       end
       object ValorTotalVenda: TCurrencyEdit
-        Left = 151
+        Left = 152
         Top = 52
         Width = 161
         Height = 35
@@ -2137,7 +2137,7 @@ object FormTelaFechamentoVenda: TFormTelaFechamentoVenda
         OnEnter = ValorAcrescimoEnter
       end
       object ValorDescontoAcrescimo: TCurrencyEdit
-        Left = 156
+        Left = 153
         Top = 112
         Width = 160
         Height = 35
@@ -2180,7 +2180,7 @@ object FormTelaFechamentoVenda: TFormTelaFechamentoVenda
         OnEnter = ValorEntradaEnter
       end
       object ValorRecebido: TCurrencyEdit
-        Left = 151
+        Left = 152
         Top = 235
         Width = 161
         Height = 35
@@ -2222,7 +2222,7 @@ object FormTelaFechamentoVenda: TFormTelaFechamentoVenda
         OnEnter = ValorAcrescimoEnter
       end
       object edtSaldo: TCurrencyEdit
-        Left = 153
+        Left = 154
         Top = 172
         Width = 159
         Height = 35

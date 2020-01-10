@@ -17,11 +17,9 @@ type
     Label9: TLabel;
     CGCPFChq: TEdit;
     LblNomeSistema: TRxLabel;
-    BtnCancelar: TConerBtn;
-    BtnOK: TConerBtn;
     Banco: TEdit;
-    procedure BitBtn2Click(Sender: TObject);
-    procedure BtnOkClick(Sender: TObject);
+    btnOK: TBitBtn;
+    BtnCancelar: TBitBtn;
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure FormCreate(Sender: TObject);
     procedure ListaChequesEnter(Sender: TObject);
@@ -34,6 +32,8 @@ type
     procedure BancoExit(Sender: TObject);
     procedure CGCPFChqExit(Sender: TObject);
     procedure NomeTitularExit(Sender: TObject);
+    procedure btnOKClick(Sender: TObject);
+    procedure BtnCancelarClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -58,128 +58,6 @@ function cmdsSendEndosso (szEndosso: LPSTR): integer; stdcall; external 'nscheq.
 function cmdsSendFormFeed : integer; stdcall; external 'nscheq.dll';
 
 {$R *.dfm}
-
-procedure TFormTelaDadosCheque.BitBtn2Click(Sender: TObject);
-begin
-  ModalResult :=MrCancel;
-  Close ;
-end;
-
-procedure TFormTelaDadosCheque.BtnOkClick(Sender: TObject);
-var
-  MotBloq, BancoCHQ, PortaCHQ, CidadeCHQ, FavorecidoCHQ, NumeroCHQ, ValorCHQ : string ;
-begin
-  if Banco.Text = '' then
-    begin
-      Informa('O Banco deve ser informado') ;
-      Banco.Setfocus ;
-      exit ;
-    end ;
-  if CGCPFChq.Text = '' then
-    begin
-      Informa('O CPF/CNPJ deve ser informado') ;
-      CGCPFChq.Setfocus ;
-      exit ;
-    end ;
-  if NomeTitular.Text = '' then
-    begin
-      Informa('O Nome do Titular deve ser informado') ;
-      NomeTitular.Setfocus ;
-      exit ;
-    end ;
-
-  if Application.FindComponent('FormTelaFechamentoVenda') <> nil then
-    if (FormTelaFechamentoVenda.PercJuroDia > 0) and (dm.TblCheques.RecordCount = 1) then
-      begin
-        FormTelaFechamentoVenda.SQLParcelasPrazoVendaTemp.Edit;
-        FormTelaFechamentoVenda.SQLParcelasPrazoVendaTempVALORVENCTO.Value := dm.TblChequesValor.Value;
-        FormTelaFechamentoVenda.SQLParcelasPrazoVendaTempDATAVENCTO.Value  := dm.TblChequesDataVecto.Value;
-        FormTelaFechamentoVenda.SQLParcelasPrazoVendaTemp.Post;
-        FormTelaFechamentoVenda.SQLParcelasPrazoVendaTemp.Close;
-        FormTelaFechamentoVenda.SQLParcelasPrazoVendaTemp.Open;
-
-        FormTelaFechamentoVenda.VlrTotJuroDia := dm.TblChequesValor.Value - FormTelaFechamentoVenda.VlrTotalOriginal;
-        FormTelaFechamentoVenda.LBTotalJuroDia.Value := FormTelaFechamentoVenda.VlrTotJuroDia;
-        FormTelaFechamentoVenda.LBTotalJuroDia.Update;
-
-        FormTelaFechamentoVenda.ValorTotalVenda.Value := FormTelaFechamentoVenda.VlrTotalOriginal     +
-                                                         FormTelaFechamentoVenda.VlrTotJuroDia        +
-                                                         FormTelaFechamentoVenda.VlrTxCrediario.Value -
-                                                         (VlrBonusTroca + FormTelaFechamentoVenda.VlrRetConfig_SldCad) ;
-        FormTelaFechamentoVenda.ValorTotalVenda.Update;
-      end;
-  dm.TblCheques.First ;
-  while not dm.TblCheques.EOF do
-    begin
-      Application.ProcessMessages;
-      if dm.TblChequesNroCheque.Value = 0 then
-        begin
-          Informa('O Número do Cheque deve ser informado') ;
-          ListaCheques.Setfocus ;
-          Exit ;
-        end ;
-
-      dm.TblCheques.Edit ;
-      dm.TblChequesBANCA5COD.AsString := Banco.Text ;
-      dm.TblChequesTITULAR.Value      := NomeTitular.Text ;
-      dm.TblChequesCGCCPF.Value       := CGCPFChq.Text ;
-      dm.TblChequesPORTICOD.AsString  := DM.SQLConfigFinanceiroPORTICODRECEBER.AsString;
-      dm.TblChequesALINICOD.AsString  := DM.SQLConfigFinanceiroALINICODRECEBER.AsString;
-      dm.TblCheques.Post;
-      if (dm.SQLTerminalAtivoTERMA30MODIMPCHQ.Value <> '') then
-        if Pergunta('Nao','*** Deseja imprimir o cheque Nº-'+ dm.TblChequesNroCheque.AsString+' ***') then
-          begin
-            if dm.SQLTerminalAtivoTERMA30MODIMPCHQ.Value = 'SCHALTER_NSC_1' then
-              begin
-                if dm.SQLTerminalAtivoTERMA5IMPCHQPORTA.Value = 'COM1' then PortaCHQ := '0';
-                if dm.SQLTerminalAtivoTERMA5IMPCHQPORTA.Value = 'COM2' then PortaCHQ := '1';
-                if dm.SQLTerminalAtivoTERMA5IMPCHQPORTA.Value = 'COM3' then PortaCHQ := '2';
-                if dm.SQLTerminalAtivoTERMA5IMPCHQPORTA.Value = 'COM4' then PortaCHQ := '3';
-                if dm.SQLTerminalAtivoTERMA5IMPCHQPORTA.Value = 'COM5' then PortaCHQ := '4';
-
-                // Alimenta as Variaveis
-                BancoCHQ      := Banco.Text;
-                CidadeCHQ     := dm.SQLEmpresaEMPRA60CID.AsString;
-                FavorecidoCHQ := dm.SQLEmpresaEMPRA60RAZAOSOC.asstring;
-                NumeroCHQ     := Preenche(dm.TblChequesNroCheque.AsString,'0',6,0);
-                ValorCHQ      := FormatCurr('#,##0.00',dm.TblChequesValor.AsFloat);
-                while pos(',',ValorCHQ) > 0 do
-                  delete(ValorCHQ,pos(',',ValorCHQ),1);
-                while pos('.',ValorCHQ) > 0 do
-                  delete(ValorCHQ,pos(',',ValorCHQ),1);
-                ValorCHQ := Preenche(ValorCHQ,'0',14,0);
-
-                NSCheq_ChangePort(StrToint(PortaCHQ));           // Abre Porta
-                cmdsSendBank(Pchar(BancoCHQ));                   // Cd Banco
-                cmdsSendCity(Pchar(CidadeCHQ));                  // Cidade
-                cmdsSendDate(0,Pchar(FormatDateTime('dd',Now)),
-                               Pchar(FormatDateTime('mm',Now)),
-                               Pchar(FormatDateTime('yy',Now))); // Data
-                cmdsSendName(Pchar(FavorecidoCHQ));              // Nome do Favorecido
-                cmdsSendNumCheque(Pchar(NumeroCHQ));             // Nro Cheque com 6 digitos e zeros a esquerda
-                                                                 // Formata o Valor, tirando os pontos e virgulas antes de enviar pra impressora, com 14 digitos e zeros a esquerda
-                cmdsSendValor(Pchar(ValorCHQ));                  // Valor
-                // cmdsSendEndosso // Dados no verso do cheque
-               { if Pergunta('Sim','*** Deseja imprimir cópia de cheque ***') then
-                  begin
-                    NSCheq_ChangePort(StrToint(PortaCHQ));           // Abre Porta
-                    cmdsSendBank(Pchar(BancoCHQ));                   // Cd Banco
-                    cmdsSendCity(Pchar(CidadeCHQ));                  // Cidade
-                    cmdsSendDate(0,Pchar(FormatDateTime('dd',Now)),
-                                   Pchar(FormatDateTime('mm',Now)),
-                                   Pchar(FormatDateTime('yy',Now))); // Data
-                    cmdsSendName(Pchar(FavorecidoCHQ));              // Nome do Favorecido
-                    cmdsSendNumCheque(Pchar(NumeroCHQ));             // Nro Cheque com 6 digitos e zeros a esquerda
-                                                                     // Formata o Valor, tirando os pontos e virgulas antes de enviar pra impressora, com 14 digitos e zeros a esquerda
-                    cmdsSendValor(Pchar(ValorCHQ));                  // Valor
-                  end;}
-              end;
-          end;
-      dm.TblCheques.Next ;
-    end ;
-  ModalResult :=MrOK;
-  Close ;
-end;
 
 procedure TFormTelaDadosCheque.FormClose(Sender: TObject;
   var Action: TCloseAction);
@@ -342,6 +220,136 @@ begin
       ShowMessage('Campo Obrigatório, deve ser preenchido!');
       NomeTitular.SetFocus;
     end;
+end;
+
+procedure TFormTelaDadosCheque.btnOKClick(Sender: TObject);
+var
+  MotBloq, BancoCHQ, PortaCHQ, CidadeCHQ, FavorecidoCHQ, NumeroCHQ, ValorCHQ : string ;
+  Gravar : Boolean;
+begin
+  Gravar := True;
+  if Banco.Text = '' then
+    begin
+      Informa('O Banco deve ser informado') ;
+      Banco.Setfocus ;
+      exit ;
+    end ;
+  if CGCPFChq.Text = '' then
+    begin
+      Informa('O CPF/CNPJ deve ser informado') ;
+      CGCPFChq.Setfocus ;
+      exit ;
+    end ;
+  if NomeTitular.Text = '' then
+    begin
+      Informa('O Nome do Titular deve ser informado') ;
+      NomeTitular.Setfocus ;
+      exit ;
+    end ;
+
+  if Application.FindComponent('FormTelaFechamentoVenda') <> nil then
+    if (FormTelaFechamentoVenda.PercJuroDia > 0) and (dm.TblCheques.RecordCount = 1) then
+      begin
+        FormTelaFechamentoVenda.SQLParcelasPrazoVendaTemp.Edit;
+        FormTelaFechamentoVenda.SQLParcelasPrazoVendaTempVALORVENCTO.Value := dm.TblChequesValor.Value;
+        FormTelaFechamentoVenda.SQLParcelasPrazoVendaTempDATAVENCTO.Value  := dm.TblChequesDataVecto.Value;
+        FormTelaFechamentoVenda.SQLParcelasPrazoVendaTemp.Post;
+        FormTelaFechamentoVenda.SQLParcelasPrazoVendaTemp.Close;
+        FormTelaFechamentoVenda.SQLParcelasPrazoVendaTemp.Open;
+
+        FormTelaFechamentoVenda.VlrTotJuroDia := dm.TblChequesValor.Value - FormTelaFechamentoVenda.VlrTotalOriginal;
+        FormTelaFechamentoVenda.LBTotalJuroDia.Value := FormTelaFechamentoVenda.VlrTotJuroDia;
+        FormTelaFechamentoVenda.LBTotalJuroDia.Update;
+
+        FormTelaFechamentoVenda.ValorTotalVenda.Value := FormTelaFechamentoVenda.VlrTotalOriginal     +
+                                                         FormTelaFechamentoVenda.VlrTotJuroDia        +
+                                                         FormTelaFechamentoVenda.VlrTxCrediario.Value -
+                                                         (VlrBonusTroca + FormTelaFechamentoVenda.VlrRetConfig_SldCad) ;
+        FormTelaFechamentoVenda.ValorTotalVenda.Update;
+      end;
+  dm.TblCheques.First ;
+  while not dm.TblCheques.EOF do
+    begin
+      Application.ProcessMessages;
+      if dm.TblChequesNroCheque.Value = 0 then
+        begin
+          Informa('O Número do Cheque deve ser informado') ;
+          ListaCheques.Setfocus ;
+          Gravar := False;
+          ModalResult := mrNone;
+          Break ;
+        end ;
+
+      dm.TblCheques.Edit ;
+      dm.TblChequesBANCA5COD.AsString := Banco.Text ;
+      dm.TblChequesTITULAR.Value      := NomeTitular.Text ;
+      dm.TblChequesCGCCPF.Value       := CGCPFChq.Text ;
+      dm.TblChequesPORTICOD.AsString  := DM.SQLConfigFinanceiroPORTICODRECEBER.AsString;
+      dm.TblChequesALINICOD.AsString  := DM.SQLConfigFinanceiroALINICODRECEBER.AsString;
+      dm.TblCheques.Post;
+      if (dm.SQLTerminalAtivoTERMA30MODIMPCHQ.Value <> '') then
+        if Pergunta('Nao','*** Deseja imprimir o cheque Nº-'+ dm.TblChequesNroCheque.AsString+' ***') then
+          begin
+            if dm.SQLTerminalAtivoTERMA30MODIMPCHQ.Value = 'SCHALTER_NSC_1' then
+              begin
+                if dm.SQLTerminalAtivoTERMA5IMPCHQPORTA.Value = 'COM1' then PortaCHQ := '0';
+                if dm.SQLTerminalAtivoTERMA5IMPCHQPORTA.Value = 'COM2' then PortaCHQ := '1';
+                if dm.SQLTerminalAtivoTERMA5IMPCHQPORTA.Value = 'COM3' then PortaCHQ := '2';
+                if dm.SQLTerminalAtivoTERMA5IMPCHQPORTA.Value = 'COM4' then PortaCHQ := '3';
+                if dm.SQLTerminalAtivoTERMA5IMPCHQPORTA.Value = 'COM5' then PortaCHQ := '4';
+
+                // Alimenta as Variaveis
+                BancoCHQ      := Banco.Text;
+                CidadeCHQ     := dm.SQLEmpresaEMPRA60CID.AsString;
+                FavorecidoCHQ := dm.SQLEmpresaEMPRA60RAZAOSOC.asstring;
+                NumeroCHQ     := Preenche(dm.TblChequesNroCheque.AsString,'0',6,0);
+                ValorCHQ      := FormatCurr('#,##0.00',dm.TblChequesValor.AsFloat);
+                while pos(',',ValorCHQ) > 0 do
+                  delete(ValorCHQ,pos(',',ValorCHQ),1);
+                while pos('.',ValorCHQ) > 0 do
+                  delete(ValorCHQ,pos(',',ValorCHQ),1);
+                ValorCHQ := Preenche(ValorCHQ,'0',14,0);
+
+                NSCheq_ChangePort(StrToint(PortaCHQ));           // Abre Porta
+                cmdsSendBank(Pchar(BancoCHQ));                   // Cd Banco
+                cmdsSendCity(Pchar(CidadeCHQ));                  // Cidade
+                cmdsSendDate(0,Pchar(FormatDateTime('dd',Now)),
+                               Pchar(FormatDateTime('mm',Now)),
+                               Pchar(FormatDateTime('yy',Now))); // Data
+                cmdsSendName(Pchar(FavorecidoCHQ));              // Nome do Favorecido
+                cmdsSendNumCheque(Pchar(NumeroCHQ));             // Nro Cheque com 6 digitos e zeros a esquerda
+                                                                 // Formata o Valor, tirando os pontos e virgulas antes de enviar pra impressora, com 14 digitos e zeros a esquerda
+                cmdsSendValor(Pchar(ValorCHQ));                  // Valor
+                // cmdsSendEndosso // Dados no verso do cheque
+               { if Pergunta('Sim','*** Deseja imprimir cópia de cheque ***') then
+                  begin
+                    NSCheq_ChangePort(StrToint(PortaCHQ));           // Abre Porta
+                    cmdsSendBank(Pchar(BancoCHQ));                   // Cd Banco
+                    cmdsSendCity(Pchar(CidadeCHQ));                  // Cidade
+                    cmdsSendDate(0,Pchar(FormatDateTime('dd',Now)),
+                                   Pchar(FormatDateTime('mm',Now)),
+                                   Pchar(FormatDateTime('yy',Now))); // Data
+                    cmdsSendName(Pchar(FavorecidoCHQ));              // Nome do Favorecido
+                    cmdsSendNumCheque(Pchar(NumeroCHQ));             // Nro Cheque com 6 digitos e zeros a esquerda
+                                                                     // Formata o Valor, tirando os pontos e virgulas antes de enviar pra impressora, com 14 digitos e zeros a esquerda
+                    cmdsSendValor(Pchar(ValorCHQ));                  // Valor
+                  end;}
+              end;
+          end;
+      dm.TblCheques.Next ;
+    end ;
+  if Gravar then
+  begin
+    ModalResult :=MrOK;
+    Close ;
+  end;
+
+end;
+
+procedure TFormTelaDadosCheque.BtnCancelarClick(Sender: TObject);
+begin
+  ModalResult :=MrCancel;
+  Close ;
 end;
 
 end.

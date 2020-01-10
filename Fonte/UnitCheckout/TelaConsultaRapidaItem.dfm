@@ -1,10 +1,10 @@
 object FormTelaConsultaRapidaItem: TFormTelaConsultaRapidaItem
-  Left = -8
-  Top = -8
+  Left = -7
+  Top = 0
   BorderIcons = []
   BorderStyle = bsNone
-  ClientHeight = 706
-  ClientWidth = 1366
+  ClientHeight = 696
+  ClientWidth = 1364
   Color = 14731440
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -41,7 +41,7 @@ object FormTelaConsultaRapidaItem: TFormTelaConsultaRapidaItem
     Left = 150
     Top = 0
     Width = 1024
-    Height = 706
+    Height = 696
     Align = alLeft
     BorderStyle = bsNone
     Color = 5278518
@@ -50,7 +50,7 @@ object FormTelaConsultaRapidaItem: TFormTelaConsultaRapidaItem
     object LblNomeSistema: TRxLabel
       Left = 0
       Top = 0
-      Width = 1024
+      Width = 1010
       Height = 45
       Align = alTop
       Alignment = taCenter
@@ -492,11 +492,6 @@ object FormTelaConsultaRapidaItem: TFormTelaConsultaRapidaItem
           item
             Expanded = False
             FieldName = 'PRODN2VLRVENDA2835D'
-            Font.Charset = ANSI_CHARSET
-            Font.Color = clBlack
-            Font.Height = -11
-            Font.Name = 'Arial'
-            Font.Style = [fsBold]
             Title.Alignment = taCenter
             Title.Caption = 'Atacado2'
             Title.Color = clGreen
@@ -511,11 +506,6 @@ object FormTelaConsultaRapidaItem: TFormTelaConsultaRapidaItem
           item
             Expanded = False
             FieldName = 'PRODN2VLRVENDA283542D'
-            Font.Charset = ANSI_CHARSET
-            Font.Color = clBlack
-            Font.Height = -11
-            Font.Name = 'Arial'
-            Font.Style = [fsBold]
             Title.Alignment = taCenter
             Title.Caption = 'Atacado3'
             Title.Color = clGreen
@@ -1142,7 +1132,7 @@ object FormTelaConsultaRapidaItem: TFormTelaConsultaRapidaItem
     Left = 0
     Top = 0
     Width = 150
-    Height = 706
+    Height = 696
     Align = alLeft
     BevelInner = bvNone
     BevelOuter = bvNone
@@ -1154,8 +1144,8 @@ object FormTelaConsultaRapidaItem: TFormTelaConsultaRapidaItem
   object ScrollBoxDireita: TScrollBox
     Left = 1174
     Top = 0
-    Width = 192
-    Height = 706
+    Width = 190
+    Height = 696
     Align = alClient
     BorderStyle = bsNone
     Color = 5278518

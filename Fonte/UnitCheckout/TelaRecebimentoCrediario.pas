@@ -8,7 +8,7 @@ uses
   Db, DBTables, RxQuery, EWall, DBCtrls, dbcgrids, Variants, ppDB, IniFiles,
   ppDBPipe, ppComm, ppRelatv, ppProd, ppClass, ppReport, ppVar, ppCtrls,
   ppPrnabl, ppBands, ppCache, Buttons, ConerBtn, CartaoCredito, RDprint,
-  RxMemDS, DateUtils;
+  RxMemDS, DateUtils, DBClient;
 
 const
   InformandoDocumento      = 'InformandoDocumento';
@@ -276,7 +276,6 @@ type
     SQLRecebimentoUSUAICOD: TIntegerField;
     SQLPesquisa: TRxQuery;
     ppLabel15: TppLabel;
-    LblTROCO: TLabel;
     SQLParcelasReceberTempBAIXAR_PARCELA: TStringField;
     SQLRenegociacao: TRxQuery;
     SQLRenegociacaoCTRCA13ID: TStringField;
@@ -350,6 +349,22 @@ type
     UdpateRenegociacao: TUpdateSQL;
     SQLRenegociacaoID_CTRCA13ID: TStringField;
     shpStatusServidor: TShape;
+    LblRecebido: TRxLabel;
+    ValorRecebido: TCurrencyEdit;
+    LblEntrada: TRxLabel;
+    ValorEntrada: TCurrencyEdit;
+    RxLabel2: TRxLabel;
+    ValorTroco: TCurrencyEdit;
+    edtSaldo: TCurrencyEdit;
+    SQLMovCaixa: TClientDataSet;
+    SQLMovCaixaID_CUPOM: TStringField;
+    SQLMovCaixaVLR_AMORTIZACAO: TFloatField;
+    SQLMovCaixaVLR_JUROS: TFloatField;
+    SQLMovCaixaVLR_MULTA: TFloatField;
+    SQLMovCaixaVLR_DESC: TFloatField;
+    SQLMovCaixaNOME_CLIENTE: TStringField;
+    SQLMovCaixaNRO_PARCELAS: TStringField;
+    SQLMovCaixaDOC_ORIGEM: TStringField;
     procedure EntradaDadosKeyDown(Sender: TObject; var Key: Word;
       Shift: TShiftState);
     procedure FormCreate(Sender: TObject);
@@ -375,6 +390,7 @@ type
     { Private declarations }
     FinalizandoRecto : boolean;
     TotalTroco : Double;
+    ValorDevido : Double;
     v_Abatimento_Original: Extended;
     AliasName : String;
     NroIt : Integer;
@@ -388,6 +404,11 @@ type
     Procedure GravarRenegociacao(id : String);
     procedure ConectaOnLine;
     procedure DisconectaOnline;
+    procedure Pagamento_Crediario;
+    procedure AtualizarSaldoEdit;
+    procedure TipoPadraoCRT;
+    procedure TipoPadraoCHQ;
+    procedure GravarMovimentoCaixaCrediario;
   public
     { Public declarations }
     NumerarioCod,
@@ -1212,7 +1233,7 @@ begin
               Informa('Numerário não encontrado !') ;
               exit ;
             end ;
-
+          NumerarioVista := StrToInt(EntradaDados.Text) ;
           ProvedorCartao := '';
 
           TipoPadrao := DM.SQLTemplate.FieldByName('NUMEA5TIPO').Value ;
@@ -1221,7 +1242,7 @@ begin
 
           NumerarioCod := EntradaDados.Text ;
           LblNUMERARIO.Caption := DM.SQLTemplate.FieldByName('NUMEA30DESCR').Value ;
-
+          ValorEntrada.Value := TotalPagar.Value;
           EntradaDados.Clear ;
           EstadoRecCred := InformandoValorRecebido;
           PreparaEstadoRec(EstadoRecCred) ;
@@ -1245,379 +1266,60 @@ begin
             exit ;
           end ;
 
-          if StrToFloat(EntradaDados.Text) < TotalPagar.Value then
-            begin
-              Informa('O valor recebido deve ser maior ou igual ao total à pagar') ;
-              exit ;
-            end ;
-
-
-
-//-----------------------
-//          if (TipoPadrao = 'DIN')  or
-//             (TipoPadrao = 'CHQV') or
-//             (TipoPadrao = 'CRTF') or
-//             (TipoPadrao = 'CRT') or
-//             (TipoPadrao = 'CRD') then
+//          if StrToFloat(EntradaDados.Text) < TotalPagar.Value then
 //            begin
-//              DM.SQLTemplate.Close ;
-//              DM.SQLTemplate.SQL.Clear ;
-//              DM.SQLTemplate.SQL.Add('select * from PARCELASVISTARECEBTEMP') ;
-//              DM.SQLTemplate.SQL.Add('where TERMICOD = ' + IntToStr(TerminalAtual)) ;
-//              DM.SQLTemplate.SQL.Add('and   NUMEICOD = ' + IntToStr(NumerarioVista)) ;
-//              DM.SQLTemplate.Open ;
-//              if DM.SQLTemplate.EOF then
-//                begin
-//                  ValorDevido := TotalPagar.Value - ValorRecebido.Value ;
-//                  AtualizarSaldoEdit;
-//                  SQLParcelasVistaRecebTemp.Last ;
-//                  NroIt := SQLParcelasVistaRecebTempNROITEM.Value + 1 ;
-//
-//                  SQLParcelasVistaRecebTemp.Append ;
-//                  SQLParcelasVistaRecebTempTERMICOD.Value := TerminalAtual ;
-//                  SQLParcelasVistaRecebTempNROITEM.Value  := NroIt ;
-//                  SQLParcelasVistaRecebTempNUMEICOD.Value := NumerarioVista ;
-//                  ValorControle := StrToFloatDef(EntradaDados.Text,0);
-//                  if (ValorControle > ValorDevido) and (ValorDevido > 0) then
-//                    begin
-//                      SQLParcelasVistaVendaTempVALORPARC.Value := StrToFloat(EntradaDados.Text) - (StrToFloat(EntradaDados.Text) - ValorDevido) ;
-//                      SQLParcelasVistaRecebTempVALORPARC.Value := StrToFloatDef(EntradaDados.Text,0);
-//                    end
-//                  else
-//                    SQLParcelasVistaRecebTempVALORPARC.Value := StrToFloatDef(EntradaDados.Text,0) ;
-//                  SQLParcelasVistaRecebTempTIPOPADR.Value    := TipoPadrao ;
-//                  SQLParcelasVistaRecebTemp.Post ;
-//                end
-//              else
-//                begin
-//                  SQLParcelasVistaRecebTemp.Close ;
-//                  SQLParcelasVistaRecebTemp.SQL.Clear ;
-//                  SQLParcelasVistaRecebTemp.SQL.Add('select * from PARCELASVISTARECEBTEMP') ;
-//                  SQLParcelasVistaRecebTemp.SQL.Add('where TERMICOD = ' + IntToStr(TerminalAtual)) ;
-//                  SQLParcelasVistaRecebTemp.SQL.Add('and   NUMEICOD = ' + IntToStr(NumerarioVista)) ;
-//                  SQLParcelasVistaRecebTemp.Open ;
-//
-//                  ValorDevido := TotalPagar.Value - ValorRecebido.Value ;
-//                  AtualizarSaldoEdit;
-//
-//                  SQLParcelasVistaRecebTemp.Edit ;
-//                  SQLParcelasVistaRecebTempVALORPARC.Value := StrToFloatDef(EntradaDados.Text,0) + SQLParcelasVistaVendaTempVALORPARC.Value;
-//                  SQLParcelasVistaRecebTempTIPOPADR.Value  := TipoPadrao ;
-//                  SQLParcelasVistaRecebTemp.Post ;
-//                end;
-//            end;
-//
-//              SQLParcelasVistaVendaTemp.Close ;
-//              SQLParcelasVistaVendaTemp.SQL.Clear ;
-//              SQLParcelasVistaVendaTemp.SQL.Add('select * from PARCELASVISTAVENDATEMP') ;
-//              SQLParcelasVistaVendaTemp.SQL.Add('where TERMICOD = ' + IntToStr(TerminalAtual)) ;
-//              SQLParcelasVistaVendaTemp.Open ;
-//
-//              ValorRecebido.Value := ValorRecebido.Value + StrToFloatDef(EntradaDados.Text,0) ;
-//              VarValorRecebido    := ValorRecebido.Value;
-//              AtualizarSaldoEdit;
-//              EntradaDados.Clear ;
-//
-//              if ValorRecebido.Value >= TotalPagar.Value then
-//                begin
-//                  if EstadoRecCredAnt = '' then
-//                    begin
-//                      if SQLParcelasPrazoRecebTemp.RecordCount = 0 then
-//                        EstadoRecCred := FinalizandoRecto
-//                      else
-//                        EstadoRecCred := InformandoNumerario;
-//                    end
-//                  else
-//                    EstadoRecCred := EstadoRecCredAnt;
-//
-//                  EstadoRecCredAnt := '' ;
-//                  PreparaEstadoRec(EstadoRecCred) ;
-//                  if (ValorRecebido.Value > TotalPagar.Value) and (ValorDevido > 0) then
-//                    begin
-//                      ValorTroco.Value := ValorRecebido.Value - ValorEntrada.Value ;
-//                      VarValorTroco    := ValorTroco.Value;
-//                    end;
-//                end
-//              else
-//                begin
-//                  EntradaDados.Clear ;
-//                  if EstadoRecCredAnt = '' then
-//                    EstadoRecCred := InformandoNumerario
-//                  else
-//                    EstadoRecCred := EstadoRecCredAnt;
-//                  EstadoRecCredAnt := '';
-//                  PreparaEstadoRec(EstadoRecCred);
-//                end;
+//              Informa('O valor recebido deve ser maior ou igual ao total à pagar') ;
+//              exit ;
+//            end ;
 
+
+//Pagamento Crediário
 //-----------------------
 
+          if (TipoPadrao = 'DIN')  or
+             (TipoPadrao = 'CHQV') or
+             (TipoPadrao = 'CRTF') or
+             (TipoPadrao = 'CRT') or
+             (TipoPadrao = 'CRD') then
+            begin
+              Pagamento_Crediario;
+              AtualizarSaldoEdit;
+              if ValorRecebido.Value < TotalPagar.Value  then
+                exit;
+            end;
 
-          LblTROCO.Caption := 'Recebido:' + FormatFloat('R$ ###0.00', StrToFloat(EntradaDados.Text)) +
-                              ' Troco:'   + FormatFloat(' R$ ###00.00', StrToFloat(EntradaDados.Text) - TotalPagar.Value ) ;
-          LblTROCO.Refresh ;
-          TotalTroco := StrToFloat(EntradaDados.Text) - TotalPagar.Value;
-          LblNUMERARIO.Caption := DM.SQLTemplate.FieldByName('NUMEA30DESCR').Value ;
-          EntradaDados.Clear ;
-          EstadoRecCred := FinalizandoRecebimento ;
-          PreparaEstadoRec(EstadoRecCred) ;
-          exit ;
-        end ;
+//-----------------------
+          if ValorRecebido.Value >= TotalPagar.Value then
+          begin
+            ValorTroco.Value := ValorRecebido.Value - TotalPagar.Value;
+            TotalTroco := ValorRecebido.Value - TotalPagar.Value;
+          end ;
+
+//          LblNUMERARIO.Caption := DM.SQLTemplate.FieldByName('NUMEA30DESCR').Value;
+          EntradaDados.Clear;
+          EstadoRecCred := FinalizandoRecebimento;
+          PreparaEstadoRec(EstadoRecCred);
+          exit;
+        end;
       //FINALIZANDO RECEBIMENTO
       if EstadoRecCred = FinalizandoRecebimento then
         begin
           if FinalizandoRecto then
             exit;
           // TESTA SE É CARTAO DE CRÉDITO
+          SQLMovCaixa.Close;
+          SQLMovCaixa.CreateDataSet;
+          SQLMovCaixa.EmptyDataSet;
           if (TipoPadrao = 'CRT') and (ProvedorCartao <> '') then
-            begin
-              // Limpar tabelas temp Vista e Prazo do Financeiro da Venda
-              DM.SQLTemplate.Close ;
-              DM.SQLTemplate.SQL.Clear ;
-              DM.SQLTemplate.SQL.Add('delete from PARCELASVISTAVENDATEMP') ;
-              DM.SQLTemplate.SQL.Add('where TERMICOD = ' + IntToStr(TerminalAtual)) ;
-              DM.SQLTemplate.ExecSQL ;
-              DM.SQLTemplate.Close ;
-              DM.SQLTemplate.SQL.Clear ;
-              DM.SQLTemplate.SQL.Add('delete from PARCELASPRAZOVENDATEMP') ;
-              DM.SQLTemplate.SQL.Add('where TERMICOD = ' + IntToStr(TerminalAtual)) ;
-              DM.SQLTemplate.ExecSQL ;
-              // Alimenta com os dados do Recebimento na tabela a vista
-              SQLParcelasVistaVendaTemp.Close;
-              SQLParcelasVistaVendaTemp.MacroByName('MFiltro').Value := 'TERMICOD = '+IntToStr(TerminalAtual);
-              SQLParcelasVistaVendaTemp.Open;
-              SQLParcelasVistaVendaTemp.Append;
-              SQLParcelasVistaVendaTempTERMICOD.Value  := TerminalAtual;
-              SQLParcelasVistaVendaTempNROITEM.Value   := 1;
-              SQLParcelasVistaVendaTempNUMEICOD.Value  := StrToInt(NumerarioCod);
-              SQLParcelasVistaVendaTempVALORPARC.Value := TotalPagar.Value;
-              SQLParcelasVistaVendaTempTIPOPADR.Value  := TipoPadrao;
-              SQLParcelasVistaVendaTemp.Post;
+          begin
+            TipoPadraoCRT;
+          end;
 
-              // Tem q Abrir a tabela a Vista e Prazo pra nao dar erro na funcao FechaCupom
-              SQLParcelasVistaVendaTemp.Close;
-              SQLParcelasVistaVendaTemp.MacroByName('MFiltro').Value := 'TERMICOD = '+IntToStr(TerminalAtual);
-              SQLParcelasVistaVendaTemp.Open;
-              SQLParcelasPrazoVendaTemp.Close;
-              SQLParcelasPrazoVendaTemp.MacroByName('MFiltro').Value := 'TERMICOD = '+IntToStr(TerminalAtual);
-              SQLParcelasPrazoVendaTemp.Open;
-
-              SQLProvedorCartao.Close;
-              SQLProvedorCartao.MacroByName('MFiltro').Value := 'PRCAA13ID = "'+ProvedorCartao+'"';
-              SQLProvedorCartao.Open;
-              if not SQLProvedorCartao.IsEmpty then
-                begin
-                  ProvedorCartao      := SQLProvedorCartaoPRCAA60CARTAO.AsString;
-                  SendDirectory       := SQLProvedorCartaoPRCATPATHENVIA.AsString;
-                  ReceiveDirectory    := SQLProvedorCartaoPRCATPATHRECEBE.AsString;
-                  DM.NumerarioCartao  := NumerarioCod;
-                  NomeNumerarioCartao := LblNUMERARIO.Caption;
-                  DM.TotalCartao      := TotalPagar.Value;
-
-                  TemNumerarioCartaoVista := True;
-                  TemNumerarioCartaoPrazo := False;
-                  {VERIFICANDO SE O CRÉDITO DO CARTÃO FOI APROVADO}
-                  if TemNumerarioCartaoPrazo or TemNumerarioCartaoVista then
-                    if not VerificaCartaoCredito then
-                      begin
-                        InformaG('Transação não completada! Troque de numerário ou tente novamente!') ;
-                        TemNumerarioCartaoVista := False;
-                        TemNumerarioCartaoPrazo := False;
-                        Application.Restore;
-                        EstadoRecCred := InformandoNumerario ;
-                        PreparaEstadoRec(EstadoRecCred) ;
-                        Exit;
-                      end;
-
-                  NroCupomFiscal := '' ;
-                  if not AbrirCupomFiscal(ECFAtual, PortaECFAtual, NroCupomFiscal) and (ECFAtual <> 'SIGTRON FS300') then
-                    begin
-                      InformaG('Problemas ao tentar abrir o cupom!') ;
-                      EntradaDados.SelectAll ;
-                      EstadoRecCred := InformandoNumerario ;
-                      PreparaEstadoRec(EstadoRecCred) ;
-                      Exit;
-                    end ;
-                  if not ImprimeItemECF(ECFAtual,                                 {Impressora}
-                                        PortaECFAtual,                            {Porta}
-                                        '',                                       {Numitem}
-                                        '0',                                      {Codigo}
-                                        'Recebimento Prestacao',                  {Descricao}
-                                        TributoTaxaCrediario,                     {Tributo}
-                                        '',                                       {TipoDesc}
-                                        'UN',                                     {Unid}
-                                        1,                                        {Qtde}
-                                        dm.TotalCartao,                           {Valor}
-                                        0,                                        {Percdesc}
-                                        0,                                        {Vlrdesco}
-                                        2                                         {NumDecQuant}) then
-                    begin
-                      CancelarCupomFiscal(ECFAtual,PortaECFAtual);
-                      InformaG('Problemas ao imprimir o item no ECF!');
-                      EntradaDados.SelectAll ;
-                      EstadoRecCred := InformandoNumerario ;
-                      PreparaEstadoRec(EstadoRecCred) ;
-                      Exit;
-                    end;
-
-                  //EMITIR FECHAMENTO CUPOM FISCAL
-                  FechouCupomFiscal   := False;
-                  EnviouNumerariosECF := False;
-                  repeat
-                    if not FecharCupomFiscal(ECFAtual,
-                                             PortaECFAtual,
-                                             Ecf_CNFV,
-                                             StrToFloat(FormatFloat('##0.00', dm.TotalCartao)),
-                                             0, // ACRESCIMO
-                                             0, // DESCONTO
-                                             0, // TROCO
-                                             SQLParcelasVistaVendaTemp,
-                                             SQLParcelasPrazoVendaTemp,
-                                             NomeClienteRec,
-                                             EnderecoClienteRec,
-                                             CidadeClienteRec,
-                                             '',
-                                             '',
-                                             '',
-                                             '',
-                                             '') then
-                      begin
-                        if Pergunta('SIM','A impressora fiscal não responde. Deseja tentar novamente?') then
-                          FechouCupomFiscal := False
-                        else
-                          Break;
-                      end
-                    else
-                      FechouCupomFiscal := True;
-                  until
-                    FechouCupomFiscal;
-                  // Se nao conseguir fechar o cupom
-                  if not FechouCupomFiscal then
-                    begin
-                      if RetornoCartao.TransacaoAutorizada then
-                        begin
-                          Msg := 'A Transação de Transferência Eletrônica de Fundos(TEF) foi cancelada!' + #13 + #13 +
-                                 'Rede --> ' + RetornoCartao.NomeRede + #13 +
-                                 'Documento(NSU) --> ' + RetornoCartao.NroTransacao + #13;
-                          if RetornoCartao.ValorTotal <> ' ' then
-                            Msg := Msg + 'Valor --> ' + FormatFloat('##0.00',StrToFloat(RetornoCartao.ValorTotal)/ 100);
-                          Application.MessageBox(PChar(Msg),'Atenção',MB_OK + MB_SYSTEMMODAL + MB_ICONINFORMATION + MB_SETFOREGROUND);
-                          Confirma(RetornoCartao.NomeRede,RetornoCartao.NroTransacao,RetornoCartao.Finalizacao,False);
-                        end;
-                      Application.Restore;
-                      EntradaDados.SelectAll ;
-                      EstadoRecCred := InformandoNumerario ;
-                      PreparaEstadoRec(EstadoRecCred) ;
-                      Exit;
-                    end;
-                  // IMPRIME AUTORIZACAO DO CARTAO DE CREDITO
-                  if RetornoCartao.TransacaoAutorizada then
-                    begin
-                      LockWindowUpdate(FormTelaRecebimentoCrediario.Handle);
-                      DadosImpressora.ECFAtual           := ECFAtual;
-                      DadosImpressora.PortaECFAtual      := PortaECFAtual;
-                      DadosImpressora.TotNumECFImp       := RetornaTotalizadorNumerarioECF(Ecf_ID,dm.NumerarioCartao);
-                      DadosImpressora.Ecf_CNFV           := Ecf_CNFV;
-                      DadosImpressora.Ecf_ID             := Ecf_ID;
-                      DadosImpressora.NroCupomFiscal     := NroCupomFiscal;
-                      if (ECFAtual = 'DARUMA FS345') then
-                        DadosImpressora.DescricaoNumerario := RetornaTotalizadorNumerarioECFDarumaFS345(Ecf_ID, dm.NumerarioCartao)
-                      else
-                        DadosImpressora.DescricaoNumerario := NomeNumerarioCartao;
-                      DadosImpressora.ValorImp           := dm.TotalCartao;
-
-                      // ENVIAR O NRO DE VIAS QUE DESEJA IMPRIMIR
-                      if RetornoCartao.QtdeLinhas > 0 then
-                        begin
-                          if not ImprimeRetorno(RetornoCartao,DadosImpressora,NroViasTEF,False) then
-                            CancelarCupomFiscal(ECFAtual,PortaECFAtual);
-                        end
-                      else
-                        begin
-                          if (Copy(TipoPadrao,1,3) = 'CHQ') and (RetornoCartao.TransacaoAutorizada) then
-                            begin
-                              Application.Restore;
-                              Informa(RetornoCartao.RetornoOperador);
-                            end;
-                        end;
-                    end;
-                   LockWindowUpdate(0);
-                end;
-            end;
           // Imprimir Cheque com o Total das Prestações selecionadas
           if (TipoPadrao = 'CHQV') or (TipoPadrao = 'CHQP') then
-            begin
-              if not dm.TblCheques.Active then
-                dm.TblCheques.Open ;
-              while not dm.TblCheques.eof do
-                dm.TblCheques.delete;
-              dm.TblCheques.Append ;
-              dm.TblChequesDataVecto.Value := DataBaixa ;
-              dm.TblChequesValor.Value     := TotalPagar.Value ;
-              dm.TblCheques.Post ;
-              Application.CreateForm(TFormTelaDadosCheque, FormTelaDadosCheque) ;
-              FormTelaDadosCheque.ShowModal;
-//              if dm.TblCheques.Active then dm.TblCheques.Close ;
-
-              {Cadastrar o Cheque Recebido}
-              DM.SQLContasReceber.Close ;
-              DM.SQLContasReceber.MacroByName('MFiltro').Value := 'CTRCA13ID is null' ;
-              DM.SQLContasReceber.Open ;
-
-
-              DM.sqlConsulta.Close;
-              DM.sqlconsulta.sql.Clear;
-              DM.sqlconsulta.sql.Text := 'select max(CTRCICOD) from contasreceber where empricod=' + EmpresaPadrao + ' and termicod=' + IntToStr(TerminalAtual);
-              DM.sqlconsulta.open;
-
-              if (dm.sqlconsulta.fieldbyname('MAX').Value > 0) then
-                CodProxCntRecTemp := dm.sqlconsulta.fieldbyname('MAX').Value + 1
-              else
-                CodProxCntRecTemp := 1;
-              dm.sqlconsulta.Close;
-//              Inc(CodProxCntRecTemp) ;
-
-              CodNextContaRec := FormatFloat('000' ,StrToFloat(EmpresaPadrao)) +
-                                 FormatFloat('000' ,StrToFloat(IntToStr(TerminalAtual))) +
-                                 Format('%.6d', [CodProxCntRecTemp]) ;
-              CodNextContaRec := CodNextContaRec + DigitVerifEAN(CodNextContaRec)  ;
-
-              DM.SQLContasReceber.Append ;
-              DM.SQLContasReceberCTRCA13ID.Value         := CodNextContaRec ;
-              DM.SQLContasReceberEMPRICOD.AsString       := EmpresaPadrao ;
-              DM.SQLContasReceberTERMICOD.Value          := TerminalAtual ;
-              DM.SQLContasReceberCTRCICOD.Value          := CodProxCntRecTemp ;
-              DM.SQLContasReceberCLIEA13ID.Value         := ClienteVenda ;
-              DM.SQLContasReceberCTRCCSTATUS.Value       := 'A' ;
-              DM.SQLContasReceberCTRCCTIPOREGISTRO.Value := 'N';
-              DM.SQLContasReceberCTRCINROPARC.Value      := 0;
-              DM.SQLContasReceberCTRCN2DESCFIN.Value     := 0 ;
-              DM.SQLContasReceberCTRCN2TXJURO.Value      := 0 ;
-              DM.SQLContasReceberCTRCN2TXMULTA.Value     := 0 ;
-              DM.SQLContasReceberCTRCN2VLR.Value         := TotalPagar.Value ;
-              DM.SQLContasReceberCTRCA5TIPOPADRAO.Value  := TipoPadrao ;
-              DM.SQLContasReceberCTRCN2TOTREC.Value      := 0 ;
-              DM.SQLContasReceberCTRCN2TOTJUROREC.Value  := 0 ;
-              DM.SQLContasReceberCTRCN2TOTMULTAREC.Value := 0 ;
-              DM.SQLContasReceberCTRCN2TOTDESCREC.Value  := 0 ;
-              //DADOS CHEQUE
-              DM.SQLContasReceberBANCA5CODCHQ.Value      := dm.TblChequesBANCA5COD.AsString ;
-              DM.SQLContasReceberCTRCA10AGENCIACHQ.Value := dm.TblChequesAGENCIA.AsString ;
-              DM.SQLContasReceberCTRCA15CONTACHQ.Value   := dm.TblChequesCONTA.AsString ;
-              DM.SQLContasReceberCTRCA15NROCHQ.Value     := dm.TblChequesNroCheque.AsString ;
-              DM.SQLContasReceberCTRCA60TITULARCHQ.Value := dm.TblChequesTITULAR.AsString ;
-              DM.SQLContasReceberCTRCA20CGCCPFCHQ.Value  := dm.TblChequesCGCCPF.AsString ;
-              if dm.TblChequesDataVecto.AsVariant <> Null then
-                DM.SQLContasReceberCTRCDVENC.AsDateTime  := dm.TblChequesDataVecto.AsDateTime ;
-              DM.SQLContasReceberALINICOD.AsVariant      := dm.TblChequesALINICOD.AsVariant ;
-              DM.SQLContasReceberPORTICOD.AsVariant      := dm.TblChequesPORTICOD.AsVariant ;
-              DM.SQLContasReceberPENDENTE.Value          := 'S' ;
-              DM.SQLContasReceberREGISTRO.Value          := Now ;
-              try
-                DM.SQLContasReceber.Post ;
-              except
-                DM.SQLContasReceber.Cancel ;
-              end;
-            end;
+          begin
+            TipoPadraoCHQ;
+          end;
 
           {Grava Movimento Caixa}
           DM.SQLTemplate.Close ;
@@ -1683,18 +1385,6 @@ begin
           SQLParcelasReceberTemp.First ;
           while not SQLParcelasReceberTemp.EOF do
             begin
-              // Teste para ver se ja recebeu essa Parcela hoje!
-              { MakeWindowMessage('Consultando Recebimento...');
-              DM.SQLTemplate.Close ;
-              DM.SQLTemplate.SQL.Clear ;
-              DM.SQLTemplate.SQL.Add('select CTRCA13ID from RECEBIMENTO where CTRCA13ID = "' + SQLParcelasReceberTempCTRCA13ID.Value + '"');
-              DM.SQLTemplate.SQL.Add(' and RECEDRECTO = "' + FormatDateTime('mm/dd/yyyy',DataBaixa) + '"');
-              DM.SQLTemplate.Open;
-              DestroyWindow;
-              if not DM.SQLTemplate.Eof then
-                Exit; }
-
-
               try
                 DataVencto := SQLLocate('CONTASRECEBER','CTRCA13ID','CTRCDEMIS',QuotedStr(SQLParcelasReceberTempCTRCA13ID.AsString));
               except
@@ -1784,129 +1474,20 @@ begin
                   //GRAVAR MOVIMENTO CAIXA VALOR LIQUIDO DA PARCELA
                   if SQLParcelasReceberTempN2VLRPAGAR.Value > 0 then
                     begin
-                      MakeWindowMessage('Gravando Movimento de Caixa...');
 
-                      DM.SQLTemplate.Close ;
-                      DM.SQLTemplate.SQL.Clear ;
-                      DM.SQLTemplate.SQL.Add('select OPCXICOD from OPERACAOCAIXA') ;
-                      DM.SQLTemplate.SQL.Add('where OPCXA5SIGLA = "RCCRD"') ;
-                      DM.SQLTemplate.Open ;
-                      if not DM.SQLTemplate.EOF then
-                        begin
-                          if SQLParcelasReceberTempINROPARC.Value > 0 then
-                            HistCx := ''
-                          else
-                            HistCx := 'AUT.NUMER.A VISTA' ;
-
-                          GravaMovimentoCaixa( DM.SQLTotalizadorCaixa,
-                                               DM.SQLTotalizar,
-                                               EmpresaPadrao,
-                                               IntToStr(TerminalAtual),
-                                               FormatDateTime('mm/dd/yyyy', Now),
-                                               NumerarioCod,
-                                               DM.SQLTemplate.Fieldbyname('OPCXICOD').Value,
-                                               IntToStr(DM.UsuarioAtual),
-                                               SQLParcelasReceberTempA13CUPOID.Value + '/' +
-                                               SQLParcelasReceberTempINROPARC.AsString,
-                                               SQLParcelasReceberTempN2VLRAMORT.Value,
-                                               SQLParcelasReceberTempN2VLRJURO.Value,  //WMOVICAIXN2VLRJURO
-                                               SQLParcelasReceberTempN2VLRMULTA.Value, //WMOVICAIXN2VLRMULTA
-                                               SQLParcelasReceberTempN2VLRDESC.Value,  //WMOVICAIXN2VLRDEC
-                                               '0',{WMVCXA6NUMCUPOM}
-                                               'C',{WTIPO}
-                                               SQLParcelasReceberTempNOMECLIENTE.Value +' - '+ HistCx,{WMVCXA255HIST}
-                                               'N',
-                                               '') ;
-                        end ;
-                      //GRAVAR MOVIMENTO CAIXA REF. AO JURO DA PARCELA
-                      if (SQLParcelasReceberTempN2VLRJURO.Value > 0) and (SQLParcelasReceberTempBAIXAR_PARCELA.AsString <> 'S') then
-                      begin
-                          DM.SQLTemplate.Close ;
-                          DM.SQLTemplate.SQL.Clear ;
-                          DM.SQLTemplate.SQL.Add('select OPCXICOD from OPERACAOCAIXA') ;
-                          DM.SQLTemplate.SQL.Add('where OPCXA5SIGLA = "JURRC"') ;
-                          DM.SQLTemplate.Open ;
-                          if not DM.SQLTemplate.EOF then
-                            GravaMovimentoCaixa( DM.SQLTotalizadorCaixa,
-                                                 DM.SQLTotalizar,
-                                                 EmpresaPadrao,
-                                                 IntToStr(TerminalAtual),
-                                                 FormatDateTime('mm/dd/yyyy', Now),
-                                                 NumerarioCod, //'Null',
-                                                 DM.SQLTemplate.Fieldbyname('OPCXICOD').Value,
-                                                 IntToStr(DM.UsuarioAtual),
-                                                 SQLParcelasReceberTempA13CUPOID.Value + '/' +
-                                                 SQLParcelasReceberTempINROPARC.AsString,
-                                                 SQLParcelasReceberTempN2VLRJURO.Value,
-                                                 0,//WMOVICAIXN2VLRJURO
-                                                 0,//WMOVICAIXN2VLRMULTA
-                                                 0,//WMOVICAIXN2VLRDEC
-                                                 '0',{WMVCXA6NUMCUPOM}
-                                                 'C',{WTIPO}
-                                                 SQLParcelasReceberTempNOMECLIENTE.Value,{WMVCXA255HIST}
-                                                 'N',
-                                                 '') ;
-                      end ;
-                      //GRAVAR MOVIMENTO CAIXA REF. A MULTA DA PARCELA
-                      if (SQLParcelasReceberTempN2VLRMULTA.Value > 0) and (SQLParcelasReceberTempBAIXAR_PARCELA.AsString <> 'S') then
-                      begin
-                          DM.SQLTemplate.Close ;
-                          DM.SQLTemplate.SQL.Clear ;
-                          DM.SQLTemplate.SQL.Add('select OPCXICOD from OPERACAOCAIXA') ;
-                          DM.SQLTemplate.SQL.Add('where OPCXA5SIGLA = "MULRC"') ;
-                          DM.SQLTemplate.Open ;
-                          if not DM.SQLTemplate.Eof then
-                            GravaMovimentoCaixa( DM.SQLTotalizadorCaixa,
-                                                 DM.SQLTotalizar,
-                                                 EmpresaPadrao,
-                                                 IntToStr(TerminalAtual),
-                                                 FormatDateTime('mm/dd/yyyy', Now),
-                                                 NumerarioCod, //'Null',
-                                                 DM.SQLTemplate.Fieldbyname('OPCXICOD').Value,
-                                                 IntToStr(DM.UsuarioAtual),
-                                                 SQLParcelasReceberTempA13CUPOID.Value + '/' +
-                                                 SQLParcelasReceberTempINROPARC.AsString,
-                                                 SQLParcelasReceberTempN2VLRMULTA.Value,
-                                                 0,//WMOVICAIXN2VLRJURO
-                                                 0,//WMOVICAIXN2VLRMULTA
-                                                 0,//WMOVICAIXN2VLRDEC
-                                                 '0',{WMVCXA6NUMCUPOM}
-                                                 'C',{WTIPO}
-                                                 SQLParcelasReceberTempNOMECLIENTE.Value {WMVCXA255HIST},
-                                                 'N',
-                                                 '') ;
-                      end ;
-                      //GRAVAR MOVIMENTO CAIXA REF. AO DESCONTO DA PARCELA
-                      if SQLParcelasReceberTempN2VLRDESC.Value > 0 then
-                        begin
-                          DM.SQLTemplate.Close ;
-                          DM.SQLTemplate.SQL.Clear ;
-                          DM.SQLTemplate.SQL.Add('select OPCXICOD from OPERACAOCAIXA') ;
-                          DM.SQLTemplate.SQL.Add('where OPCXA5SIGLA = "DESRC"') ;
-                          DM.SQLTemplate.Open ;
-                          if not DM.SQLTemplate.Eof then
-                            GravaMovimentoCaixa( DM.SQLTotalizadorCaixa,
-                                                 DM.SQLTotalizar,
-                                                 EmpresaPadrao,
-                                                 IntToStr(TerminalAtual),
-                                                 FormatDateTime('mm/dd/yyyy', Now),
-                                                 NumerarioCod, //'Null',
-                                                 DM.SQLTemplate.Fieldbyname('OPCXICOD').Value,
-                                                 IntToStr(DM.UsuarioAtual),
-                                                 SQLParcelasReceberTempA13CUPOID.Value + '/' +
-                                                 SQLParcelasReceberTempINROPARC.AsString,
-                                                 SQLParcelasReceberTempN2VLRDESC.Value,
-                                                 0,//WMOVICAIXN2VLRJURO
-                                                 0,//WMOVICAIXN2VLRMULTA
-                                                 0,//WMOVICAIXN2VLRDEC
-                                                 '0',{WMVCXA6NUMCUPOM}
-                                                 'D',{WTIPO}
-                                                 SQLParcelasReceberTempNOMECLIENTE.Value {WMVCXA255HIST},
-                                                 'N',
-                                                 '') ;
-                        end ;
-
-                      DestroyWindow;
+                      if SQLMovCaixa.Locate('DOC_ORIGEM','REC CREDIARIO',[loCaseInsensitive]) then
+                        SQLMovCaixa.Edit
+                      else
+                        SQLMovCaixa.Insert;
+                      SQLMovCaixaID_CUPOM.AsString := SQLParcelasReceberTempA13NRODOC.AsString;
+                      SQLMovCaixaVLR_AMORTIZACAO.AsFloat := SQLMovCaixaVLR_AMORTIZACAO.AsFloat + SQLParcelasReceberTempN2VLRAMORT.AsFloat;
+                      SQLMovCaixaVLR_JUROS.AsFloat := SQLMovCaixaVLR_JUROS.AsFloat + SQLParcelasReceberTempN2VLRJURO.AsFloat;
+                      SQLMovCaixaVLR_MULTA.AsFloat := SQLMovCaixaVLR_MULTA.AsFloat + SQLParcelasReceberTempN2VLRMULTA.AsFloat;
+                      SQLMovCaixaVLR_DESC.AsFloat := SQLMovCaixaVLR_DESC.AsFloat + SQLParcelasReceberTempN2VLRDESC.AsFloat;
+                      SQLMovCaixaNOME_CLIENTE.AsString := SQLParcelasReceberTempNOMECLIENTE.AsString;
+                      SQLMovCaixaNRO_PARCELAS.AsString := SQLMovCaixaNRO_PARCELAS.AsString + '/' + SQLParcelasReceberTempINROPARC.AsString;
+                      SQLMovCaixaDOC_ORIGEM.AsString := 'REC CREDIARIO';
+                      SQLMovCaixa.Post;
 
                       if (Dm.SQLTerminalAtivoTERMCAUTENTIMPMATRI.AsString <> 'S') and
                          (Dm.SQLTerminalAtivoTERMCNAOAUTRCTOCRD.AsString <> 'S')  and
@@ -2215,6 +1796,12 @@ begin
                 end;
               SQLParcelasReceberTemp.Next;
             end;
+
+            //gravar movimento caixa - o motivo de criar um clientdataset para gravação foi porque pode ter várias parcelas e vários numerários.
+            SQLMovCaixa.Close;
+            SQLMovCaixa.Open;
+            SQLMovCaixa.First;
+            GravarMovimentoCaixaCrediario;
 
           if DM.SQLTerminalAtivoTERMCIMPCOMPTOTREC.AsString = 'S' then
             begin
@@ -2586,8 +2173,7 @@ begin
   Height := FormTelaItens.Height ;
   Width  := FormTelaItens.Width ; }
 
-  LblTROCO.Caption := '' ;
-  LblTROCO.Refresh ;
+  ValorTroco.Value := 0;
   TotalTroco := 0;
 
   EstadoRecCred := InformandoDocumento ;
@@ -2797,7 +2383,7 @@ begin
   if EstadoRecCred = InformandoValorRecebido then
   begin
     EntradaDados.Clear ;
-    EntradaDados.Text := FormatFloat('###0.00', TotalPagar.Value) ;
+    EntradaDados.Text := FormatFloat('###0.00', ValorEntrada.Value - ValorRecebido.Value) ;
     EntradaDados.SelectAll ;
     LblInstrucoes.Caption := 'INFORME O VALOR RECEBIDO' ;
     LblInstrucoes.Refresh ;
@@ -2856,6 +2442,18 @@ begin
     Close ;
     exit ;
   end ;
+  DM.SQLTemplate.Close ;
+  DM.SQLTemplate.SQL.Clear ;
+  DM.SQLTemplate.SQL.Add('delete from PARCELASVISTAVENDATEMP') ;
+  DM.SQLTemplate.SQL.Add('where TERMICOD = ' + IntToStr(TerminalAtual)) ;
+  DM.SQLTemplate.ExecSQL ;
+
+  SQLParcelasVistaVendaTemp.Close ;
+  SQLParcelasVistaVendaTemp.SQL.Clear ;
+  SQLParcelasVistaVendaTemp.SQL.Add('select * from PARCELASVISTAVENDATEMP') ;
+  SQLParcelasVistaVendaTemp.SQL.Add('where TERMICOD = ' + IntToStr(TerminalAtual)) ;
+  SQLParcelasVistaVendaTemp.Open ;
+
 end;
 
 procedure TFormTelaRecebimentoCrediario.SQLParcelasReceberTempNewRecord(
@@ -3460,6 +3058,502 @@ begin
      Showmessage('Erro ao acessar a base local: ' + e.Message);
     end;
   end;
+end;
+
+procedure TFormTelaRecebimentoCrediario.Pagamento_Crediario;
+var
+  ValorControle : Real;
+begin
+  DM.SQLTemplate.Close ;
+  DM.SQLTemplate.SQL.Clear ;
+  DM.SQLTemplate.SQL.Add('select * from PARCELASVISTAVENDATEMP') ;
+  DM.SQLTemplate.SQL.Add('where TERMICOD = ' + IntToStr(TerminalAtual)) ;
+  DM.SQLTemplate.SQL.Add('and   NUMEICOD = ' + IntToStr(NumerarioVista)) ;
+  DM.SQLTemplate.Open ;
+  if DM.SQLTemplate.EOF then
+  begin
+    ValorDevido := ValorEntrada.Value - ValorRecebido.Value ;
+    AtualizarSaldoEdit;
+    SQLParcelasVistaVendaTemp.Last ;
+    NroIt := SQLParcelasVistaVendaTempNROITEM.Value + 1 ;
+
+    SQLParcelasVistaVendaTemp.Append ;
+    SQLParcelasVistaVendaTempTERMICOD.Value := TerminalAtual ;
+    SQLParcelasVistaVendaTempNROITEM.Value  := NroIt ;
+    SQLParcelasVistaVendaTempNUMEICOD.Value := NumerarioVista ;
+    ValorControle := StrToFloatDef(EntradaDados.Text,0);
+    if (ValorControle > ValorDevido) and (ValorDevido > 0) then
+        SQLParcelasVistaVendaTempVALORPARC.Value := StrToFloat(EntradaDados.Text) - (StrToFloat(EntradaDados.Text) - ValorDevido)
+    else
+      SQLParcelasVistaVendaTempVALORPARC.Value := StrToFloatDef(EntradaDados.Text,0) ;
+    SQLParcelasVistaVendaTempTIPOPADR.Value    := TipoPadrao ;
+    SQLParcelasVistaVendaTemp.Post ;
+  end
+  else
+  begin
+    SQLParcelasVistaVendaTemp.Close ;
+    SQLParcelasVistaVendaTemp.SQL.Clear ;
+    SQLParcelasVistaVendaTemp.SQL.Add('select * from PARCELASVISTAVENDATEMP') ;
+    SQLParcelasVistaVendaTemp.SQL.Add('where TERMICOD = ' + IntToStr(TerminalAtual)) ;
+    SQLParcelasVistaVendaTemp.SQL.Add('and   NUMEICOD = ' + IntToStr(NumerarioVista)) ;
+    SQLParcelasVistaVendaTemp.Open ;
+
+    ValorDevido := TotalPagar.Value - ValorRecebido.value ;
+    AtualizarSaldoEdit;
+
+    SQLParcelasVistaVendaTemp.Edit ;
+    ValorControle := StrToFloatDef(EntradaDados.Text,0);
+    if (ValorControle > ValorDevido) and (ValorDevido > 0) then
+      SQLParcelasVistaVendaTempVALORPARC.Value := ValorDevido + SQLParcelasVistaVendaTempVALORPARC.Value
+    else
+      SQLParcelasVistaVendaTempVALORPARC.Value := StrToFloatDef(EntradaDados.Text,0) + SQLParcelasVistaVendaTempVALORPARC.Value;
+    SQLParcelasVistaVendaTempTIPOPADR.Value  := TipoPadrao ;
+    SQLParcelasVistaVendaTemp.Post ;
+  end;
+//
+  SQLParcelasVistaVendaTemp.Close ;
+  SQLParcelasVistaVendaTemp.SQL.Clear ;
+  SQLParcelasVistaVendaTemp.SQL.Add('select * from PARCELASVISTAVENDATEMP') ;
+  SQLParcelasVistaVendaTemp.SQL.Add('where TERMICOD = ' + IntToStr(TerminalAtual)) ;
+  SQLParcelasVistaVendaTemp.Open ;
+
+  ValorRecebido.value := ValorRecebido.value + StrToFloatDef(EntradaDados.Text,0) ;
+  VarValorRecebido    := ValorRecebido.Value;
+
+  if ValorRecebido.Value >= TotalPagar.Value then
+  begin
+    if EstadoRecCredAnt = '' then
+      begin
+        if SQLParcelasVistaVendaTemp.RecordCount = 0 then
+          EstadoRecCred := FinalizandoRecebimento
+        else
+          EstadoRecCred := InformandoNumerario;
+      end
+    else
+      EstadoRecCred := EstadoRecCredAnt;
+    EstadoRecCredAnt := '' ;
+    PreparaEstadoRec(EstadoRecCred) ;
+  end
+  else
+  begin
+    EntradaDados.Clear ;
+    if EstadoRecCredAnt = '' then
+      EstadoRecCred := InformandoNumerario
+    else
+      EstadoRecCred := EstadoRecCredAnt;
+    EstadoRecCredAnt := '';
+    PreparaEstadoRec(EstadoRecCred);
+  end;
+
+end;
+
+procedure TFormTelaRecebimentoCrediario.AtualizarSaldoEdit;
+begin
+  edtSaldo.Text := FormatFloat('##0.00', ValorEntrada.Value - ValorRecebido.Value) ;
+end;
+
+procedure TFormTelaRecebimentoCrediario.TipoPadraoCRT;
+begin
+  SQLParcelasVistaVendaTemp.Close;
+
+  SQLParcelasVistaVendaTemp.Close ;
+  SQLParcelasVistaVendaTemp.SQL.Clear ;
+  SQLParcelasVistaVendaTemp.SQL.Add('select * from PARCELASVISTAVENDATEMP') ;
+  SQLParcelasVistaVendaTemp.SQL.Add('order by VALORPARC asc') ;
+  SQLParcelasVistaVendaTemp.MacroByName('MFiltro').Value := 'TERMICOD = '+IntToStr(TerminalAtual);
+  SQLParcelasVistaVendaTemp.Open;
+  while SQLParcelasVistaVendaTemp.Eof do
+  begin
+    SQLProvedorCartao.Close;
+    SQLProvedorCartao.MacroByName('MFiltro').Value := 'PRCAA13ID = "'+ProvedorCartao+'"';
+    SQLProvedorCartao.Open;
+    if not SQLProvedorCartao.IsEmpty then
+    begin
+      ProvedorCartao      := SQLProvedorCartaoPRCAA60CARTAO.AsString;
+      SendDirectory       := SQLProvedorCartaoPRCATPATHENVIA.AsString;
+      ReceiveDirectory    := SQLProvedorCartaoPRCATPATHRECEBE.AsString;
+      DM.NumerarioCartao  := NumerarioCod;
+      NomeNumerarioCartao := LblNUMERARIO.Caption;
+      DM.TotalCartao      := TotalPagar.Value;
+
+      TemNumerarioCartaoVista := True;
+      TemNumerarioCartaoPrazo := False;
+      {VERIFICANDO SE O CRÉDITO DO CARTÃO FOI APROVADO}
+      if TemNumerarioCartaoPrazo or TemNumerarioCartaoVista then
+        if not VerificaCartaoCredito then
+         begin
+           InformaG('Transação não completada! Troque de numerário ou tente novamente!') ;
+           TemNumerarioCartaoVista := False;
+           TemNumerarioCartaoPrazo := False;
+           Application.Restore;
+           EstadoRecCred := InformandoNumerario ;
+           PreparaEstadoRec(EstadoRecCred) ;
+           Exit;
+         end;
+
+      NroCupomFiscal := '' ;
+      if not AbrirCupomFiscal(ECFAtual, PortaECFAtual, NroCupomFiscal) and (ECFAtual <> 'SIGTRON FS300') then
+      begin
+        InformaG('Problemas ao tentar abrir o cupom!') ;
+        EntradaDados.SelectAll ;
+        EstadoRecCred := InformandoNumerario ;
+        PreparaEstadoRec(EstadoRecCred) ;
+        Exit;
+      end ;
+      if not ImprimeItemECF(ECFAtual,                                 {Impressora}
+                            PortaECFAtual,                            {Porta}
+                            '',                                       {Numitem}
+                            '0',                                      {Codigo}
+                            'Recebimento Prestacao',                  {Descricao}
+                            TributoTaxaCrediario,                     {Tributo}
+                            '',                                       {TipoDesc}
+                            'UN',                                     {Unid}
+                            1,                                        {Qtde}
+                            dm.TotalCartao,                           {Valor}
+                            0,                                        {Percdesc}
+                            0,                                        {Vlrdesco}
+                            2                                         {NumDecQuant}) then
+      begin
+         CancelarCupomFiscal(ECFAtual,PortaECFAtual);
+         InformaG('Problemas ao imprimir o item no ECF!');
+         EntradaDados.SelectAll ;
+         EstadoRecCred := InformandoNumerario ;
+         PreparaEstadoRec(EstadoRecCred) ;
+         Exit;
+      end;
+
+      //EMITIR FECHAMENTO CUPOM FISCAL
+      FechouCupomFiscal   := False;
+      EnviouNumerariosECF := False;
+      repeat
+        if not FecharCupomFiscal(ECFAtual,
+                                 PortaECFAtual,
+                                 Ecf_CNFV,
+                                 StrToFloat(FormatFloat('##0.00', dm.TotalCartao)),
+                                 0, // ACRESCIMO
+                                 0, // DESCONTO
+                                 0, // TROCO
+                                 SQLParcelasVistaVendaTemp,
+                                 SQLParcelasPrazoVendaTemp,
+                                 NomeClienteRec,
+                                 EnderecoClienteRec,
+                                 CidadeClienteRec,
+                                 '',
+                                 '',
+                                 '',
+                                 '',
+                                 '') then
+          begin
+            if Pergunta('SIM','A impressora fiscal não responde. Deseja tentar novamente?') then
+              FechouCupomFiscal := False
+            else
+              Break;
+          end
+        else
+          FechouCupomFiscal := True;
+      until
+        FechouCupomFiscal;
+      // Se nao conseguir fechar o cupom
+      if not FechouCupomFiscal then
+      begin
+        if RetornoCartao.TransacaoAutorizada then
+          begin
+            Msg := 'A Transação de Transferência Eletrônica de Fundos(TEF) foi cancelada!' + #13 + #13 +
+                   'Rede --> ' + RetornoCartao.NomeRede + #13 +
+                   'Documento(NSU) --> ' + RetornoCartao.NroTransacao + #13;
+            if RetornoCartao.ValorTotal <> ' ' then
+              Msg := Msg + 'Valor --> ' + FormatFloat('##0.00',StrToFloat(RetornoCartao.ValorTotal)/ 100);
+            Application.MessageBox(PChar(Msg),'Atenção',MB_OK + MB_SYSTEMMODAL + MB_ICONINFORMATION + MB_SETFOREGROUND);
+            Confirma(RetornoCartao.NomeRede,RetornoCartao.NroTransacao,RetornoCartao.Finalizacao,False);
+          end;
+        Application.Restore;
+        EntradaDados.SelectAll ;
+        EstadoRecCred := InformandoNumerario ;
+        PreparaEstadoRec(EstadoRecCred) ;
+        Exit;
+      end;
+      // IMPRIME AUTORIZACAO DO CARTAO DE CREDITO
+      if RetornoCartao.TransacaoAutorizada then
+      begin
+        LockWindowUpdate(FormTelaRecebimentoCrediario.Handle);
+        DadosImpressora.ECFAtual           := ECFAtual;
+        DadosImpressora.PortaECFAtual      := PortaECFAtual;
+        DadosImpressora.TotNumECFImp       := RetornaTotalizadorNumerarioECF(Ecf_ID,dm.NumerarioCartao);
+        DadosImpressora.Ecf_CNFV           := Ecf_CNFV;
+        DadosImpressora.Ecf_ID             := Ecf_ID;
+        DadosImpressora.NroCupomFiscal     := NroCupomFiscal;
+        if (ECFAtual = 'DARUMA FS345') then
+          DadosImpressora.DescricaoNumerario := RetornaTotalizadorNumerarioECFDarumaFS345(Ecf_ID, dm.NumerarioCartao)
+        else
+          DadosImpressora.DescricaoNumerario := NomeNumerarioCartao;
+        DadosImpressora.ValorImp           := dm.TotalCartao;
+
+         // ENVIAR O NRO DE VIAS QUE DESEJA IMPRIMIR
+        if RetornoCartao.QtdeLinhas > 0 then
+          begin
+            if not ImprimeRetorno(RetornoCartao,DadosImpressora,NroViasTEF,False) then
+              CancelarCupomFiscal(ECFAtual,PortaECFAtual);
+          end
+        else
+        begin
+          if (Copy(TipoPadrao,1,3) = 'CHQ') and (RetornoCartao.TransacaoAutorizada) then
+           begin
+             Application.Restore;
+             Informa(RetornoCartao.RetornoOperador);
+           end;
+        end;
+      end;
+      LockWindowUpdate(0);
+    end;
+    SQLParcelasVistaVendaTemp.Next;
+  end;
+end;
+
+procedure TFormTelaRecebimentoCrediario.TipoPadraoCHQ;
+var
+  CodNextContaRec : string;
+begin
+  if not dm.TblCheques.Active then
+    dm.TblCheques.Open ;
+  while not dm.TblCheques.eof do
+    dm.TblCheques.delete;
+  dm.TblCheques.Append ;
+  dm.TblChequesDataVecto.Value := DataBaixa ;
+  dm.TblChequesValor.Value     := TotalPagar.Value ;
+  dm.TblCheques.Post ;
+  Application.CreateForm(TFormTelaDadosCheque, FormTelaDadosCheque) ;
+  FormTelaDadosCheque.ShowModal;
+//              if dm.TblCheques.Active then dm.TblCheques.Close ;
+
+  {Cadastrar o Cheque Recebido}
+  DM.SQLContasReceber.Close ;
+  DM.SQLContasReceber.MacroByName('MFiltro').Value := 'CTRCA13ID is null' ;
+  DM.SQLContasReceber.Open ;
+
+
+  DM.sqlConsulta.Close;
+  DM.sqlconsulta.sql.Clear;
+  DM.sqlconsulta.sql.Text := 'select max(CTRCICOD) from contasreceber where empricod=' + EmpresaPadrao + ' and termicod=' + IntToStr(TerminalAtual);
+  DM.sqlconsulta.open;
+
+  if (dm.sqlconsulta.fieldbyname('MAX').Value > 0) then
+    CodProxCntRecTemp := dm.sqlconsulta.fieldbyname('MAX').Value + 1
+  else
+    CodProxCntRecTemp := 1;
+  dm.sqlconsulta.Close;
+//              Inc(CodProxCntRecTemp) ;
+
+  CodNextContaRec := FormatFloat('000' ,StrToFloat(EmpresaPadrao)) +
+                     FormatFloat('000' ,StrToFloat(IntToStr(TerminalAtual))) +
+                     Format('%.6d', [CodProxCntRecTemp]) ;
+  CodNextContaRec := CodNextContaRec + DigitVerifEAN(CodNextContaRec)  ;
+
+  DM.SQLContasReceber.Append ;
+  DM.SQLContasReceberCTRCA13ID.Value         := CodNextContaRec ;
+  DM.SQLContasReceberEMPRICOD.AsString       := EmpresaPadrao ;
+  DM.SQLContasReceberTERMICOD.Value          := TerminalAtual ;
+  DM.SQLContasReceberCTRCICOD.Value          := CodProxCntRecTemp ;
+  DM.SQLContasReceberCLIEA13ID.Value         := ClienteVenda ;
+  DM.SQLContasReceberCTRCDEMIS.Value         := Date;
+  DM.SQLContasReceberNUMEICOD.Value          := StrToIntDef(NumerarioCod,0);
+  DM.SQLContasReceberCTRCCSTATUS.Value       := 'A' ;
+  DM.SQLContasReceberCTRCCTIPOREGISTRO.Value := 'N';
+  DM.SQLContasReceberCTRCINROPARC.Value      := 0;
+  DM.SQLContasReceberCTRCN2DESCFIN.Value     := 0 ;
+  DM.SQLContasReceberCTRCN2TXJURO.Value      := 0 ;
+  DM.SQLContasReceberCTRCN2TXMULTA.Value     := 0 ;
+  DM.SQLContasReceberCTRCN2VLR.Value         := TotalPagar.Value ;
+  DM.SQLContasReceberCTRCA5TIPOPADRAO.Value  := TipoPadrao ;
+  DM.SQLContasReceberCTRCN2TOTREC.Value      := 0 ;
+  DM.SQLContasReceberCTRCN2TOTJUROREC.Value  := 0 ;
+  DM.SQLContasReceberCTRCN2TOTMULTAREC.Value := 0 ;
+  DM.SQLContasReceberCTRCN2TOTDESCREC.Value  := 0 ;
+  //DADOS CHEQUE
+  DM.SQLContasReceberBANCA5CODCHQ.Value      := dm.TblChequesBANCA5COD.AsString ;
+  DM.SQLContasReceberCTRCA10AGENCIACHQ.Value := dm.TblChequesAGENCIA.AsString ;
+  DM.SQLContasReceberCTRCA15CONTACHQ.Value   := dm.TblChequesCONTA.AsString ;
+  DM.SQLContasReceberCTRCA15NROCHQ.Value     := dm.TblChequesNroCheque.AsString ;
+  DM.SQLContasReceberCTRCA60TITULARCHQ.Value := dm.TblChequesTITULAR.AsString ;
+  DM.SQLContasReceberCTRCA20CGCCPFCHQ.Value  := dm.TblChequesCGCCPF.AsString ;
+  if dm.TblChequesDataVecto.AsVariant <> Null then
+    DM.SQLContasReceberCTRCDVENC.AsDateTime  := dm.TblChequesDataVecto.AsDateTime ;
+  DM.SQLContasReceberALINICOD.AsVariant      := dm.TblChequesALINICOD.AsVariant ;
+  DM.SQLContasReceberPORTICOD.AsVariant      := dm.TblChequesPORTICOD.AsVariant ;
+  DM.SQLContasReceberPENDENTE.Value          := 'S' ;
+  DM.SQLContasReceberREGISTRO.Value          := Now ;
+  try
+    DM.SQLContasReceber.Post ;
+  except
+    DM.SQLContasReceber.Cancel ;
+  end;
+
+end;
+
+procedure TFormTelaRecebimentoCrediario.GravarMovimentoCaixaCrediario;
+var
+  OperacaoCod, HistCx : string;
+  vCont, vUltimo : integer;
+  vValorJuros, vValorMulta, vValorDesconto : Real;
+begin
+  MakeWindowMessage('Gravando Movimento de Caixa...');
+  vValorJuros := 0;
+  vValorMulta := 0;
+  vValorDesconto := 0;
+  DM.SQLTemplate.Close ;
+  DM.SQLTemplate.SQL.Clear ;
+  DM.SQLTemplate.SQL.Add('select OPCXICOD from OPERACAOCAIXA') ;
+  DM.SQLTemplate.SQL.Add('where OPCXA5SIGLA = "RCCRD"') ;
+  DM.SQLTemplate.Open ;
+  if not DM.SQLTemplate.EOF then
+    begin
+      OperacaoCod := DM.SQLTemplate.Fieldbyname('OPCXICOD').Value;
+      if SQLMovCaixaNRO_PARCELAS.AsString <> EmptyStr then
+        HistCx := ''
+      else
+        HistCx := 'AUT.NUMER.A VISTA' ;
+      vCont := 0;
+
+      SQLParcelasVistaVendaTemp.Close ;
+      SQLParcelasVistaVendaTemp.SQL.Clear ;
+      SQLParcelasVistaVendaTemp.SQL.Add('select * from PARCELASVISTAVENDATEMP') ;
+      SQLParcelasVistaVendaTemp.SQL.Add('where TERMICOD = ' + IntToStr(TerminalAtual)) ;
+      SQLParcelasVistaVendaTemp.SQL.Add('order by VALORPARC asc') ;
+      SQLParcelasVistaVendaTemp.Open ;
+
+      vUltimo := SQLParcelasVistaVendaTemp.RecordCount;
+      while not SQLParcelasVistaVendaTemp.Eof do
+      begin
+        vCont := vCont + 1;
+        NumerarioCod := SQLParcelasVistaVendaTempNUMEICOD.AsString;
+        if vUltimo = vCont then
+        begin
+          vValorJuros := SQLMovCaixaVLR_JUROS.Value;
+          vValorMulta := SQLMovCaixaVLR_MULTA.Value;
+          vValorDesconto := SQLMovCaixaVLR_DESC.Value;
+        end
+        else
+        begin
+          vValorJuros := 0;
+          vValorMulta := 0;
+          vValorDesconto := 0;
+        end;
+        GravaMovimentoCaixa( DM.SQLTotalizadorCaixa,
+                             DM.SQLTotalizar,
+                             EmpresaPadrao,
+                             IntToStr(TerminalAtual),
+                             FormatDateTime('mm/dd/yyyy', Now),
+                             NumerarioCod,
+//                             DM.SQLTemplate.Fieldbyname('OPCXICOD').Value,
+                             OperacaoCod,
+                             IntToStr(DM.UsuarioAtual),
+                             SQLMovCaixaID_CUPOM.Value + '/' +
+                             SQLMovCaixaNRO_PARCELAS.AsString,
+                             SQLParcelasVistaVendaTempVALORPARC.Value - vValorJuros - vValorMulta,
+                             vValorJuros,  //WMOVICAIXN2VLRJURO
+                             vValorMulta, //WMOVICAIXN2VLRMULTA
+                             vValorDesconto,  //WMOVICAIXN2VLRDEC
+                             '0',{WMVCXA6NUMCUPOM}
+                             'C',{WTIPO}
+                             SQLMovCaixaNOME_CLIENTE.Value +' - '+ HistCx,{WMVCXA255HIST}
+                             'N',
+                             '') ;
+        SQLParcelasVistaVendaTemp.Next;
+      end ;
+    end;
+  SQLParcelasReceberTemp.First;
+  while not SQLParcelasReceberTemp.Eof do
+  begin
+    //GRAVAR MOVIMENTO CAIXA REF. AO JUROS DA PARCELA
+    if (SQLParcelasReceberTempN2VLRJURO.Value > 0) and (SQLParcelasReceberTempBAIXAR_PARCELA.AsString <> 'S') then
+    begin
+        DM.SQLTemplate.Close ;
+        DM.SQLTemplate.SQL.Clear ;
+        DM.SQLTemplate.SQL.Add('select OPCXICOD from OPERACAOCAIXA') ;
+        DM.SQLTemplate.SQL.Add('where OPCXA5SIGLA = "JURRC"') ;
+        DM.SQLTemplate.Open ;
+        if not DM.SQLTemplate.EOF then
+          GravaMovimentoCaixa( DM.SQLTotalizadorCaixa,
+                               DM.SQLTotalizar,
+                               EmpresaPadrao,
+                               IntToStr(TerminalAtual),
+                               FormatDateTime('mm/dd/yyyy', Now),
+                               NumerarioCod, //'Null',
+                               DM.SQLTemplate.Fieldbyname('OPCXICOD').Value,
+                               IntToStr(DM.UsuarioAtual),
+                               SQLParcelasReceberTempA13CUPOID.Value + '/' +
+                               SQLParcelasReceberTempINROPARC.AsString,
+                               SQLParcelasReceberTempN2VLRJURO.Value,
+                               0,//WMOVICAIXN2VLRJURO
+                               0,//WMOVICAIXN2VLRMULTA
+                               0,//WMOVICAIXN2VLRDEC
+                               '0',{WMVCXA6NUMCUPOM}
+                               'C',{WTIPO}
+                               SQLParcelasReceberTempNOMECLIENTE.Value,{WMVCXA255HIST}
+                               'N',
+                               '') ;
+    end ;
+    //GRAVAR MOVIMENTO CAIXA REF. A MULTA DA PARCELA
+    if (SQLParcelasReceberTempN2VLRMULTA.Value > 0) and (SQLParcelasReceberTempBAIXAR_PARCELA.AsString <> 'S') then
+    begin
+        DM.SQLTemplate.Close ;
+        DM.SQLTemplate.SQL.Clear ;
+        DM.SQLTemplate.SQL.Add('select OPCXICOD from OPERACAOCAIXA') ;
+        DM.SQLTemplate.SQL.Add('where OPCXA5SIGLA = "MULRC"') ;
+        DM.SQLTemplate.Open ;
+        if not DM.SQLTemplate.Eof then
+          GravaMovimentoCaixa( DM.SQLTotalizadorCaixa,
+                               DM.SQLTotalizar,
+                               EmpresaPadrao,
+                               IntToStr(TerminalAtual),
+                               FormatDateTime('mm/dd/yyyy', Now),
+                               NumerarioCod, //'Null',
+                               DM.SQLTemplate.Fieldbyname('OPCXICOD').Value,
+                               IntToStr(DM.UsuarioAtual),
+                               SQLParcelasReceberTempA13CUPOID.Value + '/' +
+                               SQLParcelasReceberTempINROPARC.AsString,
+                               SQLParcelasReceberTempN2VLRMULTA.Value,
+                               0,//WMOVICAIXN2VLRJURO
+                               0,//WMOVICAIXN2VLRMULTA
+                               0,//WMOVICAIXN2VLRDEC
+                               '0',{WMVCXA6NUMCUPOM}
+                               'C',{WTIPO}
+                               SQLParcelasReceberTempNOMECLIENTE.Value {WMVCXA255HIST},
+                               'N',
+                               '') ;
+    end ;
+    //GRAVAR MOVIMENTO CAIXA REF. AO DESCONTO DA PARCELA
+    if SQLParcelasReceberTempN2VLRDESC.Value > 0 then
+    begin
+      DM.SQLTemplate.Close ;
+      DM.SQLTemplate.SQL.Clear ;
+      DM.SQLTemplate.SQL.Add('select OPCXICOD from OPERACAOCAIXA') ;
+      DM.SQLTemplate.SQL.Add('where OPCXA5SIGLA = "DESRC"') ;
+      DM.SQLTemplate.Open ;
+      if not DM.SQLTemplate.Eof then
+        GravaMovimentoCaixa( DM.SQLTotalizadorCaixa,
+                             DM.SQLTotalizar,
+                             EmpresaPadrao,
+                             IntToStr(TerminalAtual),
+                             FormatDateTime('mm/dd/yyyy', Now),
+                             NumerarioCod, //'Null',
+                             DM.SQLTemplate.Fieldbyname('OPCXICOD').Value,
+                             IntToStr(DM.UsuarioAtual),
+                             SQLParcelasReceberTempA13CUPOID.Value + '/' +
+                             SQLParcelasReceberTempINROPARC.AsString,
+                             SQLParcelasReceberTempN2VLRDESC.Value,
+                             0,//WMOVICAIXN2VLRJURO
+                             0,//WMOVICAIXN2VLRMULTA
+                             0,//WMOVICAIXN2VLRDEC
+                             '0',{WMVCXA6NUMCUPOM}
+                             'D',{WTIPO}
+                             SQLParcelasReceberTempNOMECLIENTE.Value {WMVCXA255HIST},
+                             'N',
+                             '') ;
+    end ;
+    SQLParcelasReceberTemp.Next;
+  end;
+  DestroyWindow;
+
 end;
 
 end.
