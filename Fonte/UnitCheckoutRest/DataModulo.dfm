@@ -5,6 +5,7 @@ inherited DM: TDM
   Height = 724
   Width = 859
   inherited DB: TDatabase
+    Connected = False
     Left = 32
   end
   inherited SQLTemplate: TRxQuery
@@ -1248,6 +1249,12 @@ inherited DM: TDM
     object SQLConfigGeralNAO_OBRIGA_FECHAR_CAIXA: TStringField
       FieldName = 'NAO_OBRIGA_FECHAR_CAIXA'
       Origin = 'DB.CONFIGGERAL.NAO_OBRIGA_FECHAR_CAIXA'
+      FixedChar = True
+      Size = 1
+    end
+    object SQLConfigGeralRETORNO_CONS_PROD: TStringField
+      FieldName = 'RETORNO_CONS_PROD'
+      Origin = 'DB.CONFIGGERAL.RETORNO_CONS_PROD'
       FixedChar = True
       Size = 1
     end

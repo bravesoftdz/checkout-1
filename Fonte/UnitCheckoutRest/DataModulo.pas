@@ -1068,6 +1068,7 @@ type
     SQLEmpresaCFGEDBLOQ: TDateTimeField;
     SQLEmpresaCFGECBLOQ: TStringField;
     SQLPrecoCliente: TRxQuery;
+    SQLConfigGeralRETORNO_CONS_PROD: TStringField;
     procedure DataModuleCreate(Sender: TObject);
     procedure SQLCupomNewRecord(DataSet: TDataSet);
     procedure SQLCupomBeforePost(DataSet: TDataSet);

@@ -878,6 +878,7 @@ begin
   OrdemProduto := IniFile.ReadString('Restaurante','OrdemProduto','PRODA30ADESCRREDUZ');
   MostraCodigoBarras := IniFile.ReadString('Restaurante','MostraCodigoBarras','N');
   ImpressoraCaixaPath := IniFile.ReadString('Restaurante','ImpCaixa','');
+  F2_AUTOMATICO := IniFile.ReadString('IB_SOFTWARE','F2_AUTOMATICO','N');
   if ImpNaoFiscalAtual = '' then
     ImpNaoFiscalAtual := IniFile.ReadString('Restaurante','ImpMarca','');
   IniFile.Free;
@@ -4708,6 +4709,8 @@ end;
 
 procedure TFormTelaItens.DBText3Click(Sender: TObject);
 begin
+  if (EstadoPDVChk = AguardandoNovaVenda) and (F2_AUTOMATICO = 'S') then
+    FormKeyDown(Sender, F2, [ssAlt]);
   if EstadoPDVChk = InformandoItens then
     begin
       EntradaDados.Text := SQLGrupoProdutoPRODA60CODBAR.AsString;
