@@ -211,6 +211,24 @@ inherited FormTelaConfiguracaoCompra: TFormTelaConfiguracaoCompra
           ValueChecked = 'S'
           ValueUnchecked = 'N'
         end
+        object dbchkLISTAPRECO_AUTOMATICO: TDBCheckBox
+          Left = 6
+          Top = 123
+          Width = 320
+          Height = 18
+          Caption = 'Habilita cadastro de todos os produtos(Importar xml)'
+          DataField = 'CADASTRAR_TODOS_PRODUTOS'
+          DataSource = DSSQLConfigCompra
+          Font.Charset = ANSI_CHARSET
+          Font.Color = 8404992
+          Font.Height = -11
+          Font.Name = 'Tahoma'
+          Font.Style = [fsBold]
+          ParentFont = False
+          TabOrder = 6
+          ValueChecked = 'S'
+          ValueUnchecked = 'N'
+        end
       end
       object GroupBox3: TGroupBox
         Left = 8
@@ -641,6 +659,12 @@ inherited FormTelaConfiguracaoCompra: TFormTelaConfiguracaoCompra
     object SQLConfigCompraLISTAPRECO_AUTOMATICO: TStringField
       FieldName = 'LISTAPRECO_AUTOMATICO'
       Origin = 'DB.CONFIGCOMPRAS.LISTAPRECO_AUTOMATICO'
+      FixedChar = True
+      Size = 1
+    end
+    object SQLConfigCompraCADASTRAR_TODOS_PRODUTOS: TStringField
+      FieldName = 'CADASTRAR_TODOS_PRODUTOS'
+      Origin = 'DB.CONFIGCOMPRAS.CADASTRAR_TODOS_PRODUTOS'
       FixedChar = True
       Size = 1
     end

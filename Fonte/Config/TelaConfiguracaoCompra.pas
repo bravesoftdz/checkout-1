@@ -75,6 +75,8 @@ type
     LabelGravar: TSpeedButton;
     SQLConfigCompraLISTAPRECO_AUTOMATICO: TStringField;
     DBCheckBox11: TDBCheckBox;
+    dbchkLISTAPRECO_AUTOMATICO: TDBCheckBox;
+    SQLConfigCompraCADASTRAR_TODOS_PRODUTOS: TStringField;
     procedure FormCreate(Sender: TObject);
     procedure ComboOperacaoEntradaExit(Sender: TObject);
     procedure ComboOperacaoSaidaExit(Sender: TObject);
