@@ -1354,8 +1354,10 @@ begin
                   Valor1 := StrToFloatDef(EntradaDados.Text,0);
                   if (Valor1 > ValorDevido) and (ValorDevido > 0) then
                     begin
-                      //SQLParcelasVistaVendaTempVALORPARC.Value := StrToFloat(EntradaDados.Text) - (StrToFloat(EntradaDados.Text) - ValorDevido) ;
-                      SQLParcelasVistaVendaTempVALORPARC.Value := StrToFloatDef(EntradaDados.Text,0);
+
+                      SQLParcelasVistaVendaTempVALORPARC.Value := StrToFloat(EntradaDados.Text) - (StrToFloat(EntradaDados.Text) - ValorDevido);
+                      // Comentei o código abaixo e habilitei o de cima porque estava dando erro ao importar prevenda com troco.
+                      // SQLParcelasVistaVendaTempVALORPARC.Value := StrToFloatDef(EntradaDados.Text,0);
                     end
                   else
                     SQLParcelasVistaVendaTempVALORPARC.Value := StrToFloatDef(EntradaDados.Text,0) ;
