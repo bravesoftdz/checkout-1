@@ -6236,7 +6236,7 @@ procedure TFormTelaItens.FormShow(Sender: TObject);
 begin
   ConfACBrPosPrinter;
   CriardmECF;
-  CriardmSiTEF;      
+  CriardmSiTEF;
   
   dm.SQLCupom.RequestLive := True;
   dm.SQLCupomItem.RequestLive := True;
@@ -6417,7 +6417,8 @@ begin
     sTipoPadrao := SQLLocate('NUMERARIO', 'NUMEICOD', 'NUMEA5TIPO', SQLImpressaoCupom.fieldbyname('NUMEICOD').AsString);
     if (sTipoPadrao = 'CRT') then
     begin
-      dm.TotalCartao := dm.TotalCartao + GetCPNMN2VLR(idCupom,SQLImpressaoCupom.fieldbyname('NUMEICOD').AsInteger);
+      if SQLLocate('NUMERARIO', 'NUMEICOD', 'SITEF', SQLImpressaoCupom.fieldbyname('NUMEICOD').AsString) <> 'S' then
+        dm.TotalCartao := dm.TotalCartao + GetCPNMN2VLR(idCupom,SQLImpressaoCupom.fieldbyname('NUMEICOD').AsInteger);
       ProvedorCartao := SQLLocate('NUMERARIO', 'NUMEICOD', 'PRCAA13ID', SQLImpressaoCupom.fieldbyname('NUMEICOD').AsString);
       dm.NumerarioCartao := SQLImpressaoCupom.fieldbyname('NUMEICOD').AsString;
       NomeNumerarioCartao := SQLLocate('NUMERARIO', 'NUMEICOD', 'NUMEA30DESCR', SQLImpressaoCupom.fieldbyname('NUMEICOD').AsString);
@@ -6437,7 +6438,8 @@ begin
     if (sTipoPadrao = 'CRT') then
     begin
       TipoPadrao := SQLImpressaoCupom.fieldbyname('CTRCA5TIPOPADRAO').AsString;
-      dm.TotalCartao := dm.TotalCartao + SQLImpressaoCupom.fieldbyname('CTRCN2VLR').Value;
+      if SQLLocate('NUMERARIO', 'NUMEICOD', 'SITEF', SQLImpressaoCupom.fieldbyname('NUMEICOD').AsString) <> 'S' then
+        dm.TotalCartao := dm.TotalCartao + SQLImpressaoCupom.fieldbyname('CTRCN2VLR').Value;
       ProvedorCartao := SQLLocate('NUMERARIO', 'NUMEICOD', 'PRCAA13ID', SQLImpressaoCupom.fieldbyname('NUMEICOD').AsString);
       dm.NumerarioCartao := SQLImpressaoCupom.fieldbyname('NUMEICOD').AsString;
       NomeNumerarioCartao := SQLLocate('NUMERARIO', 'NUMEICOD', 'NUMEA30DESCR', SQLImpressaoCupom.fieldbyname('NUMEICOD').AsString);
@@ -6484,7 +6486,7 @@ begin
   end;
 
   {Testa se tem o arquivo Tef_Retorno.txt, imprime o cupom tef}
-  if (dm.TotalCartao > 0) and (ProvedorCartao <> '') then
+  if (dm.TotalCartao > 0) and (ProvedorCartao <> '')  then
   begin
     DadosImpressora.ECFAtual := ECFAtual;
     DadosImpressora.PortaECFAtual := PortaECFAtual;
