@@ -4,7 +4,8 @@ interface
 
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
-  Dialogs, ExtCtrls, RXShell, Menus, ShellAPI, IniFiles, AppEvnts;
+  Dialogs, ExtCtrls, RXShell, Menus, ShellAPI, IniFiles, AppEvnts, TLHelp32,
+  RestClient, RestUtils;
 
 type
   TfrmAtualizarPHP = class(TForm)
@@ -15,6 +16,7 @@ type
     MenuItemN1: TMenuItem;
     MenuItemButtonClose: TMenuItem;
     ApplicationEvents1: TApplicationEvents;
+    RestClient: TRestClient;
     procedure TimerTimer(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure MenuItemAbrir1Click(Sender: TObject);
@@ -22,6 +24,7 @@ type
     procedure MenuItemMnImportarTabelasConfiguracaoClick(Sender: TObject);
     procedure MenuItemButtonCloseClick(Sender: TObject);
     procedure ApplicationEvents1Minimize(Sender: TObject);
+    procedure TrayIconDblClick(Sender: TObject);
   private
     { Private declarations }
     url : string;
@@ -62,8 +65,17 @@ procedure TfrmAtualizarPHP.AtualizarPHP;
 begin
   if url <> EmptyStr then
   begin
-    TrayIcon.Animated := True;
-    ShellExecute(Handle,'open',PAnsiChar(url),nil,nil,SW_SHOW);
+    try
+      try
+        RestClient.Resource(url).Accept(RestUtils.MediaType_Json).GetAsDataSet();
+      except
+        on E: Exception do
+        begin
+        end;
+      end;
+      TrayIcon.Animated := True;
+    finally
+    end;
   end;
 end;
 
@@ -119,8 +131,18 @@ procedure TfrmAtualizarPHP.ApplicationEvents1Minimize(Sender: TObject);
 begin
   Self.Hide();
   Self.WindowState := wsMinimized;
-  Self.Visible := True;
+  TrayIcon.Enabled := True;
   TrayIcon.Animated := True;
+  TrayIcon.Show;
 end;
+
+procedure TfrmAtualizarPHP.TrayIconDblClick(Sender: TObject);
+begin
+  TrayIcon.Enabled := False;
+  Show();
+  WindowState := wsNormal;
+  Application.BringToFront();
+end;
+
 
 end.

@@ -9,6 +9,7 @@ uses
 
 begin
   Application.Initialize;
+  Application.Title := 'AtualizadorPHP';
   Application.CreateForm(TfrmAtualizarPHP, frmAtualizarPHP);
   Application.Run;
 end.

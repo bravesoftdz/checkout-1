@@ -225,18 +225,19 @@ object frmAtualizarPHP: TfrmAtualizarPHP
       0001FC000001FE000001FE000001FE000003FE000007FE00000FFE00001FFE00
       003FFE00007F}
     PopupMenu = PopupMenuMenuTryIcon
+    OnDblClick = TrayIconDblClick
     Left = 181
-    Top = 25
+    Top = 41
   end
   object Timer: TTimer
     Interval = 10000
     OnTimer = TimerTimer
     Left = 209
-    Top = 25
+    Top = 41
   end
   object PopupMenuMenuTryIcon: TPopupMenu
     Left = 153
-    Top = 25
+    Top = 41
     object MenuItemMnImportarTabelasConfiguracao: TMenuItem
       Caption = 'Abrir URL'
       OnClick = MenuItemMnImportarTabelasConfiguracaoClick
@@ -253,5 +254,10 @@ object frmAtualizarPHP: TfrmAtualizarPHP
     OnMinimize = ApplicationEvents1Minimize
     Left = 48
     Top = 32
+  end
+  object RestClient: TRestClient
+    ConnectionType = hctIndy
+    Left = 96
+    Top = 8
   end
 end
