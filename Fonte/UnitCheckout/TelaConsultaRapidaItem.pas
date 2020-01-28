@@ -217,6 +217,9 @@ begin
               SQLProduto.SQL.Clear ;
               SQLProduto.SQL.Add('Select * from PRODUTO') ;
               SQLProduto.SQL.Add('Where PRODCATIVO = "S" and ') ;
+              if FileExists('ProcuraPorReferencia.txt') then
+                SQLProduto.SQL.Add('PRODA60REFER like "' + FormTelaItens.EntradaDados.Text + '%"')
+              else
               if not FileExists('ProcuraContendo.txt') then
                 begin
                   if Pos('*', FormTelaItens.EntradaDados.Text) > 0 then

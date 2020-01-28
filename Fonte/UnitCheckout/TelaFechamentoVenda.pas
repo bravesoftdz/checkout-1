@@ -1354,10 +1354,10 @@ begin
                   Valor1 := StrToFloatDef(EntradaDados.Text,0);
                   if (Valor1 > ValorDevido) and (ValorDevido > 0) then
                     begin
-
-                      SQLParcelasVistaVendaTempVALORPARC.Value := StrToFloat(EntradaDados.Text) - (StrToFloat(EntradaDados.Text) - ValorDevido);
-                      // Comentei o código abaixo e habilitei o de cima porque estava dando erro ao importar prevenda com troco.
-                      // SQLParcelasVistaVendaTempVALORPARC.Value := StrToFloatDef(EntradaDados.Text,0);
+                     if not ImportandoPreVenda then
+                       SQLParcelasVistaVendaTempVALORPARC.Value := StrToFloat(EntradaDados.Text) - (StrToFloat(EntradaDados.Text) - ValorDevido)
+                     else // Comentei o código abaixo e habilitei o de cima porque estava dando erro ao importar prevenda com troco.
+                       SQLParcelasVistaVendaTempVALORPARC.Value := StrToFloatDef(EntradaDados.Text,0);
                     end
                   else
                     SQLParcelasVistaVendaTempVALORPARC.Value := StrToFloatDef(EntradaDados.Text,0) ;
@@ -4469,8 +4469,8 @@ begin
           if planoCliente <> '' then
             begin
               PlanoVenda := strToint(planoCliente);
-              EstadoFechVenda   := InformandoPlano ;
-              EntradaDados.Text := IntToStr(PlanoVenda) ;
+              EstadoFechVenda   := InformandoPlano;
+              EntradaDados.Text := IntToStr(PlanoVenda);
               EntradaDadosKeyDown(Sender, Enter, [ssAlt]);
             end;  
         end;  
@@ -4579,7 +4579,7 @@ begin
       begin
         Sigla   := 'VDVIS' ;
         MsgErro := 'Não há nenhuma Operação de Caixa configurada com a sigla de Venda a Vista!' ;
-        VlrLanc := SQLParcelasVistaVendaTempVALORPARC.Value - ValorTroco.Value;
+        VlrLanc := SQLParcelasVistaVendaTempVALORPARC.Value; // tirei por causa do troco duplicando após alterar o prevenda - ValorTroco.Value;
       end ;
 
     if Copy(TipoPadrao1,1,3) = 'CHQ' then
@@ -5884,7 +5884,7 @@ begin
           if (ValorTroco.Value > 0) then
             begin
               if (i = 1) then
-                ValorCorrigido := SQLParcelasVistaVendaTempVALORPARC.Value - ValorTroco.Value
+                ValorCorrigido := SQLParcelasVistaVendaTempVALORPARC.Value // tirei por causa do troco duplicando após alterar o prevenda - ValorTroco.Value
               else
                 ValorCorrigido := SQLParcelasVistaVendaTempVALORPARC.Value;
             end
@@ -5896,7 +5896,7 @@ begin
           DM.SQLCupomNumerarioNUMEICOD.Value    := SQLParcelasVistaVendaTempNUMEICOD.Value ;
           DM.SQLCupomNumerarioCONMCSTATUS.Value := 'A' ;
           if SQLParcelasVistaVendaTempTIPOPADR.Value = 'DIN' then
-            DM.SQLCupomNumerarioCPNMN2VLR.Value   := SQLParcelasVistaVendaTempVALORPARC.Value - ValorTroco.Value
+            DM.SQLCupomNumerarioCPNMN2VLR.Value   := SQLParcelasVistaVendaTempVALORPARC.Value // tirei por causa do troco duplicando após alterar o prevenda - ValorTroco.Value;
           else
             DM.SQLCupomNumerarioCPNMN2VLR.Value   := SQLParcelasVistaVendaTempVALORPARC.Value ;
 
@@ -5967,7 +5967,7 @@ begin
                                    DM.SQLTemplate.FieldByName('OPCXICOD').AsString,//WOPCXICOD
                                    IntToStr(DM.UsuarioAtual),//WUSUAICOD
                                    DM.CodNextCupom,//WMVCIXA15DOCORIG
-                                   SQLParcelasVistaVendaTempVALORPARC.Value -ValorTroco.Value,//WMOVICAIXN2VLR
+                                   SQLParcelasVistaVendaTempVALORPARC.Value, // tirei por causa do troco duplicando após alterar o prevenda-ValorTroco.Value,//WMOVICAIXN2VLR
                                    0,//WMOVICAIXN2VLRJURO
                                    0,//WMOVICAIXN2VLRMULTA
                                    0,//WMOVICAIXN2VLRDEC
@@ -6047,7 +6047,7 @@ begin
                                DM.SQLTemplate.FieldByName('OPCXICOD').AsString,//WOPCXICOD
                                IntToStr(DM.UsuarioAtual),//WUSUAICOD
                                DM.CodNextCupom,//WMVCIXA15DOCORIG
-                               SQLParcelasVistaVendaTempVALORPARC.Value - ValorTroco.Value,//WMOVICAIXN2VLR
+                               SQLParcelasVistaVendaTempVALORPARC.Value, // tirei por causa do troco duplicando após alterar o prevenda - ValorTroco.Value,//WMOVICAIXN2VLR
                                0,//WMOVICAIXN2VLRJURO
                                0,//WMOVICAIXN2VLRMULTA
                                0,//WMOVICAIXN2VLRDEC

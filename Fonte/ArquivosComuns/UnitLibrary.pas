@@ -3466,21 +3466,24 @@ begin
             else
               begin
                 // Testar PRODA60REFER
-                (Tabela as TQuery).Close ;
-                (Tabela as TQuery).SQL.Clear ;
-                (Tabela as TQuery).SQL.Add('select * from PRODUTO') ;
-                if ProcuraProdutoPelaRef08Char then
-                  (Tabela as TQuery).SQL.Add('where PRODCATIVO = ''S'' and PRODA60REFER = ''' + Copy(Codigo,1,8) + '''')
-                 else
-                  (Tabela as TQuery).SQL.Add('where PRODCATIVO = ''S'' and PRODA60REFER = ''' + Codigo + '''') ;
-                (Tabela as TQuery).Open ;
-                (Tabela as TQuery).First ;
-                if not (Tabela as TQuery).EOF then
-                  begin
-                    CodigoBarrasProduto := (Tabela as TQuery).FieldbyName('PRODA60CODBAR').Value;
-                    EncontrouProduto := True;
-                    Exit;
-                  end;
+                if not FileExists('ProcuraPorReferencia.txt') then
+                begin
+                  (Tabela as TQuery).Close ;
+                  (Tabela as TQuery).SQL.Clear ;
+                  (Tabela as TQuery).SQL.Add('select * from PRODUTO') ;
+                  if ProcuraProdutoPelaRef08Char then
+                    (Tabela as TQuery).SQL.Add('where PRODCATIVO = ''S'' and PRODA60REFER = ''' + Copy(Codigo,1,8) + '''')
+                   else
+                    (Tabela as TQuery).SQL.Add('where PRODCATIVO = ''S'' and PRODA60REFER = ''' + Codigo + '''') ;
+                  (Tabela as TQuery).Open ;
+                  (Tabela as TQuery).First ;
+                  if not (Tabela as TQuery).EOF then
+                    begin
+                      CodigoBarrasProduto := (Tabela as TQuery).FieldbyName('PRODA60CODBAR').Value;
+                      EncontrouProduto := True;
+                      Exit;
+                    end;
+                end;
               end;
           end;
       end;
