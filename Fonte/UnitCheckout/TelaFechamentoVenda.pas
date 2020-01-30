@@ -1357,7 +1357,12 @@ begin
                      if not ImportandoPreVenda then
                        SQLParcelasVistaVendaTempVALORPARC.Value := StrToFloat(EntradaDados.Text) - (StrToFloat(EntradaDados.Text) - ValorDevido)
                      else // Comentei o código abaixo e habilitei o de cima porque estava dando erro ao importar prevenda com troco.
-                       SQLParcelasVistaVendaTempVALORPARC.Value := StrToFloatDef(EntradaDados.Text,0);
+                     begin
+                       if (Valor1 > ValorDevido) then
+                         SQLParcelasVistaVendaTempVALORPARC.Value := ValorDevido
+                       else
+                         SQLParcelasVistaVendaTempVALORPARC.Value := StrToFloatDef(EntradaDados.Text,0);
+                     end;
                     end
                   else
                     SQLParcelasVistaVendaTempVALORPARC.Value := StrToFloatDef(EntradaDados.Text,0) ;
@@ -5041,8 +5046,11 @@ begin
   if (ValorDescontoAcrescimo.Value <> vEstimativa) and (not FormTelaItens.DescontoNoItem) then
   begin
     DM.SQLPreVendaItem2.Close;
-    DM.SQLPreVendaItem2.MacroByName('MFiltro').Value := 'CUPOA13ID = ' + QuotedStr(DM.CodNextCupom);
+    DM.SQLPreVendaItem2.SQL.Clear;
+    DM.SQLPreVendaItem2.SQL.Add('select * from PREVENDAITEM where %MFiltro');
+    DM.SQLPreVendaItem2.MacroByName('MFiltro').Value := 'TERMICOD = ' + QuotedStr(IntToStr(TerminalAtual)) + ' AND PRVDICOD = ' + IntToStr(CodNextPreVenda);
     DM.SQLPreVendaItem2.Open;
+
     if not DM.SQLPreVendaItem2.IsEmpty then
     begin
       DM.SQLPreVendaItem2.Last;
