@@ -2452,7 +2452,7 @@ begin
       if not VerificaLimiteCredito(SQLTemplateCLIEA13ID.AsString,ValorVenda,DM.SQLParcelas,DM.SQLCliente) then
         Abort;}
       ClienteCadastro := SQLTemplateCLIEA13ID.AsString;
-      UsaPrecoVenda   := copy(SQLTemplateCLIECTPPRCVENDA.AsString,1,1);
+      UsaPrecoVenda   := copy(SQLTemplateCLIECTPPRCVENDA.AsString,1,2);
 
       ClienteVenda := SQLTemplate.FieldByName('CLIEA13ID').AsString;
       ClienteRecto := SQLTemplate.FieldByName('CLIEA13ID').AsString;
