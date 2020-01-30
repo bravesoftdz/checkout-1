@@ -55,6 +55,7 @@ type
     cxGrid1DBTableView1CHAVEACESSO: TcxGridDBColumn;
     cxGrid1DBTableView1Selecionar: TcxGridDBColumn;
     cxGrid1DBTableView1Mensagem: TcxGridDBColumn;
+    lblTitulo: TLabel;
     procedure BtInutilizarNFCEClick(Sender: TObject);
     procedure btTransmiteClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
