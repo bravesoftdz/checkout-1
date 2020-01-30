@@ -4371,6 +4371,7 @@ begin
                   FormTelaConsultaRapidaCupom.SQLCupom.MacroByName('Terminal').Value := '0=0';
                 FormTelaConsultaRapidaCupom.SQLCupom.MacroByName('MostraVendas').Value := 'Cupom.CUPOINRO < 1';
                 FormTelaConsultaRapidaCupom.SQLCupom.Open;
+                FormTelaConsultaRapidaCupom.lblTitulo.Caption := 'Gerar e Transmitir NFCe';
                 FormTelaConsultaRapidaCupom.ShowModal;
                 if FormTelaConsultaRapidaCupom.ModalResult = MrOk then
                 begin
@@ -4954,6 +4955,7 @@ begin
                 FormTelaConsultaRapidaCupom.SQLCupom.MacroByName('Terminal').Value := '0=0';
               FormTelaConsultaRapidaCupom.SQLCupom.MacroByName('MostraVendas').Value := '(Cupom.CUPOINRO>0) and ((Cupom.STNFE is null) or (Cupom.STNFE=''''))';
               FormTelaConsultaRapidaCupom.SQLCupom.Open;
+              FormTelaConsultaRapidaCupom.lblTitulo.Caption := 'Retransmitir NFCe';
               FormTelaConsultaRapidaCupom.ShowModal;
               if FormTelaConsultaRapidaCupom.ModalResult = MrOk then
               begin

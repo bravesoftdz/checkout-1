@@ -1111,6 +1111,7 @@ begin
           FormTelaConsultaRapidaCupom.SQLCupom.MacroByName('Terminal').Value    := 'Cupom.TERMICOD  = ' + IntToStr(TerminalAtual);
           FormTelaConsultaRapidaCupom.SQLCupom.MacroByName('MostraVendas').Value := '0=0';
           FormTelaConsultaRapidaCupom.SQLCupom.Open;
+          FormTelaConsultaRapidaCupom.lblTitulo.Caption := 'Cancelar NFCe';
           FormTelaConsultaRapidaCupom.ShowModal;
           if FormTelaConsultaRapidaCupom.ModalResult = MrOk then
             Docum := FormTelaConsultaRapidaCupom.SQLCupomCUPOA13ID.AsString
