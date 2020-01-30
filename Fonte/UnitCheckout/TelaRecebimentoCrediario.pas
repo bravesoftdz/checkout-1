@@ -268,7 +268,7 @@ type
     DSSQLParcelasVistaVendaTemp: TDataSource;
     Label15: TLabel;
     SQLCupomCUPOA13IDCUPNEG: TStringField;
-    RDPrint: TRDprint;
+//    RDPrint: TRDprint;
     SQLRecebimentoNUMEICOD: TIntegerField;
     SQLParcelasReceberTempCTRCN2TOTCORRECAO: TFloatField;
     SQLContasReceberCTRCN2TOTCORRECAO: TFloatField;
@@ -365,6 +365,7 @@ type
     SQLMovCaixaNOME_CLIENTE: TStringField;
     SQLMovCaixaNRO_PARCELAS: TStringField;
     SQLMovCaixaDOC_ORIGEM: TStringField;
+    RDprint: TRDprint;
     procedure EntradaDadosKeyDown(Sender: TObject; var Key: Word;
       Shift: TShiftState);
     procedure FormCreate(Sender: TObject);
@@ -3446,8 +3447,8 @@ begin
 //                             DM.SQLTemplate.Fieldbyname('OPCXICOD').Value,
                              OperacaoCod,
                              IntToStr(DM.UsuarioAtual),
-                             SQLMovCaixaID_CUPOM.Value + '/' +
-                             SQLMovCaixaNRO_PARCELAS.AsString,
+                             SQLMovCaixaID_CUPOM.Value,// + '/' +
+//                             SQLMovCaixaNRO_PARCELAS.AsString,
                              SQLParcelasVistaVendaTempVALORPARC.Value - vValorJuros - vValorMulta,
                              vValorJuros,  //WMOVICAIXN2VLRJURO
                              vValorMulta, //WMOVICAIXN2VLRMULTA
