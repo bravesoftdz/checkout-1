@@ -1,4 +1,4 @@
- unit TelaFechamentoVenda;
+unit TelaFechamentoVenda;
 interface
 
 uses
@@ -481,6 +481,11 @@ Var
   RetornoUser : TInfoRetornoUser;
   ImprimeConfDivida:Boolean;
 begin
+  case key of
+    VK_PRIOR : SQLParcelasPrazoVendaTemp.Prior;
+    VK_NEXT  : SQLParcelasPrazoVendaTemp.Next;
+  end;
+
   if (Key <> VK_ESCAPE) and (fBloqueioSitef) then
     exit;
   if (Key = VK_ESCAPE) and (EstadoFechVenda = FinalizandoVenda) then
@@ -6700,7 +6705,7 @@ begin
            MemoRetorno.Lines.Clear;
            MemoRetorno.Lines.Add('</ce><n>Cliente:' + SQLLocate('Cliente','CLIEA13ID','CLIEA60RAZAOSOC',ClienteVenda)+'</e>');
            MemoRetorno.Lines.Add('</fn>------------------------------------------------');
-           MemoRetorno.Lines.Add('<ad><n>Valor do Limeite inicial ' + FormatFloat('R$ ##0.00', LimiteOrigemCre) + '</n></ad>');
+           MemoRetorno.Lines.Add('<ad><n>Valor do Limite inicial ' + FormatFloat('R$ ##0.00', LimiteOrigemCre) + '</n></ad>');
            MemoRetorno.Lines.Add('<ad><n>Parcelas Abertas S/encargos ' + FormatFloat('R$ ##0.00', (DebitoCre-CreditoCre)) + '</n></ad>');
            MemoRetorno.Lines.Add('<ad><n>Juros, Multas, Descontos ' + FormatFloat('R$ ##0.00', JurosCre) + '</n></ad>');
            MemoRetorno.Lines.Add('</fn>------------------------------------------------');

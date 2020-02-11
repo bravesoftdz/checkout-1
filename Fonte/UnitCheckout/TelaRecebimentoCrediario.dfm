@@ -1,6 +1,6 @@
 object FormTelaRecebimentoCrediario: TFormTelaRecebimentoCrediario
-  Left = 265
-  Top = 53
+  Left = 280
+  Top = 23
   BorderIcons = []
   BorderStyle = bsSingle
   Caption = ' '

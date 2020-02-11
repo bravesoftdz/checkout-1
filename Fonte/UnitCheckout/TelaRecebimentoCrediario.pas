@@ -465,7 +465,7 @@ Var
   TotalRecibo : array of array of string;
   i, nLin : Integer;
   nx: Real;
-  TotalRecbto, TotalDescto, TotalJuros: Extended;
+  TotalRecbto, TotalDescto, TotalJuros, TotalMulta, TotalParcela: Extended;
 begin
   v_Abatimento_Original := 0;
   vFiltro := '';
@@ -1459,8 +1459,10 @@ begin
                                                  SQLParcelasReceberTempN2VLRJURO.VALUE+
                                                  SQLParcelasReceberTempN2VLRMULTA.VALUE-
                                                  SQLParcelasReceberTempN2VLRDESC.VALUE;
-                    TotalDescto := TotalDescto + SQLParcelasReceberTempN2VLRDESC.value;
-                    TotalJuros  := TotalJuros  + SQLParcelasReceberTempN2VLRJURO.value;
+                    TotalParcela := TotalParcela + SQLParcelasReceberTempN2VLRAMORT.VALUE;
+                    TotalDescto  := TotalDescto + SQLParcelasReceberTempN2VLRDESC.value;
+                    TotalJuros   := TotalJuros  + SQLParcelasReceberTempN2VLRJURO.value;
+                    TotalMulta   := TotalMulta + SQLParcelasReceberTempN2VLRMULTA.Value;
                   end;
 
                   if SQLParcelasReceberTempBAIXAR_PARCELA.AsString = 'S' then
@@ -1821,8 +1823,11 @@ begin
                         FormTelaItens.MemoRetornoNFE.Lines.Add('Cliente:  '+SQLParcelasReceberTempNOMECLIENTE.Value);
                         FormTelaItens.MemoRetornoNFE.Lines.Add('Vencimento: '+FormatDateTime('dd/mm/yyyy',SQLParcelasReceberTempDVENC.value));
                         FormTelaItens.MemoRetornoNFE.Lines.Add(' ');
-                        FormTelaItens.MemoRetornoNFE.Lines.Add('Total Compras ' + FormatFloat('R$ ##0.00',TotalPagar.Value));
+//                        FormTelaItens.MemoRetornoNFE.Lines.Add('Total Compras ' + FormatFloat('R$ ##0.00',TotalPagar.Value));
+                        FormTelaItens.MemoRetornoNFE.Lines.Add('Total Compras ' + FormatFloat('R$ ##0.00',TotalParcela));
                         FormTelaItens.MemoRetornoNFE.Lines.Add('Valor Juros   ' + FormatFloat('R$ ##0.00',TotalJuros));
+                        FormTelaItens.MemoRetornoNFE.Lines.Add('Valor Multa   ' + FormatFloat('R$ ##0.00',TotalMulta));
+
                         FormTelaItens.MemoRetornoNFE.Lines.Add('Valor Desc.   ' + FormatFloat('R$ ##0.00',TotalDescto));
                         FormTelaItens.MemoRetornoNFE.Lines.Add('<n>Valor Pago ' + FormatFloat('R$ ##0.00',TotalRecbto)+'</n>');
                         FormTelaItens.MemoRetornoNFE.Lines.Add(' ');

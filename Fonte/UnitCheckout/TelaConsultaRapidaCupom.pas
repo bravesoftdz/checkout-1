@@ -6,9 +6,9 @@ uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, DB, DBTables, RxQuery, Grids, DBGrids, ExtCtrls, StdCtrls, CartaoCredito,
   Buttons, Mask, ToolEdit, AdvGlowButton, DBClient, cxStyles, cxCustomData,
-  cxGraphics, cxFilter, cxData, cxDataStorage, cxEdit, cxDBData,
-  cxGridCustomTableView, cxGridTableView, cxGridDBTableView, cxGridLevel,
-  cxClasses, cxControls, cxGridCustomView, cxGrid, DBCtrls;
+  cxGraphics, cxFilter, cxData, cxDataStorage, cxEdit, cxDBData, pcnConversaoNFe,
+  cxGridLevel, cxGridCustomTableView, cxGridTableView, cxGridDBTableView,
+  cxClasses, cxControls, cxGridCustomView, cxGrid;
 
 type
   TFormTelaConsultaRapidaCupom = class(TForm)
@@ -71,6 +71,8 @@ type
     procedure edtDataFinalExit(Sender: TObject);
   private
     { Private declarations }
+    function Consulta_NFCe : Boolean;
+    procedure Inicia_NFe;
   public
     { Public declarations }
     ProvedorCartao, NomeNumerarioCartao : string;
@@ -216,9 +218,14 @@ begin
     try
       if cdsCupomSelecionar.Value then
       begin
-        Imprimir_Nfce := False;
-        FormTelaItens.Transmite_NFCe(cdsCupomCUPOA13ID.Value);
-        Inc(vCupomOK);
+        if Consulta_NFCe then
+          Inc(vCupomOK)
+        else
+        begin
+          Imprimir_Nfce := False;
+          FormTelaItens.Transmite_NFCe(cdsCupomCUPOA13ID.Value);
+          Inc(vCupomOK);
+        end;
       end;
     except
       on E: Exception do
@@ -283,6 +290,116 @@ end;
 procedure TFormTelaConsultaRapidaCupom.edtDataFinalExit(Sender: TObject);
 begin
  AbrirDadosCupom;
+end;
+
+function TFormTelaConsultaRapidaCupom.Consulta_NFCe: Boolean;
+var
+  Chave : String;
+begin
+  Result := False;
+  Inicia_NFe;
+  dm.ACBrNFe.Consultar(cdsCupomCHAVEACESSO.AsString);
+  if (dm.ACBrNFe.WebServices.Consulta.cStat = 613) or (dm.ACBrNFe.WebServices.Consulta.cStat = 539) then
+  begin
+    if dm.ACBrNFe.WebServices.Consulta.XMotivo <> '' then
+    begin
+      if pos('NF-e [', dm.ACBrNFe.WebServices.Consulta.XMotivo) > 0 then
+      begin
+        Chave := Copy(dm.ACBrNFe.WebServices.Consulta.XMotivo, pos('NF-e [', dm.ACBrNFe.WebServices.Consulta.XMotivo), 200);
+        Chave := StringReplace(Chave, 'NF-e [', '', [rfReplaceAll, rfIgnoreCase]);
+        Chave := StringReplace(Chave, ']', '', [rfReplaceAll]);
+
+        if Chave <> '' then
+        begin
+          dm.SQLCupom.close;
+          dm.SQLCupom.macrobyname('MFiltro').Value := 'CUPOA13ID = ''' + cdsCupomCUPOA13ID.Value + '''';
+          dm.SQLCupom.Open;
+
+          dm.SQLCupom.RequestLive := True;
+          dm.SQLCupom.edit;
+          dm.SQLCupomCHAVEACESSO.AsString := Chave;
+          dm.SQLCupom.Post;
+
+          dm.ACBrNFe.Consultar(Chave);
+          if (dm.ACBrNFe.WebServices.Consulta.cStat = 100) then
+          begin
+            DM.SQLTemplate.Close;
+            DM.SQLTemplate.SQL.Clear;
+            DM.SQLTemplate.SQL.Add('Update CUPOM Set STNFE = ' + IntToStr(dm.ACBrNFe.WebServices.consulta.cStat));
+            DM.SQLTemplate.SQL.Add(', PROTOCOLO=''' + dm.ACBrNFe.WebServices.consulta.Protocolo + '''');
+            DM.SQLTemplate.SQL.Add(', PENDENTE=' + QuotedStr('S'));
+            DM.SQLTemplate.SQL.Add(' Where CUPOA13ID =''' + cdsCupomCUPOA13ID.Value + '''');
+            DM.SQLTemplate.ExecSQL;
+            Result := True;
+          end;
+          Result := True;
+        end;
+
+//        SQLCupom.Close;
+//        SQLCupom.Open;
+
+//        ConsultarDenovo := True;
+      end;
+    end
+    else if dm.ACBrNFe.WebServices.Consulta.protNFe.xMotivo <> '' then
+    begin
+      Chave := Copy(dm.ACBrNFe.WebServices.Consulta.XMotivo, pos('[chNFe:', dm.ACBrNFe.WebServices.Consulta.XMotivo), 200);
+      Chave := StringReplace(Chave, '[chNFe:', '', [rfReplaceAll, rfIgnoreCase]);
+      Chave := StringReplace(Chave, ']', '', [rfReplaceAll]);
+
+      if Chave <> '' then
+      begin
+        if dm.SQLCupom.IsEmpty then
+        begin
+          dm.SQLCupom.close;
+          dm.SQLCupom.macrobyname('MFiltro').Value := 'CUPOA13ID = ''' + cdsCupomCUPOA13ID.Value + '''';
+          dm.SQLCupom.Open;
+        end;
+
+        dm.SQLCupom.RequestLive := True;
+        dm.SQLCupom.edit;
+        dm.SQLCupomCHAVEACESSO.AsString := Chave;
+        dm.SQLCupom.Post;
+        Result := True;
+      end;
+    end;
+  end
+  else
+  if (dm.ACBrNFe.WebServices.Consulta.cStat = 100) then
+  begin
+    DM.SQLTemplate.Close;
+    DM.SQLTemplate.SQL.Clear;
+    DM.SQLTemplate.SQL.Add('Update CUPOM Set STNFE = ' + IntToStr(dm.ACBrNFe.WebServices.consulta.cStat));
+    DM.SQLTemplate.SQL.Add(', PROTOCOLO=''' + dm.ACBrNFe.WebServices.consulta.Protocolo + '''');
+    DM.SQLTemplate.SQL.Add(', PENDENTE=' + QuotedStr('S'));
+    DM.SQLTemplate.SQL.Add(' Where CUPOA13ID =''' + cdsCupomCUPOA13ID.Value + '''');
+    DM.SQLTemplate.ExecSQL;
+    Result := True;
+  end;
+
+end;
+
+procedure TFormTelaConsultaRapidaCupom.Inicia_NFe;
+begin
+{$IFDEF ACBrNFeOpenSSL}
+  dm.ACBrNFe.Configuracoes.Certificados.ArquivoPFX := dm.sqlEmpresa.FieldByName('EMPRA100CERTIFSERIE').AsString;
+  dm.ACBrNFe.Configuracoes.Certificados.Certificado := dm.sqlEmpresa.FieldByName('EMPRA100CERTIFSERIE').AsString;
+  dm.ACBrNFe.Configuracoes.Certificados.Senha := dm.sqlEmpresa.FieldByName('EMPRA35CERTIFSENHA').AsString;
+{$ELSE}
+  dm.ACBrNFe.Configuracoes.Certificados.NumeroSerie := dm.sqlEmpresa.FieldByName('EMPRA100CERTIFSERIE').AsString;
+  dm.ACBrNFe.Configuracoes.Certificados.Senha := dm.sqlEmpresa.FieldByName('EMPRA35CERTIFSENHA').AsString;
+{$ENDIF}
+  if dm.sqlEmpresa.FieldByName('VERSAO').AsString = '4' then
+    dm.ACBrNFe.Configuracoes.Geral.VersaoDF := ve400
+  else
+    dm.ACBrNFe.Configuracoes.Geral.VersaoDF := ve310;
+  dm.ACBrNFe.Configuracoes.Geral.IdCSC := dm.sqlEmpresa.FieldByName('idTOKEN').AsString;
+  dm.ACBrNFe.Configuracoes.Geral.CSC := dm.sqlEmpresa.FieldByName('TOKEN').AsString;
+  DM.ACBrNFe.Configuracoes.Geral.VersaoQRCode := veqr200;
+  dm.ACBrNFeDANFeESCPOS.ViaConsumidor := True;
+  dm.ACBrNFeDANFeESCPOS.ImprimeItens := True;
+  dm.ACBrNFeDANFeESCPOS.ViaConsumidor := True;
+  dm.ACBrNFeDANFeESCPOS.ImprimeItens := True;
 end;
 
 end.

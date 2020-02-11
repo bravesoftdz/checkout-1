@@ -90,7 +90,7 @@ MaxStackSize=1048576
 ImageBase=4194304
 ExeDescription=
 [Directories]
-OutputDir=D:\Projetos\Retaguarda\Docs\Scripts
+OutputDir=C:\Projetos\Retaguarda\Docs\Scripts\Rodar no IB
 UnitOutputDir=D:\Easy2Solutions\DCU
 PackageDLLOutputDir=
 PackageDCPOutputDir=
@@ -144,10 +144,11 @@ Item0=WinTypes=Windows;WinProcs=Windows;DbiTypes=BDE;DbiProcs=BDE;DbiErrs=BDE;
 Count=1
 Item0=D:\Easy2Solutions\DCU
 [HistoryLists\hlOutputDirectorry]
-Count=6
-Item0=D:\Projetos\Retaguarda\Docs\Scripts
-Item1=D:\Easy2Solutions\Gestao
-Item2=C:\Desenv\GestaoOficial\Scripts
-Item3=\Desenv\GestaoOficial\Scripts
-Item4=C:\Desenv\GestaoOficial\Atualizador\Scripts
-Item5=C:\Unit\Gestao
+Count=7
+Item0=C:\Projetos\Retaguarda\Docs\Scripts\Rodar no IB
+Item1=D:\Projetos\Retaguarda\Docs\Scripts
+Item2=D:\Easy2Solutions\Gestao
+Item3=C:\Desenv\GestaoOficial\Scripts
+Item4=\Desenv\GestaoOficial\Scripts
+Item5=C:\Desenv\GestaoOficial\Atualizador\Scripts
+Item6=C:\Unit\Gestao

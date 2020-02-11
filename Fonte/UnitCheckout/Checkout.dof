@@ -90,7 +90,7 @@ MaxStackSize=1048576
 ImageBase=4194304
 ExeDescription=
 [Directories]
-OutputDir=D:\Easy2Solutions\Gestao
+OutputDir=C:\Easy2Solutions\Gestao
 UnitOutputDir=
 PackageDLLOutputDir=
 PackageDCPOutputDir=
@@ -149,9 +149,8 @@ C:\Program Files (x86)\Developer Express Inc\Library\Delphi7\dcldxPScxScheduler3
 Count=1
 Item0=WinTypes=Windows;WinProcs=Windows;DbiTypes=BDE;DbiProcs=BDE;DbiErrs=BDE;
 [HistoryLists\hlOutputDirectorry]
-Count=5
-Item0=D:\Easy2Solutions\Gestao
-Item1=D:\Easy2Solutions
-Item2=C:\Easy2Solutions
-Item3=C:\Easy2Solutions\Gestao
-Item4=C:\Unit\Gestao
+Count=4
+Item0=d:\easy2solutions
+Item1=c:\easy2solutions
+Item2=c:\easy2solutions\gestao
+Item3=C:\UNIT\GESTAO
