@@ -8,7 +8,7 @@ uses
   ppDB, ppTxPipe, ppPrnabl, ppStrtch, ppMemo, ppCache, ppBands, CartaoCredito,
   Buttons, ConerBtn, UnSoundPlay, RXSwitch, WindowsLibrary, IniFiles,
   DBClient, Provider, AdvGlowButton, AdvOfficeStatusBar,WaitWindow,
-  AdvOfficeStatusBarStylers, AdvSmoothPanel, AdvReflectionLabel;
+  AdvOfficeStatusBarStylers, AdvSmoothPanel, AdvReflectionLabel, RXClock;
 
 const
   InformandoVendedor            = 'InformandoVendedor';
@@ -27,6 +27,7 @@ const
   InformandoCliente             = 'InformandoCliente';
   InformandoClienteDependente   = 'InformandoClienteDependente';
   FinalizandoVenda              = 'FinalizandoVenda' ;
+  InformandoCredito             = 'InformandoCredito' ;
   TipoPadraoLiberacao : array [0..3] of string = ('CRD','CNV','CHQP','CHQ');
 type
   TFormTelaFechamentoVenda = class(TForm)
@@ -277,6 +278,7 @@ type
     pMensagemCliente: TPanel;
     Label11: TLabel;
     lMensagemCliente: TLabel;
+    RxHora: TRxClock;
     procedure FormCreate(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure EntradaDadosKeyDown(Sender: TObject; var Key: Word;
@@ -443,7 +445,6 @@ begin
       LblValorDescontoAcrescimo.Refresh ;
       ValorDescontoAcrescimo.Value := FormTelaItens.curSubTotalDesc.Value;
     end;
-
 
   ValorTotalVenda.Value := FormTelaItens.CurSubTotal.Value - VlrDescPromoImportado -
                            (VlrBonusTroca + VlrRetConfig_SldCad) ;
@@ -1045,7 +1046,7 @@ begin
                                          (SQLPlanoRecebimentoPLRCN2PERCDESC.Value/100))
               else
               if ImportandoPreVenda then
-                ValorTotalVenda.Value := (FormTelaItens.CurSubTotal.Value + VlrTxCrediario.Value)
+                ValorTotalVenda.Value := ((FormTelaItens.CurSubTotal.Value + VlrTxCrediario.Value) - (VlrBonusTroca + VlrRetConfig_SldCad))
               else
                 ValorTotalVenda.Value := (FormTelaItens.CurSubTotal.Value + VlrTxCrediario.Value) - (VlrBonusTroca + VlrRetConfig_SldCad + ValorDescontoAcrescimo.Value);
 
@@ -6612,6 +6613,21 @@ begin
               TipoBloqueio := 4 ;
         end;
 
+      // TESTAR SE TEM FATURAS EM ATRASO
+      MsgBloqueioVenda := '';
+      DM.SQLTemplate.Close ;
+      DM.SQLTemplate.SQL.Clear ;
+      DM.SQLTemplate.SQL.Add('select count(CR.CTRCA13ID) CONTADOR ');
+      DM.SQLTemplate.SQL.Add('from CONTASRECEBER CR ');
+      DM.SQLTemplate.SQL.Add('where CR.CTRCDVENC < :DATA and ');
+      DM.SQLTemplate.SQL.Add('CR.CLIEA13ID = :CLIENTE and ');
+      DM.SQLTemplate.SQL.Add('CR.CTRCN2VLR > CR.CTRCN2TOTREC ');
+      DM.SQLTemplate.ParamByName('DATA').AsDate := Now;
+      DM.SQLTemplate.ParamByName('CLIENTE').AsString := ClienteVenda;
+      DM.SQLTemplate.Open ;
+      if DM.SQLTemplate.FieldByName('CONTADOR').AsInteger > 0 then
+        TipoBloqueio := 6;
+
       // TESTAR SE TEM ALGUM CHEQUE COM SITUACAO Q TEM BLOQUEIO
       MsgBloqueioVenda := '';
       DM.SQLTemplate.Close ;
@@ -6633,7 +6649,7 @@ begin
 
       //TESTAR SE CLIENTE TEM LIMITE PARA A COMPRA
       if ((TipoPadrao = 'CRD') or (TipoPadrao = 'CHQP') or (TipoPadrao = 'CRTF')) then
-        if (DM.SQLConfigVendaCFVECTESTALIMTCRED.AsString = 'S') then
+        if (DM.SQLConfigVendaCFVECTESTALIMTCRED.AsString = 'S') and (TipoBloqueio = 0) then
           if not VerificaLimiteCredito(ClienteVenda,ValorTotalVenda.Value,DM.SQLParcelas,DM.SQLCliente) then
             TipoBloqueio := 9;
 
@@ -6643,6 +6659,7 @@ begin
         3 : MsgBloqueioVenda := 'Este Cliente está em 2 Aviso' ;
         4 : MsgBloqueioVenda := 'Este Cliente está em SPC' ;
         5 : MsgBloqueioVenda := 'Verificar Cadastro de Cheques' ;
+        6 : MsgBloqueioVenda := 'Este Cliente possui faturas em atraso';
         9 : MsgBloqueioVenda := 'Limite para Compras foi excedido! Verificar Cadastro do Cliente' ;
       end ;
       if (DM.SQLConfigVendaCFVEA250MSGBLOQ.Value <> '') and (TipoBloqueio > 0) then

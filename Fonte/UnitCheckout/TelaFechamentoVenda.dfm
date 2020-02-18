@@ -1,6 +1,6 @@
 object FormTelaFechamentoVenda: TFormTelaFechamentoVenda
-  Left = 16
-  Top = 5
+  Left = -24
+  Top = 0
   BorderIcons = []
   BorderStyle = bsNone
   Caption = 'Tela Fechamento Venda'
@@ -2323,6 +2323,21 @@ object FormTelaFechamentoVenda: TFormTelaFechamentoVenda
         end
       end
     end
+    object RxHora: TRxClock
+      Left = 120
+      Top = 16
+      Width = 185
+      Height = 20
+      BevelInner = bvNone
+      BevelOuter = bvNone
+      Color = 5278518
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWhite
+      Font.Height = -17
+      Font.Name = 'MS Sans Serif'
+      Font.Style = [fsBold]
+      ParentFont = False
+    end
   end
   object MemoRetorno: TMemo
     Left = 1065
@@ -3418,8 +3433,8 @@ object FormTelaFechamentoVenda: TFormTelaFechamentoVenda
     PanelAppearanceDark.TextColorHot = clWhite
     PanelAppearanceDark.TextColorDown = clWhite
     PanelAppearanceDark.TextStyle = []
-    Left = 378
-    Top = 6
+    Left = 210
+    Top = 65534
   end
   object SQLClienteCredito: TRxQuery
     DatabaseName = 'DB'
