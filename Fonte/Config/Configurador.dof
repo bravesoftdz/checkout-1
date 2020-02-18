@@ -90,7 +90,7 @@ MaxStackSize=1048576
 ImageBase=4194304
 ExeDescription=
 [Directories]
-OutputDir=D:\Easy2Solutions\Gestao
+OutputDir=C:\Easy2Solutions\Gestao
 UnitOutputDir=
 PackageDLLOutputDir=
 PackageDCPOutputDir=
@@ -147,8 +147,8 @@ Count=1
 Item0=WinTypes=Windows;WinProcs=Windows;DbiTypes=BDE;DbiProcs=BDE;DbiErrs=BDE;
 [HistoryLists\hlOutputDirectorry]
 Count=5
-Item0=D:\Easy2Solutions\Gestao
-Item1=D:\Easy2Solutions
-Item2=C:\Easy2Solutions
-Item3=C:\Easy2Solutions\Gestao
+Item0=C:\Easy2Solutions\Gestao
+Item1=D:\Easy2Solutions\Gestao
+Item2=D:\Easy2Solutions
+Item3=C:\Easy2Solutions
 Item4=C:\Unit\Gestao

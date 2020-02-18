@@ -10,6 +10,7 @@ inherited CadastroOperacaoEstoqueCFOP: TCadastroOperacaoEstoqueCFOP
       inherited PanelFundoDados: TPanel
         inherited Panel5: TPanel
           inherited PagePrincipal: TPageControl
+            ActivePage = TabSheetDadosPrincipais
             inherited TabSheetConsulta: TTabSheet
               inherited DBGridLista: TDBGrid
                 Columns = <
@@ -88,7 +89,7 @@ inherited CadastroOperacaoEstoqueCFOP: TCadastroOperacaoEstoqueCFOP
                 ParentFont = False
               end
               object Label68: TLabel
-                Left = 163
+                Left = 222
                 Top = 12
                 Width = 108
                 Height = 13
@@ -193,7 +194,7 @@ inherited CadastroOperacaoEstoqueCFOP: TCadastroOperacaoEstoqueCFOP
               object ComboOrigem: TRxDBComboBox
                 Left = 3
                 Top = 28
-                Width = 154
+                Width = 214
                 Height = 21
                 Style = csDropDownList
                 DataField = 'ORIGEMMERC'
@@ -208,18 +209,38 @@ inherited CadastroOperacaoEstoqueCFOP: TCadastroOperacaoEstoqueCFOP
                 Items.Strings = (
                   '0-Nacional'
                   '1-Estrangeira(importa'#231#227'o direta)'
-                  '2-Estrangeira(adquirida mercaso nacional)')
+                  '2-Estrangeira(adquirida mercaso nacional)'
+                  
+                    '3-Nacional, mercadoria ou bem com Conte'#250'do de Importa'#231#227'o superio' +
+                    'r a 40%'
+                  
+                    '4-Nacional, cuja produ'#231#227'o tenha sido feita em conformidade com o' +
+                    's processos '
+                  
+                    '5-Nacional, mercadoria ou bem com Conte'#250'do de Importa'#231#227'o inferio' +
+                    'r ou igual a 40%'
+                  
+                    '6-Estrangeira - Importa'#231#227'o direta, sem similar nacional, constan' +
+                    'te em lista'
+                  
+                    '7-Estrangeira - Adquirida no mercado interno, sem similar nacion' +
+                    'al, constante em lista')
                 ParentFont = False
                 TabOrder = 0
                 Values.Strings = (
                   '0'
                   '1'
-                  '2')
+                  '2'
+                  '3'
+                  '4'
+                  '5'
+                  '6'
+                  '7')
               end
               object ComboSitTrib: TRxDBComboBox
-                Left = 162
+                Left = 222
                 Top = 28
-                Width = 479
+                Width = 414
                 Height = 21
                 Style = csDropDownList
                 DataField = 'CSTICMS'
