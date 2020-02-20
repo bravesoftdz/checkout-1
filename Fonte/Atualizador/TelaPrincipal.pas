@@ -634,6 +634,7 @@ begin
   Progress.Max := ListaTrigger.Items.Count ;
   Progress.Position := 0 ;
   SQLScript.SemicolonTerm := False;
+  SQLScript.IgnoreParams := True;
   ListaTrigger.SetFocus;
   for i := 0 to ListaTrigger.Items.Count-1 do
   begin
@@ -645,12 +646,13 @@ begin
   Memo.Lines.SaveToFile('Log.txt');
   Progress.Position := 0;
   SQLScript.SemicolonTerm := True;
+  SQLScript.IgnoreParams := False;
   CorrecoesBanco;
   Database.Close;
   Application.ProcessMessages;
-  ShowMessage('Banco de Dados Atualizado com Sucesso !');
+//  ShowMessage('Banco de Dados Atualizado com Sucesso !');
   Close;
-  Free;
+//  Free;
 end;
 
 procedure TFormTelaPrincipal.FormCreate(Sender: TObject);
