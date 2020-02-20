@@ -173,8 +173,8 @@ begin
     else
       begin
         if (MostraDisplay = 'S') and (TblPreVendaCabDisplayNumero.Value>0) then
-          memo.Lines.Add('</ce><e>Comprovante: '+Sequencial+'</e>')
-//          memo.Lines.Add('</ce><e>Comprovante: '+TblPreVendaCabDisplayNumero.AsString+'</e>')
+//          memo.Lines.Add('</ce><e>Comprovante: '+Sequencial+'</e>')
+          memo.Lines.Add('</ce><e>Comprovante: '+TblPreVendaCabDisplayNumero.AsString+'</e>')
         else
           memo.Lines.Add('<ce><e>ID: '+TblPreVendaCabTicketNumero.AsString+'</e></ce>');
       end;
