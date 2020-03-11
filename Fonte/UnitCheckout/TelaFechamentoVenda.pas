@@ -1383,14 +1383,30 @@ begin
                   SQLParcelasVistaVendaTemp.SQL.Add('where TERMICOD = ' + IntToStr(TerminalAtual)) ;
                   SQLParcelasVistaVendaTemp.SQL.Add('and   NUMEICOD = ' + IntToStr(NumerarioVista)) ;
                   SQLParcelasVistaVendaTemp.Open ;
-
                   ValorDevido := ValorEntrada.Value - ValorRecebido.Value ;
                   AtualizarSaldoEdit;
-
                   SQLParcelasVistaVendaTemp.Edit ;
+                  Valor1 := StrToFloatDef(EntradaDados.Text,0);
+                  if (Valor1 > ValorDevido) and (ValorDevido > 0) then
+                    begin
+                     if not ImportandoPreVenda then
+                       SQLParcelasVistaVendaTempVALORPARC.Value := (StrToFloat(EntradaDados.Text) - (StrToFloat(EntradaDados.Text) - ValorDevido) + SQLParcelasVistaVendaTempVALORPARC.AsFloat)
+                     else // Comentei o código abaixo e habilitei o de cima porque estava dando erro ao importar prevenda com troco.
+                     begin
+                       if (Valor1 > ValorDevido) then
+                         SQLParcelasVistaVendaTempVALORPARC.Value := ValorDevido + SQLParcelasVistaVendaTempVALORPARC.AsFloat
+                       else
+                         SQLParcelasVistaVendaTempVALORPARC.Value := StrToFloatDef(EntradaDados.Text,0) + SQLParcelasVistaVendaTempVALORPARC.AsFloat;
+                     end;
+                    end
+                  else
+                    SQLParcelasVistaVendaTempVALORPARC.Value := StrToFloatDef(EntradaDados.Text,0) + SQLParcelasVistaVendaTempVALORPARC.AsFloat;
+
+
                  // SQLParcelasVistaVendaTempVALORPARC.Value := StrToFloatDef(EntradaDados.Text,0) - ValorDevido ;
                  //SQLParcelasVistaVendaTempVALORPARC.Value := StrToFloatDef(EntradaDados.Text,0) + VarValorRecebido ;
-                  SQLParcelasVistaVendaTempVALORPARC.Value := StrToFloatDef(EntradaDados.Text,0) + SQLParcelasVistaVendaTempVALORPARC.Value;
+                 //SQLParcelasVistaVendaTempVALORPARC.Value := StrToFloatDef(EntradaDados.Text,0) + SQLParcelasVistaVendaTempVALORPARC.Value;
+//                  SQLParcelasVistaVendaTempVALORPARC.Value := ValorDevido + SQLParcelasVistaVendaTempVALORPARC.Value;
                   SQLParcelasVistaVendaTempTIPOPADR.Value  := TipoPadrao ;
                   SQLParcelasVistaVendaTemp.Post ;
                 end;
