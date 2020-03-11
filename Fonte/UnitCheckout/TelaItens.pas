@@ -2454,8 +2454,8 @@ begin
           end
           else
             DescItemVlr := (ValorItem * QuantItem) * (DescItemPerc / 100);
-
-        DescItemVlr := StrToFloat(Copy(FloatToStr(DescItemVlr), 1, Pos(',', FloatToStr(DescItemVlr)) + 3));
+        if Pos(',', FloatToStr(DescItemVlr)) > 0 then
+          DescItemVlr := StrToFloat(Copy(FloatToStr(DescItemVlr), 1, Pos(',', FloatToStr(DescItemVlr)) + 3));
       end;
 
       InfDesc := '';
@@ -2468,7 +2468,8 @@ begin
       if DescItemPerc > 0 then
       begin
         DescItemVlr := (ValorItem * QuantItem) * (DescItemPerc / 100);
-        DescItemVlr := StrToFloat(Copy(FloatToStr(DescItemVlr), 1, Pos(',', FloatToStr(DescItemVlr)) + 2));
+        if Pos(',', FloatToStr(DescItemVlr)) > 0 then
+          DescItemVlr := StrToFloat(Copy(FloatToStr(DescItemVlr), 1, Pos(',', FloatToStr(DescItemVlr)) + 2));
       end;
 
       InfDesc := '';
